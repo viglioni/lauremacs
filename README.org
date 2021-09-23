@@ -1,0 +1,20 @@
+#+title: LAUREMACS
+#+author: Laura Viglioni
+
+** About
+   My new emacs configuration
+
+** How to use it
+   Clone this repo to your ~~/~ and run
+
+   #+begin_src shell :exports both :results output
+     emacs -q -l ~/lauremacs/init.el
+   #+end_src
+
+   Note that if you clone this in another place, you might need to change some paths inside [[./init.el][init.el]].
+
+** Licence
+   This project is free and it will always be.
+  
+   [[https://www.gnu.org/licenses/gpl-3.0.en.html][GPL-3]]
+

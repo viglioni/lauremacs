@@ -5,6 +5,10 @@
    My new emacs configuration
    
    🚧 *[WIP]* 🚧
+
+   I'm developing it on
+   - MacOS 🍎
+   - using Emacs ~27.2.50~
    
 ** How to use it
    Clone this repo to your ~home~ dir and run

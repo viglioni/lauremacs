@@ -7,7 +7,7 @@
    🚧 *[WIP]* 🚧
    
 ** How to use it
-   Clone this repo to your ~~/~ and run
+   Clone this repo to your ~home~ dir and run
 
    #+begin_src shell :exports both :results output
      emacs -q -l ~/lauremacs/init.el

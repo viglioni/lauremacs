@@ -1,4 +1,10 @@
 ;;
+;; Theme
+;;
+
+;(load-theme 'spacemacs-dark t)
+
+;;
 ;; Load config files
 ;;
 
@@ -7,6 +13,9 @@
          (concat lauremacs-dir "/config")
          t ".*\\.el$"))
 
+;;
+;; Custom variables
+;;
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

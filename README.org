@@ -3,6 +3,7 @@
 
 ** About
    My new emacs configuration
+   
    🚧 *[WIP]* 🚧
    
 ** How to use it

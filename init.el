@@ -7,7 +7,7 @@
 
 (setq lauremacs-dir "~/lauremacs")
 (setq user-emacs-directory (join-path lauremacs-dir ".emacs.d"))
-(load-file (concat user-emacs-directory "early-init.el"))
+(load-file (join-path user-emacs-directory "early-init.el"))
 
 
 ;;

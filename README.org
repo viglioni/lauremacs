@@ -3,7 +3,8 @@
 
 ** About
    My new emacs configuration
-
+   🚧 *[WIP]* 🚧
+   
 ** How to use it
    Clone this repo to your ~~/~ and run
 
@@ -11,10 +12,11 @@
      emacs -q -l ~/lauremacs/init.el
    #+end_src
 
-   Note that if you clone this in another place, you might need to change some paths inside [[./init.el][init.el]].
+   Note that if you clone this in another place, you will need to change ~lauremacs-dir~ inside [[./init.el][init.el]].
 
 ** Licence
    This project is free and it will always be.
   
    [[https://www.gnu.org/licenses/gpl-3.0.en.html][GPL-3]]
 
+   

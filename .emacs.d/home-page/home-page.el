@@ -29,7 +29,7 @@
 ;; Dashboard
 ;;
 
-(setq dashboard-buffer-name "*lauremacs*")
+(setq dashboard-buffer-name (get-buffer initial-buffer-choice))
 
 (use-package page-break-lines)
 (use-package all-the-icons)

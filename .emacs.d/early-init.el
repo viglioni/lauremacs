@@ -14,7 +14,7 @@
 ;;
 
 (setq inhibit-startup-message t)
-(setq initial-buffer-choice "*lauremacs*")
+(setq initial-buffer-choice lauremacs-buffer-name)
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar

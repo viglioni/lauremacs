@@ -10,7 +10,9 @@
 (setq lauremacs-d-dir (join-path lauremacs-dir ".emacs.d"))
 (setq lauremacs-home-page-dir (join-path lauremacs-d-dir "home-page"))
 (setq user-emacs-directory lauremacs-d-dir)
+(setq lauremacs-buffer-name "*lauremacs*")
 
+;; load early-init.el
 (load-file (join-path user-emacs-directory "early-init.el"))
 
 

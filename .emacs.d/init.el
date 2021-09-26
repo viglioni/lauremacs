@@ -11,6 +11,7 @@
 (setq lauremacs-home-page-dir (join-path lauremacs-d-dir "home-page"))
 (setq user-emacs-directory lauremacs-d-dir)
 (setq lauremacs-buffer-name "*lauremacs*")
+(setq lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
 
 ;; load early-init.el
 (load-file (join-path user-emacs-directory "early-init.el"))
@@ -40,6 +41,14 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+;;
+;; load-path
+;;
+
+(let ((default-directory lauremacs-external-libs-dir))
+  (normal-top-level-add-subdirs-to-load-path))
+
 
 
 ;;

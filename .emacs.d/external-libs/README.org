@@ -1,0 +1,3 @@
+A directory to store libs that are manually installed.
+
+This dir must be recursivelly added to the ~load-path~.

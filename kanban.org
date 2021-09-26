@@ -8,6 +8,7 @@
   - [ ] iedit-evil
   - [ ] get some modeline (doom? spacemacs?)
   - [ ] vterm
+  - [ ] magit
     
 * Bikeshedding [0%]
   - [ ] pretty symbols

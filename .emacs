@@ -11,7 +11,16 @@
 (mapcar 'load-file
         (directory-files
          (concat lauremacs-dir "/config")
-         t ".*\\.el$"))
+         t (rx (and (+ (| alphanumeric "." "-"))
+                    ".el"
+                    line-end))))
+
+;;
+;; Loading another packages
+;;
+
+(use-package which-key)
+(add-hook 'emacs-startup-hook 'which-key-mode)
 
 ;;
 ;; Custom variables

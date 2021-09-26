@@ -1,0 +1,34 @@
+* Basic stuff [25%]
+  - [ ] projectile
+  - [ ] helm
+  - [X] dashboard
+  - [ ] set leader keys
+  - [ ] add layout
+  - [ ] multicursor
+  - [ ] iedit-evil
+ 
+* Bikeshedding
+  - [ ] pretty symbols
+    
+* Dashboard [50%]
+  - [X] gifs
+  - [ ] put quotes
+
+* keys [0%]
+  - [ ] window keys
+  - [ ] projectile keys
+  - [ ] major mode keys
+  - [ ] layout keys
+  - [ ] change buffer
+  - [ ] 
+
+* org [100%]
+  - [ ] pretty symbols
+
+* Code modes
+  - [ ] LSP
+  - [ ] TS
+  - [ ] Haskell
+  - [ ] Clojure
+  - [ ] SQL
+

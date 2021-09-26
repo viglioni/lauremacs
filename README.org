@@ -14,7 +14,7 @@
    Clone this repo to your ~home~ dir and run
 
    #+begin_src shell :exports both :results output
-     emacs -q -l ~/lauremacs/init.el
+     emacs -q -l ~/lauremacs/.emacs.d/init.el --title Lauremacs
    #+end_src
 
    Note that if you clone this in another place, you will need to change ~lauremacs-dir~ inside [[./init.el][init.el]].

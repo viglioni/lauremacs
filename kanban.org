@@ -1,4 +1,4 @@
-* Basic stuff [25%]
+* Basic stuff [12%]
   - [ ] projectile
   - [ ] helm
   - [X] dashboard
@@ -6,8 +6,10 @@
   - [ ] add layout
   - [ ] multicursor
   - [ ] iedit-evil
- 
-* Bikeshedding
+  - [ ] get some modeline (doom? spacemacs?)
+  - [ ] vterm
+    
+* Bikeshedding [0%]
   - [ ] pretty symbols
     
 * Dashboard [50%]
@@ -20,12 +22,12 @@
   - [ ] major mode keys
   - [ ] layout keys
   - [ ] change buffer
-  - [ ] 
+  - [ ] shell
 
-* org [100%]
+* org [0%]
   - [ ] pretty symbols
 
-* Code modes
+* IDE [0%]
   - [ ] LSP
   - [ ] TS
   - [ ] Haskell

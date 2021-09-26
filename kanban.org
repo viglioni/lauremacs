@@ -1,6 +1,6 @@
-* Basic stuff [25%]
+* Basic stuff [30%]
   - [ ] projectile
-  - [ ] helm
+  - [X] helm
   - [X] dashboard
   - [ ] set leader keys
   - [ ] add layout
@@ -11,6 +11,7 @@
   - [ ] magit
   - [X] which key
   - [X] evil
+  - [ ] snippets
     
 * Transient State [0%]
   - [ ] evil 

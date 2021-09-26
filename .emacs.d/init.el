@@ -1,12 +1,16 @@
 ;;
 ;; Early configuration
 ;;
+
 (defun join-path (path filename)
   "concat path and file. Adds '/' to the end of the path if necessary"
   (concat path (if (string-match-p "/$" path) "" "/") filename))
 
 (setq lauremacs-dir "~/lauremacs")
-(setq user-emacs-directory (join-path lauremacs-dir ".emacs.d"))
+(setq lauremacs-d-dir (join-path lauremacs-dir ".emacs.d"))
+(setq lauremacs-home-page-dir (join-path lauremacs-d-dir "home-page"))
+(setq user-emacs-directory lauremacs-d-dir)
+
 (load-file (join-path user-emacs-directory "early-init.el"))
 
 
@@ -36,6 +40,19 @@
 (setq use-package-always-ensure t)
 
 
+;;
+;; Load home page
+;;
+
+(load-file (join-path lauremacs-home-page-dir "home-page.el"))
+
+;;
+;; Load personal file
+;;
+
+
 (load-file (concat lauremacs-dir "/.emacs"))
+
+
 
 

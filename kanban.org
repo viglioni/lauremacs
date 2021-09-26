@@ -1,4 +1,4 @@
-* Basic stuff [12%]
+* Basic stuff [16%]
   - [ ] projectile
   - [ ] helm
   - [X] dashboard
@@ -9,6 +9,8 @@
   - [ ] get some modeline (doom? spacemacs?)
   - [ ] vterm
   - [ ] magit
+  - [ ] which key
+  - [X] evil
     
 * Bikeshedding [0%]
   - [ ] pretty symbols

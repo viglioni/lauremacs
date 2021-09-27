@@ -1,4 +1,5 @@
-* Basic stuff [30%]
+
+* Basic stuff [35%]
   - [ ] projectile
   - [X] helm
   - [X] dashboard
@@ -12,6 +13,10 @@
   - [X] which key
   - [X] evil
   - [ ] snippets
+  - [X] paredit
+  - [ ] company
+  - [ ] eldoc
+  - [X] auto-complete
     
 * Transient State [0%]
   - [ ] evil 

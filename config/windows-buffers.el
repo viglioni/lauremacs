@@ -48,3 +48,8 @@ TODO: throw if not splitable"
  "" '(nil :which-key "windows")
  "1" '(lauremacs/window-split-single-column :which-key "split single column")
  "2" '(lauremacs/window-split-double-columns :which-key "split double columns"))
+
+(general-define-key
+ :prefix "<f19> b"
+ "" '(nil :which-key "buffers")
+ "b" '(helm-buffers-list :which-key "list buffers"))

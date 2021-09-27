@@ -19,8 +19,12 @@
 ;; Loading another packages
 ;;
 
-(use-package which-key)
-(add-hook 'emacs-startup-hook 'which-key-mode)
+(use-package which-key
+  :init (which-key-mode)
+  :config
+  (setq which-key-idle-delay 0.3))
+
+(use-package general)
 
 ;;
 ;; Custom variables

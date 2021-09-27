@@ -8,23 +8,36 @@
 ;; Load config files
 ;;
 
-(mapcar 'load-file
-        (directory-files
-         (concat lauremacs-dir "/config")
-         t (rx (and (+ (| alphanumeric "." "-"))
-                    ".el"
-                    line-end))))
+(let ((config-files (directory-files
+                     (concat lauremacs-dir "/config")
+                     t (rx (and (+ (| alphanumeric "." "-"))
+                                ".el"
+                                line-end)))))
+  (mapcar 'load-file config-files))
 
 ;;
 ;; Loading another packages
 ;;
+
+(use-package helm
+  :bind (("M-x" . 'helm-M-x)))
 
 (use-package which-key
   :init (which-key-mode)
   :config
   (setq which-key-idle-delay 0.3))
 
-(use-package general)
+(use-package general
+  :init
+  (general-define-key
+   "<f19> <f19>" '(helm-M-x :which-key "M-x")))
+
+(use-package paredit
+  :hook (emacs-lisp-mode . paredit-mode))
+
+(use-package auto-complete
+  :hook (prog-mode . auto-complete-mode)
+  :init (ac-config-default))
 
 ;;
 ;; Custom variables

@@ -29,13 +29,12 @@
 ;; Dashboard
 ;;
 
-(setq dashboard-buffer-name (get-buffer initial-buffer-choice))
-
 (use-package page-break-lines)
 (use-package all-the-icons)
 
 (use-package dashboard
   :config
+  (setq dashboard-buffer-name lauremacs-buffer-name)
   (setq dashboard-items '((recents . 15)))
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)

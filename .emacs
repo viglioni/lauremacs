@@ -22,10 +22,23 @@
 
 (use-package evil)
 
+(use-package smartparens
+  :config
+  (smartparens-global-mode t)
+  (sp-local-pair '(emacs-lisp-mode) "'" "'" :actions nil))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package highlight-parentheses
+  :hook (prog-mode . highlight-parentheses-mode))
+
 (use-package helm
   :bind (("M-x" . 'helm-M-x))
   :init
   (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
+
+(use-package helm-swoop)
 
 (use-package paredit
   :hook '((emacs-lisp-mode . paredit-mode)

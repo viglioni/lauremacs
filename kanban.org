@@ -1,5 +1,5 @@
 
-* Basic stuff [40%]
+* Basic stuff [46%]
   - [ ] <leader> x
   - [ ] add layout
   - [X] auto-complete
@@ -22,7 +22,7 @@
   - [X] rainbow parens
   - [X] set leader keys
   - [ ] straight
-  - [ ] swoop
+  - [X] swoop
   - [ ] vterm
   - [X] which key
   - [ ] yasnippets

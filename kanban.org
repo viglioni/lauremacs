@@ -1,39 +1,54 @@
 
-* Basic stuff [35%]
-  - [ ] projectile
-  - [X] helm
-  - [X] dashboard
-  - [ ] set leader keys
+* Basic stuff [40%]
+  - [ ] <leader> x
   - [ ] add layout
-  - [ ] multicursor
-  - [ ] iedit-evil
-  - [ ] get some modeline (doom? spacemacs?)
-  - [ ] vterm
-  - [ ] magit
-  - [X] which key
-  - [X] evil
-  - [ ] snippets
-  - [X] paredit
-  - [ ] company
-  - [ ] eldoc
   - [X] auto-complete
-    
+  - [X] company
+  - [ ] compilation buffer
+  - [X] dashboard
+  - [ ] eldoc
+  - [X] evil
+  - [X] expand-region
+  - [ ] flycheck
+  - [ ] get some modeline (doom? spacemacs?)
+  - [X] helm
+  - [ ] iedit-evil
+  - [ ] ispell/aspell
+  - [ ] magit
+  - [X] multicursor
+  - [ ] neotree
+  - [X] paredit
+  - [ ] projectile
+  - [X] rainbow parens
+  - [X] set leader keys
+  - [ ] straight
+  - [ ] swoop
+  - [ ] vterm
+  - [X] which key
+  - [ ] yasnippets
+
 * Transient State [0%]
-  - [ ] evil 
+  - [ ] evil
+  - [ ] layers
+  - [ ] html
+  - [ ] themes
   
-* Bikeshedding [0%]
+* Bikeshedding [25%]
   - [ ] pretty symbols
+  - [X] rainbow-mode
+  - [ ] company icons
+  - [ ] company-fuzzy
     
 * Dashboard [50%]
   - [X] gifs
   - [ ] put quotes
 
-* keys [0%]
+* key-bindings [0%]
   - [ ] window keys
   - [ ] projectile keys
   - [ ] major mode keys
   - [ ] layout keys
-  - [ ] change buffer
+  - [ ] buffers
   - [ ] shell
 
 * org [0%]
@@ -45,4 +60,5 @@
   - [ ] Haskell
   - [ ] Clojure
   - [ ] SQL
+  - [ ] elisp
 

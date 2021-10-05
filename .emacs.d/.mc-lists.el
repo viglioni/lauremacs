@@ -4,9 +4,11 @@
 (setq mc/cmds-to-run-for-all
       '(
 	indent-for-tab-command
+	paredit-doublequote
 	paredit-forward-barf-sexp
 	paredit-forward-delete
 	paredit-forward-kill-word
+	paredit-open-round
 	))
 
 (setq mc/cmds-to-run-once

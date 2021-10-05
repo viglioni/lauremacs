@@ -1,1 +1,5 @@
 *~
+.emacs.d/eshell/*
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/projectile.cache
+.emacs.d/recentf

@@ -101,7 +101,43 @@ e.g.
 (fp/const-fn-interactive 'concat \"several \" \"string \" \"args\")"
   `(lambda () (interactive) (apply ,fn (quote ,args))))
 
-(general-define-key ;; walk through code
+
+;;
+;; Windows binds
+;;
+
+(lauremacs-leader
+  "w" '(nil :which-key "windows")
+  "w0" (list (fp/const-fn-interactive 'delete-other-windows) :which-key "delete other windows")
+  "w1" '(lauremacs/window-split-single-column :which-key "split single column")
+  "w2" '(lauremacs/window-split-double-columns :which-key "split double columns")
+  "w3" '(lauremacs/window-split-triple-columns :which-key "split double columns")
+  "w4" '(lauremacs/window-split-grid :which-key "split windows in grid")
+  "wt" '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
+  "w=" (list (fp/const-fn-interactive 'balance-windows) :which-key "balance windows")
+  "wd" (list (fp/const-fn-interactive 'delete-window) :which-key "delete current window"))
+
+
+;;
+;; Buffers binds
+;;
+
+(lauremacs-leader
+  "TAB" '(lauremacs/switch-to-last-buffer :which-key "alternate buffer")
+  "b" '(nil :which-key "buffers")
+  "bb" '(helm-buffers-list :which-key "list buffers")
+  "bm" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
+         :which-key "switch to Messages buffer")
+  "bs" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
+         :which-key "switch to scratch buffer")
+  "bh" '((lambda () (interactive) (switch-to-buffer lauremacs-buffer-name))
+         :which-key "switch to home buffer"))
+
+;;
+;; Walk through code / windows
+;;
+
+(general-define-key 
  "s-m" 'left-char
  "s-," 'next-line
  "s-." 'previous-line
@@ -110,10 +146,6 @@ e.g.
  "C-s-," 'forward-paragraph
  "C-s-." 'backward-paragraph
  "C-s-/" 'forward-word)
-
-;;
-;; windows-buffers related config
-;;
 
 (general-define-key ;; walk through windows
  :prefix "C-x"
@@ -126,39 +158,44 @@ e.g.
  "." 'evil-window-up
  "/" 'evil-window-right)
 
-;;
-;; Windows binds
-;;
+(use-package multiple-cursors
+  :bind (:map mc/keymap
+	      ("<return>" . nil))
+  :init
+  (general-define-key
+   :prefix "C-c m"
+   "" '(nil :which-key "multi-cursor")
+   "<mouse-1>" '(mc/add-cursor-on-click :which-key "add cursor on click")
+   "m" '(mc/edit-lines :which-key "edit lines")
+   "a" '(mc/edit-beginnings-of-lines :which-key "edit beginnings of lines")
+   "e" '(mc/edit-ends-of-lines :which-key "edit ends of lines")
+   "w" '(mc/mark-all-words-like-this :which-key "mark all words like this")
+   "s" '(mc/mark-all-symbols-like-this :which-key "mark all symbols like this")
+   "t" '(mc/mark-all-like-this :which-key "mark all like this")
+   "r" '(mc/mark-all-in-region :which-key "mark all in region")
+   "n" '(mc/mark-next-like-this :which-key "mark next like this")
+   "p" '(mc/mark-previous-like-this :which-key "mark previous like this")
+   "N" '(mc/skip-to-next-like-this :which-key "skip to next like this")
+   "P" '(mc/skip-to-previous-like-this :which-key "skip to previous like this")
+   "u" '(nil :which-key "unmark")
+   "un" '(mc/unmark-next-like-this :which-key "unmark last like this")
+   "up" '(mc/unmark-previous-like-this :which-key "unmark first like this"))
+  (lauremacs-leader
+    "m" '(nil :which-key "multi-cursor")
+    "m <mouse-1>" '(mc/add-cursor-on-click :which-key "add cursor on click")
+    "mm" '(mc/edit-lines :which-key "edit lines")
+    "ma" '(mc/edit-beginnings-of-lines :which-key "edit beginnings of lines")
+    "me" '(mc/edit-ends-of-lines :which-key "edit ends of lines")
+    "mw" '(mc/mark-all-words-like-this :which-key "mark all words like this")
+    "ms" '(mc/mark-all-symbols-like-this :which-key "mark all symbols like this")
+    "mt" '(mc/mark-all-like-this :which-key "mark all like this")
+    "mr" '(mc/mark-all-in-region :which-key "mark all in region")
+    "mn" '(mc/mark-next-like-this :which-key "mark next like this")
+    "mp" '(mc/mark-previous-like-this :which-key "mark previous like this")
+    "mN" '(mc/skip-to-next-like-this :which-key "skip to next like this")
+    "mP" '(mc/skip-to-previous-like-this :which-key "skip to previous like this")
+    "mu" '(nil :which-key "unmark")
+    "mun" '(mc/unmark-next-like-this :which-key "unmark last like this")
+    "mup" '(mc/unmark-previous-like-this :which-key "unmark first like this")))
 
-(lauremacs-leader
- "w" '(nil :which-key "windows")
- "w1" '(lauremacs/window-split-single-column :which-key "split single column")
- "w2" '(lauremacs/window-split-double-columns :which-key "split double columns")
- "w3" '(lauremacs/window-split-triple-columns :which-key "split double columns")
- "w4" '(lauremacs/window-split-grid :which-key "split windows in grid")
- "wt" '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
- "w=" (list (fp/const-fn-interactive 'balance-windows) :which-key "balance windows"))
 
-
-;;
-;; Buffers binds
-;;
-
-(lauremacs-leader
- "TAB" '(lauremacs/switch-to-last-buffer :which-key "alternate buffer")
- "b" '(nil :which-key "buffers")
- "bb" '(helm-buffers-list :which-key "list buffers")
- "bm" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
-        :which-key "switch to Messages buffer")
- "bs" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
-        :which-key "switch to scratch buffer")
- "bh" '((lambda () (interactive) (switch-to-buffer lauremacs-buffer-name))
-        :which-key "switch to home buffer"))
-
-;;
-;; Search binds
-;;
-
-(lauremacs-leader
-  "s" '(nil :which-key "search")
-  "ss" '(helm-swoop :which-key "swoop"))

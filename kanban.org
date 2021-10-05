@@ -1,5 +1,5 @@
 
-* Basic stuff [46%]
+* Basic stuff [52%]
   - [ ] <leader> x
   - [ ] add layout
   - [X] auto-complete
@@ -14,18 +14,21 @@
   - [X] helm
   - [ ] iedit-evil
   - [ ] ispell/aspell
-  - [ ] magit
+  - [X] magit
   - [X] multicursor
   - [ ] neotree
   - [X] paredit
   - [ ] projectile
   - [X] rainbow parens
   - [X] set leader keys
-  - [ ] straight
   - [X] swoop
   - [ ] vterm
   - [X] which key
   - [ ] yasnippets
+
+* Enhancements
+  - [ ] straight
+  - [ ] use the ~:after~ from ~use-package~
 
 * Transient State [0%]
   - [ ] evil
@@ -33,12 +36,12 @@
   - [ ] html
   - [ ] themes
   
-* Bikeshedding [25%]
+* Bikeshedding [20%]
   - [ ] pretty symbols
   - [X] rainbow-mode
   - [ ] company icons
   - [ ] company-fuzzy
-    
+  - [ ] emacs meme
 * Dashboard [50%]
   - [X] gifs
   - [ ] put quotes

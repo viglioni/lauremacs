@@ -16,9 +16,12 @@
 (use-package general
   :init
   (general-create-definer lauremacs-major-mode-leader
-                          :prefix "<f17>")
+    :prefix "<f17>")
   (general-create-definer lauremacs-leader
-                          :prefix "<f19>"))
+    :prefix "<f19>")
+  (lauremacs-leader
+    "s" '(nil :which-key "search")
+    "g" '(nil :which-key "git")))
 
 (use-package evil)
 
@@ -32,13 +35,6 @@
 
 (use-package highlight-parentheses
   :hook (prog-mode . highlight-parentheses-mode))
-
-(use-package helm
-  :bind (("M-x" . 'helm-M-x))
-  :init
-  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
-
-(use-package helm-swoop)
 
 (use-package paredit
   :hook '((emacs-lisp-mode . paredit-mode)
@@ -55,50 +51,15 @@
   :init
   (global-company-mode 1))
 
-(use-package multiple-cursors
-  :bind (:map mc/keymap
-	      ("<return>" . nil))
-  :init
-  (general-define-key
-   :prefix "C-c m"
-   "" '(nil :which-key "multi-cursor")
-   "<mouse-1>" '(mc/add-cursor-on-click :which-key "add cursor on click")
-   "m" '(mc/edit-lines :which-key "edit lines")
-   "a" '(mc/edit-beginnings-of-lines :which-key "edit beginnings of lines")
-   "e" '(mc/edit-ends-of-lines :which-key "edit ends of lines")
-   "w" '(mc/mark-all-words-like-this :which-key "mark all words like this")
-   "s" '(mc/mark-all-symbols-like-this :which-key "mark all symbols like this")
-   "t" '(mc/mark-all-like-this :which-key "mark all like this")
-   "r" '(mc/mark-all-in-region :which-key "mark all in region")
-   "n" '(mc/mark-next-like-this :which-key "mark next like this")
-   "p" '(mc/mark-previous-like-this :which-key "mark previous like this")
-   "N" '(mc/skip-to-next-like-this :which-key "skip to next like this")
-   "P" '(mc/skip-to-previous-like-this :which-key "skip to previous like this")
-   "u" '(nil :which-key "unmark")
-   "un" '(mc/unmark-next-like-this :which-key "unmark last like this")
-   "up" '(mc/unmark-previous-like-this :which-key "unmark first like this"))
-  (lauremacs-leader
-   "m" '(nil :which-key "multi-cursor")
-   "m <mouse-1>" '(mc/add-cursor-on-click :which-key "add cursor on click")
-   "mm" '(mc/edit-lines :which-key "edit lines")
-   "ma" '(mc/edit-beginnings-of-lines :which-key "edit beginnings of lines")
-   "me" '(mc/edit-ends-of-lines :which-key "edit ends of lines")
-   "mw" '(mc/mark-all-words-like-this :which-key "mark all words like this")
-   "ms" '(mc/mark-all-symbols-like-this :which-key "mark all symbols like this")
-   "mt" '(mc/mark-all-like-this :which-key "mark all like this")
-   "mr" '(mc/mark-all-in-region :which-key "mark all in region")
-   "mn" '(mc/mark-next-like-this :which-key "mark next like this")
-   "mp" '(mc/mark-previous-like-this :which-key "mark previous like this")
-   "mN" '(mc/skip-to-next-like-this :which-key "skip to next like this")
-   "mP" '(mc/skip-to-previous-like-this :which-key "skip to previous like this")
-   "mu" '(nil :which-key "unmark")
-   "mun" '(mc/unmark-next-like-this :which-key "unmark last like this")
-   "mup" '(mc/unmark-previous-like-this :which-key "unmark first like this")))
-
 (use-package expand-region
   :init
   (lauremacs-leader
     "v" '(er/expand-region :which-key "expand region")))
+
+(use-package magit
+  :init
+  (lauremacs-leader
+    "gs" '(magit-status :which-key "magit status")))
 
 ;;
 ;; Load config files

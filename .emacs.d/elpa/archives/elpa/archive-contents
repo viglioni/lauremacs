@@ -440,7 +440,7 @@
 	      (:keywords "files")
 	      (:url . "http://elpa.gnu.org/packages/cpio-mode.html"))])
  (crdt .
-       [(0 2 5)
+       [(0 2 7)
 	nil "Collaborative editing using Conflict-free Replicated Data Types" tar
 	((:url . "https://code.librehq.com/qhong/crdt.el")
 	 (:keywords "collaboration" "crdt")
@@ -672,17 +672,17 @@
 	       ("Leo Liu" . "sdl.web@gmail.com"))
 	      (:keywords "killing" "convenience"))])
  (ebdb .
-       [(0 8 4)
+       [(0 8 5)
 	((emacs
 	  (25 1))
 	 (seq
 	  (2 15)))
 	"Contact management package" tar
 	((:url . "https://github.com/girzel/ebdb")
+	 (:keywords "convenience" "mail")
 	 (:maintainer "Eric Abrahamsen" . "eric@ericabrahamsen.net")
 	 (:authors
-	  ("Eric Abrahamsen" . "eric@ericabrahamsen.net"))
-	 (:keywords "convenience" "mail"))])
+	  ("Eric Abrahamsen" . "eric@ericabrahamsen.net")))])
  (ebdb-gnorb .
 	     [(1 0 2)
 	      ((gnorb
@@ -714,7 +714,7 @@
 	      (:maintainer "Markus Triska" . "triska@metalevel.at")
 	      (:url . "https://www.metalevel.at/ediprolog/"))])
  (eev .
-      [(20210925)
+      [(20211002)
        ((emacs
 	 (24 4)))
        "Support for e-scripts (eepitch blocks, elisp hyperlinks, etc)" tar
@@ -1571,6 +1571,14 @@
 			(:authors
 			 ("Protesilaos Stavrou" . "info@protesilaos.com"))
 			(:keywords "faces" "theme" "accessibility"))])
+ (multi-mode .
+	     [(1 14)
+	      nil "support for multiple major modes" tar
+	      ((:url . "http://www.loveshack.ukfsn.org/emacs")
+	       (:keywords "languages" "extensions" "files")
+	       (:maintainer "Dave Love" . "fx@gnu.org")
+	       (:authors
+		("Dave Love" . "fx@gnu.org")))])
  (multishell .
 	     [(1 1 9)
 	      ((cl-lib
@@ -2215,7 +2223,7 @@
 	 ("Nicolas Petton" . "nicolas@petton.fr"))
 	(:url . "https://elpa.gnu.org/packages/seq.html"))])
  (setup .
-	[(1 0 1)
+	[(1 1 0)
 	 ((emacs
 	   (26 1)))
 	 "Helpful Configuration Macro" tar

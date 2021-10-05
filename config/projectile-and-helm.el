@@ -11,7 +11,8 @@
 (use-package helm
   :bind (("M-x" . 'helm-M-x))
   :init
-  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
+  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x"))
+  (lauremacs-leader "/" '(helm-grep-do-git-grep :which-key "search")))
 
 (use-package helm-swoop
   :init
@@ -63,6 +64,10 @@
      ))
   (projectile-project-search-path
    '("~/Loft/" "~/Personal/"  "~/Loft/webnext/apps"))
+
+  (projectile-switch-project-action '(lambda ()
+				(neotree-projectile-action)
+				(projectile-find-file)))
   :init
   (projectile-mode 1)
   (lauremacs-leader

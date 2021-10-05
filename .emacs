@@ -21,7 +21,8 @@
     :prefix "<f19>")
   (lauremacs-leader
     "s" '(nil :which-key "search")
-    "g" '(nil :which-key "git")))
+    "g" '(nil :which-key "git")
+    "a" '(nil :which-key "applications")))
 
 (use-package evil)
 
@@ -61,6 +62,10 @@
   (lauremacs-leader
     "gs" '(magit-status :which-key "magit status")))
 
+(lauremacs-leader
+  "as" '(nil :which-key "shell")
+  "ass" 'shell
+  "ase" 'eshell)
 ;;
 ;; Load config files
 ;;

@@ -39,10 +39,13 @@
 
 (use-package paredit
   :hook '((emacs-lisp-mode . paredit-mode)
-          (eval-expression-minibuffer-setup-hook . paredit-mode)
-          (ielm-mode-hook . paredit-mode)
-          (lisp-mode-hook . paredit-mode)
-          (lisp-interaction-mode-hook . paredit-mode)))
+          (eval-expression-minibuffer-setup . paredit-mode)
+          (ielm-mode . paredit-mode)
+          (lisp-mode . paredit-mode)
+	  (minibuffer-setup-hook . paredit-mode)
+          (lisp-interaction-mode . paredit-mode))
+  :init
+  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
 
 (use-package company
   :bind (("C-/" . 'company-complete)

@@ -76,3 +76,12 @@
   (lauremacs-leader
     "pp" '(helm-projectile-switch-project :which-key "switch project")
     "pf" '(helm-projectile-find-file :which-key "find file")))
+
+(use-package neotree
+  :after (projectile)
+  :init
+  (lauremacs-leader
+    "pt" '(neotree-toggle :which-key "neotree toggle"))
+  :custom
+  (neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (neo-show-hidden-files t))

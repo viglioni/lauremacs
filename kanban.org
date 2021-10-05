@@ -1,5 +1,5 @@
 
-* Basic stuff [52%]
+* Basic stuff [60%]
   - [ ] <leader> x
   - [ ] add layout
   - [X] auto-complete
@@ -16,9 +16,9 @@
   - [ ] ispell/aspell
   - [X] magit
   - [X] multicursor
-  - [ ] neotree
+  - [X] neotree
   - [X] paredit
-  - [ ] projectile
+  - [X] projectile
   - [X] rainbow parens
   - [X] set leader keys
   - [X] swoop
@@ -42,6 +42,8 @@
   - [ ] company icons
   - [ ] company-fuzzy
   - [ ] emacs meme
+  - [ ] emojis
+    
 * Dashboard [50%]
   - [X] gifs
   - [ ] put quotes

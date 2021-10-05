@@ -5,7 +5,7 @@
 ;;
 
 ;;
-;; funcs 
+;; configs related to projectile, helm and neotree
 ;;
 
 (use-package helm

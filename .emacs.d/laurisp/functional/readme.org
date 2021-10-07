@@ -1,0 +1,19 @@
+* Functional
+  A functional lib for emacs.
+  To run tests and compiling this project uses [[https://github.com/doublep/eldev][eldev]].
+  
+* Testing
+  To run tests we use [[https://github.com/jorgenschaefer/emacs-buttercup/][buttercup]] and some macros defined in ~~/test/buttercup-helpers~, check out [[https://github.com/Viglioni/laurisp/tree/main/personal-libs/buttercup-helpers][buttercup-helpers repo]].
+  
+*** To run tests
+    In the root of this project:
+    #+begin_src shell
+      $ eldev test
+    #+end_src
+* Compiling
+*** To compile
+    In the root of this project:
+    #+begin_src shell
+      $ eldev compile
+    #+end_src
+

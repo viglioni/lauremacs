@@ -3,11 +3,13 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	helm-M-x
 	indent-for-tab-command
 	paredit-doublequote
 	paredit-forward-barf-sexp
 	paredit-forward-delete
 	paredit-forward-kill-word
+	paredit-kill
 	paredit-open-round
 	))
 

@@ -43,6 +43,8 @@
   - [ ] company-fuzzy
   - [ ] emacs meme
   - [ ] emojis
+  - [ ] configure eshell
+  - [ ] configure bottom shells
     
 * Dashboard [50%]
   - [X] gifs
@@ -57,7 +59,9 @@
   - [ ] shell
 
 * org [0%]
-  - [ ] pretty symbols
+  - [ ] pretty symbols (org-bullet?)
+  - [ ] movement keys
+
 
 * IDE [0%]
   - [ ] LSP

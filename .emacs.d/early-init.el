@@ -24,4 +24,8 @@
 (set-face-attribute 'default nil :font "Source Code Pro" :height 150)
 
 
+;;
+;; Misc
+;;
 
+(defalias 'yes-or-no-p 'y-or-n-p)

@@ -1,3 +1,10 @@
+;;; lauremacs-home-page.el --- Configs and functions related to home page
+
+;;; Commentary:
+;; 
+
+;;; Code:
+
 (setq lauremacs-home-banners-dir (join-path lauremacs-home-page-dir "banners"))
 (setq lauremacs-home-friday-gifs-dir (join-path lauremacs-home-banners-dir "fridays"))
 
@@ -8,14 +15,14 @@
 
 ;;;###autoload
 (defun lauremacs-home--friday? ()
-  "returns if today is friday. () -> bool"
+  "Return if today is friday.  () -> bool."
   (equal "Fri" (format-time-string "%a")))
 
 ;;;###autoload
 (defun lauremacs-home/choose-gif ()
-  "Chooses randomly a gif path from `lauremacs-home-banners-dir' or if it is friday,
-   from `lauremacs-home-friday-gifs-dir'
-   ()->string"
+  "Chooses randomly a gif path from `lauremacs-home-banners-dir'.
+If today is a friday, it gets from `lauremacs-home-friday-gifs-dir'.
+\()->string"
   (let* ((dir (if (lauremacs-home--friday?)
                  lauremacs-home-friday-gifs-dir
                 lauremacs-home-banners-dir))
@@ -47,5 +54,8 @@
                                                      :face 'font-lock-keyword-face))
   (dashboard-setup-startup-hook)
   :init
-  (add-hook 'emacs-startup-hook 'dashboard-refresh-buffer)
-  )
+  (add-hook 'emacs-startup-hook 'dashboard-refresh-buffer))
+
+(provide 'lauremacs-home-page)
+
+;;; lauremacs-home-page.el ends here

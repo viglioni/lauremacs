@@ -74,6 +74,13 @@
   `(funcall (compose ,@(reverse  fn-list)) ,arg))
 
 ;;;###autoload
+(defmacro fp/const-fn-interactive (fn &rest args)
+  "Return an interactive lambda function that execute FN with given ARGS.
+e.g.
+\(fp/const-fn-interactive 'concat \"several \" \"string \" \"args\")"
+  `(lambda () (interactive) (apply ,fn (quote ,args))))
+
+;;;###autoload
 (defmacro compose-and-call (fn-list &rest args)
   "Since compose returns a function, this helper receives a list of
    functions and args and apply them to composed funcs

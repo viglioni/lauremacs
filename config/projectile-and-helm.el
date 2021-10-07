@@ -21,6 +21,7 @@
 
 (use-package projectile
   :custom
+  (projectile-indexing-method 'native)
   (projectile-globally-ignored-directories
    '(".cask"
      ".eldev"

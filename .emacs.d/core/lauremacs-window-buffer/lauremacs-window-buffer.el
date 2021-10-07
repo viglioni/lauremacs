@@ -101,24 +101,21 @@ TODO: throw if not splitable"
   (switch-to-buffer (car (lauremacs--get-prev-buffers))))
 
 ;;;###autoload
-(defun lauremacs/windw-layout-toggle ()
+(defun lauremacs/window-layout-toggle ()
   "Toggle between horizontal and vertical layout of two windows.
 TODO: add throwif"
   (interactive)
   (when (not (= 2 (count-windows)))
     (error "Can't toggle window layout when the number of windows isn't two"))
-  (let* ((current-is-horizontal? (car (car (window-tree))))
-	 (first-window (nth 2 (window-tree)))
-	 (second-window (nth 3 (window-tree)))
-	 (split-fn (if current-is-horizontal? #'split-window-horizontally #'split-window-vertically))
-	 )))
-
-;;;###autoload
-(defmacro fp/const-fn-interactive (fn &rest args)
-  "Return an interactive lambda function that execute FN with given ARGS.
-e.g.
-\(fp/const-fn-interactive 'concat \"several \" \"string \" \"args\")"
-  `(lambda () (interactive) (apply ,fn (quote ,args))))
+  (let* ((w-tree (car (window-tree)))
+	 (current-split-is-vertical? (car w-tree))
+	 (first-window (nth 2 w-tree))
+	 (second-window (nth 3 w-tree))
+	 (second-window-state (window-state-get second-window))
+	 (split-fn (if current-split-is-vertical? #'split-window-horizontally #'split-window-vertically))
+	 )
+    (delete-other-windows first-window)
+    (window-state-put second-window-state (funcall split-fn))))
 
 (provide 'lauremacs-window-buffer)
 

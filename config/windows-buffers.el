@@ -18,7 +18,8 @@
   "w4" '(lauremacs/window-split-grid :which-key "split windows in grid")
   "wt" '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
   "w=" (list (fp/const-fn-interactive 'balance-windows) :which-key "balance windows")
-  "wd" (list (fp/const-fn-interactive 'delete-window) :which-key "delete current window"))
+  "wd" (list (fp/const-fn-interactive 'delete-window) :which-key "delete current window")
+  "we" (list (fp/const-fn-interactive 'lauremacs/window-layout-toggle) :which-key "delete current window"))
 
 
 ;;

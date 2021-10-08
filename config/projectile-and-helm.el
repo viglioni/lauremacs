@@ -11,8 +11,7 @@
 (use-package helm
   :bind (("M-x" . 'helm-M-x))
   :init
-  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x"))
-  (lauremacs-leader "/" '(helm-grep-do-git-grep :which-key "search")))
+  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
 
 (use-package helm-swoop
   :init
@@ -82,6 +81,11 @@
   (lauremacs-leader
     "pp" '(helm-projectile-switch-project :which-key "switch project")
     "pf" '(helm-projectile-find-file :which-key "find file")))
+
+(use-package helm-ag
+  :after (helm-projectile)
+  :init
+  (lauremacs-leader "/" '(helm-do-grep-ag :which-key "search in project")))
 
 (use-package neotree
   :after (projectile)

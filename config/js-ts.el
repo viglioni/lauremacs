@@ -33,7 +33,22 @@
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2))
 
+(bind-lazy-function 'lsp-rename-ts-file
+										'lauremacs-ide-lsp-ts-rename-file
+										'lauremacs-ide-extra)
+
+(lauremacs-major-mode-leader
+	:keymaps '(typescript-mode web-mode)
+	"rf" '(lsp-rename-ts-file :which-key "rename file"))
 
 (use-package prettier-js
   :after (typescript-mode))
 
+;;
+;; Add node (nvm) to exec path
+;; 
+
+(let* ((node-version-dirs (directory-files "~/.nvm/versions/node/" t "v"))
+			 (bin-path (mapcar (lambda (x) (concat x "/bin")) node-version-dirs)))
+	(dolist (path  bin-path)
+		(add-to-list 'exec-path path)))

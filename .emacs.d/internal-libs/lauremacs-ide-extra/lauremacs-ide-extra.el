@@ -1,4 +1,4 @@
-;;; lauremacs-lsp-extra.el --- extra functions to lsp-mode
+;;; lauremacs-ide-extra.el --- extra functions to lsp-mode
 ;;
 ;; @author Laura Viglioni
 ;; 2021
@@ -11,23 +11,27 @@
 
 ;;; Code:
 
-(message "loading lauremacs-lsp-extra...")
+(message "loading lauremacs-ide-extra...")
+
+(require 'flycheck)
+(require 'lsp)
+(require 'functional)
 
 ;;
 ;; explain error at point
 ;;
 
-(setq LauSP--error-buffer "LauSP-error-at-point")
+(defvar lauremacs-ide--error-buffer "error-at-point")
 
 ;;;###autoload
-(defun LauSP--kill-error-buffer (key)
+(defun lauremacs-ide--kill-error-buffer (key)
   "Kill error buffer when any KEY is pressed."
 	(interactive "k")
-  (if (get-buffer LauSP--error-buffer)
-      (kill-buffer LauSP--error-buffer)))
+  (if (get-buffer lauremacs-ide--error-buffer)
+      (kill-buffer lauremacs-ide--error-buffer)))
 
 ;;;###autoload
-(defun LauSP--config-error-buffer (msg)
+(defun lauremacs-ide--config-error-buffer (msg)
   "Configure error buffer.
 Argument MSG error message."
 	(let* ((max-text-width 100)
@@ -44,20 +48,20 @@ Argument MSG error message."
     (visual-line-mode)))
 
 ;;;###autoload
-(defun lsp-explain-error-at-point ()
+(defun lauremacs-ide-explain-error-at-point ()
   "Explain error at point, if any."
 	(interactive)
   (let ((err (flycheck-overlay-errors-at (point))))
     (if err
         (let* ((msg (head (mapcar 'flycheck-error-message err)))
-               (buff-name (get-buffer-create LauSP--error-buffer))
+               (buff-name (get-buffer-create lauremacs-ide--error-buffer))
                (error-buff (get-buffer buff-name)))
           (display-buffer-in-side-window error-buff '((side . bottom)))
           (switch-to-buffer-other-window error-buff)
           (erase-buffer)
           (insert (concat "\n" msg))
-          (LauSP--config-error-buffer msg)
-          (call-interactively 'LauSP--kill-error-buffer)))
+          (lauremacs-ide--config-error-buffer msg)
+          (call-interactively 'lauremacs-ide--kill-error-buffer)))
     (error "No error at point")))
 
 
@@ -66,7 +70,7 @@ Argument MSG error message."
 ;;
 
 ;;;###autoload
-(defun lsp-ts-rename-file ()
+(defun lauremacs-ide-lsp-ts-rename-file ()
   "Rename current file and all it's references in other files."
   (interactive)
   (let* ((name (buffer-name))
@@ -98,6 +102,6 @@ Argument MSG error message."
 
 
 
-(provide 'lauremacs-lsp-extra)
+(provide 'lauremacs-ide-extra)
 
-;;; lauremacs-lsp-extra.el ends here
+;;; lauremacs-ide-extra.el ends here

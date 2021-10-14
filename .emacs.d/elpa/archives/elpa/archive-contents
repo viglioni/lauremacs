@@ -226,6 +226,28 @@
 	     (:authors
 	      ("Serghei Iakovlev" . "egrep@protonmail.ch"))
 	     (:keywords "languages"))])
+ (boxy .
+       [(1 0 2)
+	((emacs
+	  (26 1)))
+	"A boxy layout framework" tar
+	((:url . "https://gitlab.com/tygrdev/boxy.el")
+	 (:keywords "tools")
+	 (:maintainer "Tyler Grinn" . "tylergrinn@gmail.com")
+	 (:authors
+	  ("Tyler Grinn" . "tylergrinn@gmail.com")))])
+ (boxy-headlines .
+		 [(1 0 2)
+		  ((emacs
+		    (26 1))
+		   (boxy
+		    (1 0)))
+		  "View org files in a boxy diagram" tar
+		  ((:url . "https://gitlab.com/tygrdev/boxy-headlines")
+		   (:keywords "tools")
+		   (:maintainer "Tyler Grinn" . "tylergrinn@gmail.com")
+		   (:authors
+		    ("Tyler Grinn" . "tylergrinn@gmail.com")))])
  (brief .
 	[(5 87)
 	 nil "Brief Editor Emulator (Brief Mode)" tar
@@ -714,7 +736,7 @@
 	      (:maintainer "Markus Triska" . "triska@metalevel.at")
 	      (:url . "https://www.metalevel.at/ediprolog/"))])
  (eev .
-      [(20211002)
+      [(20211007)
        ((emacs
 	 (24 4)))
        "Support for e-scripts (eepitch blocks, elisp hyperlinks, etc)" tar
@@ -1638,8 +1660,16 @@
 	  (:authors
 	   ("Artur Malabarba" . "emacs@endlessparentheses.com"))
 	  (:keywords "extensions" "lisp"))])
+ (nano-modeline .
+		[(0 2)
+		 ((emacs
+		   (27 1)))
+		 "N Λ N O modeline" tar
+		 ((:url . "https://github.com/rougier/nano-modeline")
+		  (:keywords "convenience" "mode-line" "header-line")
+		  (:maintainer "Nicolas P. Rougier" . "Nicolas.Rougier@inria.fr"))])
  (nano-theme .
-	     [(0 1)
+	     [(0 2 1)
 	      ((emacs
 		(27 1)))
 	      "N Λ N O theme" tar
@@ -1762,6 +1792,18 @@
 	     (:authors
 	      ("Ian Dunn" . "dunni@gnu.org"))
 	     (:keywords "convenience" "text" "org"))])
+ (org-real .
+	   [(1 0 1)
+	    ((emacs
+	      (26 1))
+	     (boxy
+	      (1 0)))
+	    "Keep track of real things as org-mode links" tar
+	    ((:url . "https://gitlab.com/tygrdev/org-real")
+	     (:keywords "tools")
+	     (:maintainer "Tyler Grinn" . "tylergrinn@gmail.com")
+	     (:authors
+	      ("Tyler Grinn" . "tylergrinn@gmail.com")))])
  (org-translate .
 		[(0 1 3)
 		 ((emacs
@@ -1894,7 +1936,7 @@
 	      ("Feng Shu" . "tumashu@163.com"))
 	     (:keywords "convenience" "tooltip"))])
  (project .
-	  [(0 7 1)
+	  [(0 8 0)
 	   ((emacs
 	     (26 1))
 	    (xref

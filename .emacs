@@ -2,7 +2,7 @@
 ;; Theme
 ;;
 
-(load-theme 'spacemacs-dark t)
+(load-theme 'spacemacs-light t)
 
 ;;
 ;; Loading another packages

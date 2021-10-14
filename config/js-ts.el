@@ -1,3 +1,6 @@
+(use-package json-mode
+	:mode "\\.json\\'"
+	:hook ((json-mode . lsp-deferred)))
 
 (use-package typescript-mode
   :mode "\\.ts\\'"

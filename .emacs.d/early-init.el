@@ -29,3 +29,4 @@
 ;;
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+(setq-default tab-width 2)

@@ -4,3 +4,4 @@ projectile.cache
 recentf
 **/.eldev/*
 .lsp-*
+.cache/

@@ -3,7 +3,7 @@
 ;;
 
 (defun join-path (path filename)
-  "concat path and file. Adds '/' to the end of the path if necessary"
+  "Concat path and file. Add '/' to the end of the path if necessary."
   (concat path (if (string-match-p "/$" path) "" "/") filename))
 
 (setq lauremacs-dir "~/lauremacs")

@@ -5,7 +5,7 @@
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :hook ((typescript-mode . lsp-deferred)
-	  (typescript-mode . prettier-js-mode))
+				 (typescript-mode . prettier-js-mode))
   :custom
   (typescript-indent-level 2))
 

@@ -2,26 +2,47 @@
 #+author: Laura Viglioni
 
 ** About
-   My new emacs configuration
+My new emacs configuration
    
-   🚧 *[WIP]* 🚧
+🚧 *[WIP]* 🚧
 
-   I'm developing it on
-   - MacOS 🍎
-   - using Emacs ~27.2.50~
-   
+I'm developing it on
+- MacOS 🍎
+- using Emacs ~27.2.50~
+
+** Some assumptions:
+- The ansi-term shell is configured to open ~/bin/zsh~ instead of ~/bin/bash~
+
 ** How to use it
-   Clone this repo to your ~home~ dir and run
+Clone this repo to your ~home~ dir and run
 
-   #+begin_src shell :exports both :results output
-     emacs -q -l ~/lauremacs/.emacs.d/init.el --title Lauremacs
-   #+end_src
+- Make the script executable
 
-   Note that if you clone this in another place, you will need to change ~lauremacs-dir~ inside [[./init.el][init.el]].
+  #+begin_src shell :exports both :results output
+    chmod +x ~/lauremacs/scripts/lauremacs
+  #+end_src
+
+  - Add script's dir to path (optional)
+#+begin_src shell :exports both :results output
+   echo 'PATH=~/lauremacs/scripts:$PATH' >> ~/.zshrc
+#+end_src
+
+- Run with
+#+begin_src shell :exports both :results output
+  lauremacs
+  lauremacs -nw # open emacs on shell
+#+end_src
+   
+Note that if you clone this in another place, you will need to change ~lauremacs-dir~ inside [[./init.el][init.el]].
+
+** Load files and dirs
+- After ~.emacs.d/init.el~ is loaded, it will load ~.emacs~, you can put adicional config there.
+- The dir ~~/private-files/emacs-files~ will be added recursivelly to emacs load path.
+- The file ~~/private-files/emacs-files/env-private.el~ is current be loaded in ~.emacs~, but won't throw any errors if this file does not exist.
 
 ** Licence
-   This project is free and it will always be.
+This project is free and it will always be.
   
-   [[https://www.gnu.org/licenses/gpl-3.0.en.html][GPL-3]]
+[[https://www.gnu.org/licenses/gpl-3.0.en.html][GPL-3]]
 
    

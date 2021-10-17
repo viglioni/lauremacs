@@ -1,0 +1,3 @@
+#!/bin/bash
+
+emacs -q -l ~/lauremacs/.emacs.d/init.el --title Lauremacs $@

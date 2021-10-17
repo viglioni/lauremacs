@@ -8,6 +8,9 @@
 ;; configs related to emacs lisp mode
 ;;
 
+(require 'eval-sexp-fu)
+
+(add-hook 'emacs-lisp-mode-hook 'eval-sexp-fu-flash-mode)
 
 (lauremacs-major-mode-leader
  :keymaps 'emacs-lisp-mode-map

@@ -71,8 +71,9 @@
 
 (global-prettify-symbols-mode 1)
 
-(use-package yaml-mode
-	:mode "\\.ya?ml\\'")
+(use-package highlight-indentation
+	:commands highlight-indentation-mode)
+
 
 ;;
 ;; Load config files

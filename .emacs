@@ -71,6 +71,9 @@
 
 (global-prettify-symbols-mode 1)
 
+(use-package yaml-mode
+	:mode "\\.ya?ml\\'")
+
 ;;
 ;; Load config files
 ;;

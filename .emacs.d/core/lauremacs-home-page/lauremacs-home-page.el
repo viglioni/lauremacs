@@ -46,12 +46,17 @@ If today is a friday, it gets from `lauremacs-home-friday-gifs-dir'.
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-banner-logo-title "L A U R E M A C S")
-  (setq dashboard-startup-banner  (lauremacs-home/choose-gif))
+  (setq dashboard-startup-banner  (if (display-graphic-p)
+																			(lauremacs-home/choose-gif)
+																		(join-path lauremacs-home-banners-dir "lauremacs-text-banner.txt")))
   (setq dashboard-footer-messages '("Made with love"))
-  (setq dashboard-footer-icon (all-the-icons-faicon "heart"
-                                                     :height 1.1
-                                                     :v-adjust -0.05
-                                                     :face 'font-lock-keyword-face))
+  (setq dashboard-footer-icon
+				(if (display-graphic-p)
+						(all-the-icons-faicon "heart"
+																	:height 1.1
+																	:v-adjust -0.05
+																	:face 'font-lock-keyword-face)
+					"♥"))
   (dashboard-setup-startup-hook)
   :init
   (add-hook 'emacs-startup-hook 'dashboard-refresh-buffer))

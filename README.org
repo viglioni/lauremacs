@@ -52,12 +52,13 @@ This project is free and it will always be.
 ** Screenshots
 
 *** GUI mode
-#+ATTR_ORG: :width 100
-#+ATTR_HTML: :width 100px 
+#+ATTR_ORG: :width 500
+#+ATTR_HTML: :width 400px
 [[./screenshots/Screen Shot 2021-10-17 at 19.52.05.png]]
 
 *** Running inside terminal
 
-#+ATTR_ORG: :width 100
+#+ATTR_ORG: :width 500
+#+ATTR_HTML: :width 400px
 [[./screenshots/Screen Shot 2021-10-17 at 19.52.14.png]]
 

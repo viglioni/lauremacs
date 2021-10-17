@@ -11,7 +11,7 @@
 
 (lauremacs-leader
   "w" '(nil :which-key "windows")
-  "w0" (list (fp/const-fn-interactive 'delete-other-windows) :which-key "delete other windows")
+  "w0" '(delete-window :which-key "delete other windows")
   "w1" '(lauremacs/window-split-single-column :which-key "split single column")
   "w2" '(lauremacs/window-split-double-columns :which-key "split double columns")
   "w3" '(lauremacs/window-split-triple-columns :which-key "split double columns")
@@ -19,7 +19,9 @@
   "wt" '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
   "w=" (list (fp/const-fn-interactive 'balance-windows) :which-key "balance windows")
   "wd" (list (fp/const-fn-interactive 'delete-window) :which-key "delete current window")
-  "we" (list (fp/const-fn-interactive 'lauremacs/window-layout-toggle) :which-key "delete current window"))
+  "we" (list (fp/const-fn-interactive 'lauremacs/window-layout-toggle) :which-key "delete current window")
+	"wk" '(nil :which-key "kill window")
+	"wkb" '(purpose-delete-window-at-bottom :which-key "delete bottom window"))
 
 
 ;;

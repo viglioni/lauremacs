@@ -1,3 +1,4 @@
+
 #+title: LAUREMACS
 #+author: Laura Viglioni
 
@@ -16,18 +17,20 @@ I'm developing it on
 ** How to use it
 Clone this repo to your ~home~ dir and run
 
-- Make the script executable
+Make the script executable
 
   #+begin_src shell :exports both :results output
     chmod +x ~/lauremacs/scripts/lauremacs
   #+end_src
 
-  - Add script's dir to path (optional)
+Add script's dir to path (optional)
+
 #+begin_src shell :exports both :results output
-   echo 'PATH=~/lauremacs/scripts:$PATH' >> ~/.zshrc
+  echo 'PATH=~/lauremacs/scripts:$PATH' >> ~/.zshrc
 #+end_src
 
-- Run with
+Run with
+
 #+begin_src shell :exports both :results output
   lauremacs
   lauremacs -nw # open emacs on shell
@@ -46,3 +49,14 @@ This project is free and it will always be.
 [[https://www.gnu.org/licenses/gpl-3.0.en.html][GPL-3]]
 
    
+** Screenshots
+
+*** GUI mode
+#+ATTR_ORG: :width 100
+[[./screenshots/Screen Shot 2021-10-17 at 19.52.05.png]]
+
+*** Running inside terminal
+
+#+ATTR_ORG: :width 100
+[[./screenshots/Screen Shot 2021-10-17 at 19.52.14.png]]
+

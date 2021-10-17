@@ -14,6 +14,7 @@
 (setq user-emacs-directory lauremacs-d-dir)
 (setq lauremacs-buffer-name "*lauremacs*")
 (setq lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
+(setq lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))
 
 ;; load early-init.el
 (load-file (join-path user-emacs-directory "early-init.el"))
@@ -50,7 +51,8 @@
 
 (dolist (dir (list laurisp-dir
 		   lauremacs-core-dir
-		   lauremacs-external-libs-dir))
+		   lauremacs-external-libs-dir
+			 lauremacs-internal-libs-dir))
   (let ((default-directory dir))
     (normal-top-level-add-subdirs-to-load-path)))
 

@@ -65,10 +65,8 @@
   (lauremacs-leader
     "gs" '(magit-status :which-key "magit status")))
 
-(lauremacs-leader
-  "as" '(nil :which-key "shell")
-  "ass" 'shell
-  "ase" 'eshell)
+(global-prettify-symbols-mode 1)
+
 ;;
 ;; Load config files
 ;;

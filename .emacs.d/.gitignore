@@ -6,3 +6,4 @@ recentf
 .lsp-*
 .cache/
 transient/*
+.dap-*

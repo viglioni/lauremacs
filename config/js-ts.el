@@ -1,4 +1,20 @@
+;;;###autoload
+(defun use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint
+          (and root
+               (expand-file-name "node_modules/.bin/eslint"
+                                 root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
 
+(add-to-multiple-hooks
+ 'use-eslint-from-node-modules
+ 'typescript-mode-hook
+ 'json-mode-hook
+ 'web-mode-hook)
 
 (use-package json-mode
 	:mode "\\.json\\'"
@@ -14,7 +30,7 @@
 (use-package web-mode
   :mode "\\.tsx\\'"
   :hook ((web-mode . lsp-deferred)
-	 (web-mode . prettier-js-mode))
+				 (web-mode . prettier-js-mode))
   :init
   (lauremacs-major-mode-leader
     :keymaps 'web-mode-map

@@ -1,3 +1,5 @@
+
+
 (use-package json-mode
 	:mode "\\.json\\'"
 	:hook ((json-mode . lsp-deferred)))
@@ -38,17 +40,8 @@
 										'lauremacs-ide-extra)
 
 (lauremacs-major-mode-leader
-	:keymaps '(typescript-mode web-mode)
+	:keymaps '(typescript-mode-map web-mode)
 	"rf" '(lsp-rename-ts-file :which-key "rename file"))
 
 (use-package prettier-js
   :after (typescript-mode))
-
-;;
-;; Add node (nvm) to exec path
-;; 
-
-(let* ((node-version-dirs (directory-files "~/.nvm/versions/node/" t "v"))
-			 (bin-path (mapcar (lambda (x) (concat x "/bin")) node-version-dirs)))
-	(dolist (path  bin-path)
-		(add-to-list 'exec-path path)))

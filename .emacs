@@ -24,55 +24,14 @@
     "g" '(nil :which-key "git")
     "a" '(nil :which-key "applications")))
 
-(use-package evil)
-
-(use-package smartparens
-  :config
-  (smartparens-global-mode t)
-  (sp-local-pair '(emacs-lisp-mode) "'" "'" :actions nil))
-
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package highlight-parentheses
-  :hook (prog-mode . highlight-parentheses-mode)
-	:init
-	(add-hook 'eshell-mode-hook 'highlight-parentheses-mode))
-
-(use-package paredit
-  :hook '((emacs-lisp-mode . paredit-mode)
-					(eshell-mode . paredit-mode)
-          (eval-expression-minibuffer-setup . paredit-mode)
-          (ielm-mode . paredit-mode)
-          (lisp-mode . paredit-mode)
-	  (minibuffer-setup-hook . paredit-mode)
-          (lisp-interaction-mode . paredit-mode))
-  :init
-	(add-hook 'eshell-mode-hook 'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
-
-(use-package company
-  :bind (("C-/" . 'company-complete)
-	 :map company-search-map
-	 ("s-." . 'company-select-previous)
-	 ("s-," . 'company-select-next))
-  :init
-  (global-company-mode 1))
 
 (use-package expand-region
   :init
   (lauremacs-leader
     "v" '(er/expand-region :which-key "expand region")))
 
-(use-package magit
-  :init
-  (lauremacs-leader
-    "gs" '(magit-status :which-key "magit status")))
 
-(global-prettify-symbols-mode 1)
 
-(use-package highlight-indentation
-	:commands highlight-indentation-mode)
 
 
 ;;

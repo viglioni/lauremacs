@@ -11,6 +11,7 @@
 (use-package helm
   :bind (("M-x" . 'helm-M-x))
   :init
+	(helm-mode 1)
   (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
 
 (use-package helm-swoop

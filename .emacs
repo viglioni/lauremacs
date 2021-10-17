@@ -35,16 +35,20 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package highlight-parentheses
-  :hook (prog-mode . highlight-parentheses-mode))
+  :hook (prog-mode . highlight-parentheses-mode)
+	:init
+	(add-hook 'eshell-mode-hook 'highlight-parentheses-mode))
 
 (use-package paredit
   :hook '((emacs-lisp-mode . paredit-mode)
+					(eshell-mode . paredit-mode)
           (eval-expression-minibuffer-setup . paredit-mode)
           (ielm-mode . paredit-mode)
           (lisp-mode . paredit-mode)
 	  (minibuffer-setup-hook . paredit-mode)
           (lisp-interaction-mode . paredit-mode))
   :init
+	(add-hook 'eshell-mode-hook 'enable-paredit-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
 
 (use-package company

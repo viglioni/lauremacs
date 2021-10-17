@@ -30,6 +30,32 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 				(set-window-dedicated-p (get-buffer-window buff) t)
 				(select-window (purpose-get-bottom-window))))))
 
+;;
+;; eshell config
+;;
+
+(setq eshell-history-size         10000
+      eshell-buffer-maximum-lines 10000
+      eshell-hist-ignoredups t
+      eshell-scroll-to-bottom-on-input t)
+
+(use-package eshell-git-prompt
+  :after eshell)
+
+(use-package eshell
+  :config
+  (with-eval-after-load 'esh-opt
+    (setq eshell-destroy-buffer-when-process-dies t)
+    (setq eshell-visual-commands '("htop" "zsh" "vim")))
+  (eshell-git-prompt-use-theme 'multiline)
+	:init
+	 ;; Save command history when commands are entered
+  (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
+
+;;
+;; binds
+;;
+
 (lauremacs-leader
   "as" '(nil :which-key "shell")
 	;; pop shell

@@ -52,13 +52,18 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 	 ;; Save command history when commands are entered
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
 
+(add-to-list 'display-buffer-alist
+             '("*Async Shell Command*" (display-buffer-in-side-window) (side . bottom)))
+
 ;;
 ;; binds
 ;;
 
 (lauremacs-leader
-  "as" '(nil :which-key "shell")
+	"!" '(shell-command :which-key "shell command")
+	"&" '(async-shell-command :which-key "async shell command")
 	;; pop shell
+  "as" '(nil :which-key "shell")
   "ass" (list (lauremacs-pop-shell 'shell) :which-key "shell")
   "ase" (list (lauremacs-pop-shell 'eshell) :which-key "eshell")
 	"ast" (list (lauremacs-pop-shell 'ansi-term "/bin/zsh") :which-key "ansi-term")

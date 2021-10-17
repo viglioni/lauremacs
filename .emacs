@@ -1,4 +1,11 @@
 ;;
+;; Constants
+;;
+
+(setq private-files-dir "~/private-files/emacs-files")
+(add-to-list 'load-path private-files-dir)
+
+;;
 ;; Theme
 ;;
 
@@ -32,8 +39,6 @@
 
 
 
-
-
 ;;
 ;; Load config files
 ;;
@@ -44,6 +49,9 @@
                                 ".el"
                                 line-end)))))
   (mapcar 'load-file config-files))
+
+;; Load secret env variables
+(require-without-throw 'env-private)
 
 
 ;;

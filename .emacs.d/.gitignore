@@ -5,3 +5,4 @@ recentf
 **/.eldev/*
 .lsp-*
 .cache/
+transient/*

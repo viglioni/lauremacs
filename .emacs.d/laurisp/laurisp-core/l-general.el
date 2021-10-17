@@ -17,3 +17,8 @@
   "if condition is true, thrown an error"
   `(unless ,condition (error (or ,error-description ""))))
 
+
+;;;###autoload
+(defun add-to-multiple-hooks (function &rest hooks)
+	"Add a FUNCTION to several HOOKS."
+  (mapc (lambda (hook) (add-hook hook function)) hooks))

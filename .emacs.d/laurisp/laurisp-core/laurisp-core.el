@@ -54,7 +54,13 @@
    (load-lib 'emacs-grammarly)"
   `(require ,lib-name))
 
-
+;;;###autoload
+(defun require-without-throw (lib)
+	"Require LIB and prints a message if it's not found.
+E.g. \"(require-without-throw 'functional)\"."
+	(if (require lib nil t)
+			(message (concat "Loaded lib: " (symbol-name lib)))
+		(message (concat "Can't load lib: " (symbol-name lib)))))
 
 ;;;###autoloading
 (defmacro bind-lazy-function (func-name lib-func-name package-name)

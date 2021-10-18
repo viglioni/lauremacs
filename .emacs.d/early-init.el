@@ -16,7 +16,7 @@
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
 (set-fringe-mode 10)        ; Give some breathing room
-(menu-bar-mode -1)          ; Disable the menu bar
+(menu-bar-mode 1)          ; Disable the menu bar
 
 (setq visible-bell t)       ; Set up the visible bell
 

@@ -9,12 +9,12 @@
 ;;
 
 (use-package helm
-  :bind (("M-x" . 'helm-M-x)
-				 ("C-x C-f" . '(helm-find-files :which-key "find files"))
-				 )
+  :bind (("M-x" . 'helm-M-x))
   :init
 	(helm-mode 1)
-  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
+  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x"))
+	(general-define-key
+	 "C-x C-f" '(helm-find-files :which-key "find files")))
 
 (use-package helm-swoop
   :init

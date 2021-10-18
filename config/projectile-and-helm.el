@@ -9,7 +9,9 @@
 ;;
 
 (use-package helm
-  :bind (("M-x" . 'helm-M-x))
+  :bind (("M-x" . 'helm-M-x)
+				 ("C-x C-f" . '(helm-find-files :which-key "find files"))
+				 )
   :init
 	(helm-mode 1)
   (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x")))
@@ -18,6 +20,10 @@
   :init
   (lauremacs-leader
     "ss" '(helm-swoop :which-key "swoop")))
+
+(use-package helm-flx
+	:after helm
+	:init (helm-flx-mode 1))
 
 (use-package projectile
   :custom

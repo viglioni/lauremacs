@@ -14,12 +14,21 @@
 	(helm-mode 1)
   (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x"))
 	(general-define-key
-	 "C-x C-f" '(helm-find-files :which-key "find files")))
+	 :prefix "C-x"
+	 "C-f" '(helm-find-files :which-key "find files")
+	 "C-b" '(helm-buffers-list :which-key "list buffers"))
+	(general-define-key
+	 :prefix "C-h"
+	 "a" '(helm-apropos :which-key "apropos")))
 
 (use-package helm-swoop
   :init
   (lauremacs-leader
     "ss" '(helm-swoop :which-key "swoop")))
+
+(use-package helm-descbinds
+	:after helm
+	:init (helm-descbinds-mode))
 
 (use-package helm-flx
 	:after helm

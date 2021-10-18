@@ -37,3 +37,12 @@
 						 emojify-apropos-emoji)
 	:hook (org-mode . emojify-mode))
 
+(use-package yasnippet
+	:init
+	(yas-global-mode 1)
+	:bind (:map yas-minor-mode-map
+							("M-/" . yas-expand)))
+
+(use-package yasnippet-snippets
+	:after yasnippet)
+

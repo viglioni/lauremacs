@@ -1,18 +1,18 @@
 
-* Basic stuff [60%]
+* Basic stuff [76%]
   - [ ] <leader> x
   - [ ] add layout
   - [X] auto-complete
   - [X] company
-  - [ ] compilation buffer
+  - [X] compilation buffer
   - [X] dashboard
   - [ ] eldoc
   - [X] evil
   - [X] expand-region
-  - [ ] flycheck
+  - [X] flycheck
   - [ ] get some modeline (doom? spacemacs?)
   - [X] helm
-  - [ ] iedit-evil
+  - [X] iedit
   - [ ] ispell/aspell
   - [X] magit
   - [X] multicursor
@@ -24,11 +24,14 @@
   - [X] swoop
   - [ ] vterm
   - [X] which key
-  - [ ] yasnippets
+  - [X] yasnippets
 
-* Enhancements
+* Enhancements [0%]
   - [ ] straight
   - [ ] use the ~:after~ from ~use-package~
+  - [ ] email
+  - [ ] slack
+  - [ ] spotify
 
 * Transient State [0%]
   - [ ] evil
@@ -36,13 +39,13 @@
   - [ ] html
   - [ ] themes
   
-* Bikeshedding [20%]
+* Bikeshedding [25%]
   - [ ] pretty symbols
   - [X] rainbow-mode
   - [ ] company icons
   - [ ] company-fuzzy
   - [ ] emacs meme
-  - [ ] emojis
+  - [X] emojis
   - [ ] configure eshell
   - [ ] configure bottom shells
     
@@ -50,24 +53,50 @@
   - [X] gifs
   - [ ] put quotes
 
-* key-bindings [0%]
-  - [ ] window keys
-  - [ ] projectile keys
-  - [ ] major mode keys
+* key-bindings [57%]
+  - [X] window keys
+  - [X] projectile keys
   - [ ] layout keys
-  - [ ] buffers
-  - [ ] shell
+  - [X] buffers
+  - [X] shell
+  - [ ] iedit
+  - [ ] emojis
 
-* org [0%]
-  - [ ] pretty symbols (org-bullet?)
+* org [50%]
+  - [X] pretty symbols (org-bullet?)
   - [ ] movement keys
 
 
-* IDE [0%]
-  - [ ] LSP
-  - [ ] TS
+* IDE [42%]
+  - [X] LSP
+  - [X] TS
   - [ ] Haskell
   - [ ] Clojure
   - [ ] SQL
-  - [ ] elisp
+  - [X] elisp
+  - [ ] slime?
+
+* helm enhancements [0%]
+- [ ] [[https://github.com/emacs-helm/helm-dictionary][helm dictionary]]
+- [ ][[https://github.com/emacs-helm/helm-mu][ helm mu (email)]]
+- [ ] [[helm slime][https://github.com/emacs-helm/helm-slime]]
+- [ ] [[https://github.com/emacs-helm/helm-system-packages][helm system packages]]
+- [ ] [[https://github.com/emacs-helm/helm-ls-git][helm ls git]]
+
+* personal libs [14%]
+- [ ] buttercup-helpers
+- [X] functional
+- [ ] json-utils
+- [ ] lang-scripts
+- [ ] launguage-server-protocol
+- [ ] laurg
+- [X] laurisp-core
+- [ ] lautex
+- [ ] make-scripts
+- [ ] npm-scripts
+- [ ] ramda-docs
+- [ ] spotilau
+- [ ] sqlau
+- [ ] ts-repl
+
 

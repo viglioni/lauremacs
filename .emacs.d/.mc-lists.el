@@ -3,24 +3,31 @@
 
 (setq mc/cmds-to-run-for-all
       '(
-	delete-horizontal-space
-	helm-M-x
-	indent-for-tab-command
-	kill-region
-	kmacro-end-macro
-	kmacro-start-macro
-	ns-copy-including-secondary
-	org-self-insert-command
-	paredit-doublequote
-	paredit-forward
-	paredit-forward-barf-sexp
-	paredit-forward-delete
-	paredit-forward-kill-word
-	paredit-forward-slurp-sexp
-	paredit-kill
-	paredit-open-round
-	))
+				delete-horizontal-space
+				helm-M-x
+				helm-confirm-and-exit-minibuffer
+				indent-for-tab-command
+				kill-region
+				kmacro-end-macro
+				kmacro-start-macro
+				lsp-signature-stop
+				ns-copy-including-secondary
+				org-self-insert-command
+				paredit-doublequote
+				paredit-forward
+				paredit-forward-barf-sexp
+				paredit-forward-delete
+				paredit-forward-kill-word
+				paredit-forward-slurp-sexp
+				paredit-kill
+				paredit-open-round
+				sp-forward-slurp-sexp
+				sp-remove-active-pair-overlay
+				))
 
 (setq mc/cmds-to-run-once
       '(
-	))
+				iedit-switch-to-mc-mode
+				lsp-rename
+				lsp-ui-doc--handle-mouse-movement
+				))

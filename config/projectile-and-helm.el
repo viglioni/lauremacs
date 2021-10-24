@@ -5,6 +5,25 @@
 ;;
 
 ;;
+;; Always display candidates at bottom window
+;;
+
+(defvar spacemacs-helm-display-help-buffer-regexp '("\\*.*Helm.*Help.*\\*"))
+(defvar spacemacs-helm-display-buffer-regexp `("\\*.*helm.*\\*"
+                                               (display-buffer-in-side-window)
+                                               (inhibit-same-window . nil)
+                                               (side . bottom)
+                                               (window-width . 0.6)
+                                               (window-height . 0.4)))
+
+(defun display-helm-at-bottom (buffer &optional _resume)
+  (let ((display-buffer-alist (list spacemacs-helm-display-help-buffer-regexp
+                                    spacemacs-helm-display-buffer-regexp)))
+    (display-buffer buffer)))
+
+
+
+;;
 ;; configs related to projectile, helm and neotree
 ;;
 
@@ -12,6 +31,7 @@
   :bind (("M-x" . 'helm-M-x))
   :init
 	(helm-mode 1)
+	;; bindings
   (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x"))
 	(general-define-key
 	 :prefix "C-x"

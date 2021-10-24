@@ -24,6 +24,9 @@
 (use-package lsp-treemacs
   :after lsp)
 
+(use-package lsp-origami
+	:after lsp)
+
 (bind-lazy-function 'explain-error-at-point
 										'lauremacs-ide-explain-error-at-point
 										'lauremacs-ide-extra)

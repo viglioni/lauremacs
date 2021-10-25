@@ -2,7 +2,7 @@
 
 ;;;###autoload
 (defmacro define-org-cmd (&rest plist)
-  "Receives a plist (:situation 'command)  as args to define which
+  "Receives a PLIST (:situation 'command)  as args to define which
 command should be called on each situation. 
 Obs.: the command will ONLY be called on the specific situation.
 *~*~*
@@ -56,6 +56,10 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (variable-pitch-mode 1)
   (visual-line-mode 1))
 
+(bind-lazy-function 'org-insert-src
+										'lauremacs/org-insert-source 
+										'lauremacs-org-extensions)
+
 (use-package org
   :hook (org-mode . lauremacs/org-mode-setup)
   :init
@@ -71,7 +75,22 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 		  :item    'org-move-item-up)
    "C-<down>"   (define-org-cmd
 		  :heading 'org-move-subtree-down
-		  :item    'org-move-item-down)))
+		  :item    'org-move-item-down))
+	(lauremacs-major-mode-leader
+		:keymaps 'org-mode-map
+		"i" '(nil :which-key "insert")
+		"ic" '(org-insert-src :which-key "insert code block source"))
+	(org-babel-do-load-languages
+   'org-babel-load-languages
+   '((haskell . t)
+     (clojure . t)
+     (emacs-lisp . t)
+     (python . t)
+     (js . t)
+     (C . t)
+     (latex . t)
+     (shell . t)
+     (sql . t))))
 
 (use-package org-bullets
   :after org

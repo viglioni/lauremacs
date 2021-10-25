@@ -53,6 +53,11 @@
 ;; Load secret env variables
 (require-without-throw 'env-private)
 
+;;
+;; exec path from shell
+;;
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 ;;
 ;; Custom variables

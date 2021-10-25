@@ -10,11 +10,11 @@
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
-(add-to-multiple-hooks
- 'use-eslint-from-node-modules
- 'typescript-mode-hook
- 'json-mode-hook
- 'web-mode-hook)
+;; (add-to-multiple-hooks
+;;  'use-eslint-from-node-modules
+;;  'typescript-mode-hook
+;;  'json-mode-hook
+;;  'web-mode-hook)
 
 (use-package json-mode
 	:mode "\\.json\\'"

@@ -27,6 +27,9 @@
 (use-package lsp-origami
 	:after lsp)
 
+(use-package lsp-haskell
+	:after (lsp haskell-mode))
+
 (bind-lazy-function 'explain-error-at-point
 										'lauremacs-ide-explain-error-at-point
 										'lauremacs-ide-extra)

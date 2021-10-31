@@ -5,8 +5,8 @@
 
 ;;; Code:
 
-(setq lauremacs-home-banners-dir (join-path lauremacs-home-page-dir "banners"))
-(setq lauremacs-home-friday-gifs-dir (join-path lauremacs-home-banners-dir "fridays"))
+(defconst lauremacs-home-banners-dir (join-path lauremacs-home-page-dir "banners"))
+(defconst lauremacs-home-friday-gifs-dir (join-path lauremacs-home-banners-dir "fridays"))
 
 
 ;;

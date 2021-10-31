@@ -1,3 +1,9 @@
+;;
+;; @author Laura Viglioni
+;; 2021
+;; GNU Public License 3.0
+;;
+
 
 ;;;###autoload
 (defun lauremacs/lsp-mode-setup ()

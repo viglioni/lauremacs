@@ -27,69 +27,75 @@
   - [X] yasnippets
 
 * Enhancements [0%]
-  - [ ] straight
-  - [ ] use the ~:after~ from ~use-package~
   - [ ] email
   - [ ] slack
   - [ ] spotify
+  - [ ] straight
+  - [ ] Undo tree
+  - [ ] use the ~:after~ from ~use-package~
 
 * Transient State [0%]
   - [ ] evil
-  - [ ] layers
   - [ ] html
+  - [ ] layers
+  - [ ] mc click selection
   - [ ] themes
   
-* Bikeshedding [25%]
-  - [ ] pretty symbols
-  - [X] rainbow-mode
+* Bikeshedding [50%]
   - [ ] company icons
   - [ ] company-fuzzy
+  - [X] configure bottom shells
+  - [X] configure eshell
   - [ ] emacs meme
   - [X] emojis
-  - [ ] configure eshell
-  - [ ] configure bottom shells
+  - [ ] magit go to pull request
+  - [ ] magit open pull request from emacs
+  - [ ] pretty symbols
+  - [X] rainbow-mode
     
 * Dashboard [50%]
   - [X] gifs
   - [ ] put quotes
 
 * key-bindings [57%]
-  - [X] window keys
-  - [X] projectile keys
-  - [ ] layout keys
   - [X] buffers
-  - [X] shell
-  - [ ] iedit
   - [ ] emojis
+  - [ ] help (~C-h~ -> ~<Leader> h~)
+  - [ ] iedit
+  - [ ] layout keys
+  - [X] projectile keys
+  - [X] shell
+  - [X] window keys
 
 * org [50%]
-  - [X] pretty symbols (org-bullet?)
+  - [ ] bindings...
+  - [ ] LaTeX
   - [ ] movement keys
+  - [X] pretty symbols (org-bullet?)
 
-
-* IDE [42%]
-  - [X] LSP
-  - [X] TS
-  - [ ] Haskell
+* IDE [57%]
   - [ ] Clojure
-  - [ ] SQL
   - [X] elisp
+  - [X] Haskell
+  - [X] LSP
   - [ ] slime?
+  - [ ] SQL
+  - [X] TS
 
 * helm enhancements [0%]
-- [ ] [[https://github.com/emacs-helm/helm-dictionary][helm dictionary]]
 - [ ][[https://github.com/emacs-helm/helm-mu][ helm mu (email)]]
-- [ ] [[helm slime][https://github.com/emacs-helm/helm-slime]]
-- [ ] [[https://github.com/emacs-helm/helm-system-packages][helm system packages]]
+- [ ] [[https://github.com/emacs-helm/helm-dictionary][helm dictionary]]
 - [ ] [[https://github.com/emacs-helm/helm-ls-git][helm ls git]]
+- [ ] [[https://github.com/emacs-helm/helm-system-packages][helm system packages]]
+- [ ] [[helm slime][https://github.com/emacs-helm/helm-slime]]
 
-* personal libs [14%]
+* personal libs [21%]
 - [ ] buttercup-helpers
 - [X] functional
 - [ ] json-utils
 - [ ] lang-scripts
 - [ ] launguage-server-protocol
-- [ ] laurg
+- [X] laurg
 - [X] laurisp-core
 - [ ] lautex
 - [ ] make-scripts
@@ -98,5 +104,8 @@
 - [ ] spotilau
 - [ ] sqlau
 - [ ] ts-repl
-
+* Usability issues/bugs [0%]
+- [ ] Ansi colour on compilation buffer
+- [ ] Ansi colour on magit buffer
+- [ ] Buffer list choice is not getting in the correct order
 

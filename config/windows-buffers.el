@@ -31,7 +31,8 @@
 (lauremacs-leader
   "TAB" '(lauremacs/switch-to-last-buffer :which-key "alternate buffer")
   "b" '(nil :which-key "buffers")
-  "bb" '(helm-buffers-list :which-key "list buffers")
+  "bb" '(persp-switch-to-buffer :which-key "list buffers")
+	"bk" '(persp-kill-buffer :which-key "kill buffer")
   "bm" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
          :which-key "switch to Messages buffer")
   "bs" '((lambda () (interactive) (switch-to-buffer "*scratch*"))

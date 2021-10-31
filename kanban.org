@@ -1,7 +1,7 @@
 
-* Basic stuff [76%]
+* Basic stuff [80%]
   - [ ] <leader> x
-  - [ ] add layout
+  - [X] add layout
   - [X] auto-complete
   - [X] company
   - [X] compilation buffer
@@ -108,4 +108,8 @@
 - [ ] Ansi colour on compilation buffer
 - [ ] Ansi colour on magit buffer
 - [ ] Buffer list choice is not getting in the correct order
+* Use spacemacs layout/perspective [0%]
+- [ ] Create new persp
+- [ ] switch
+- [ ] list
 

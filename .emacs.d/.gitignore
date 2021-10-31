@@ -7,3 +7,4 @@ recentf
 .cache/
 transient/*
 .dap-*
+persp-confs/*

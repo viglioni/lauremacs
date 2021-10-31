@@ -6,15 +6,22 @@
   "Concat path and file. Add '/' to the end of the path if necessary."
   (concat path (if (string-match-p "/$" path) "" "/") filename))
 
-(setq lauremacs-dir "~/lauremacs")
-(setq lauremacs-d-dir (join-path lauremacs-dir ".emacs.d"))
-(setq lauremacs-core-dir (join-path lauremacs-d-dir "core"))
-(setq laurisp-dir (join-path lauremacs-d-dir "laurisp"))
-(setq lauremacs-home-page-dir (join-path lauremacs-core-dir "lauremacs-home-page"))
+(defconst lauremacs-dir "~/lauremacs")
+(defconst lauremacs-config-dir (join-path lauremacs-dir "config"))
+(defconst lauremacs-d-dir (join-path lauremacs-dir ".emacs.d"))
+(defconst lauremacs-core-dir (join-path lauremacs-d-dir "core"))
+(defconst laurisp-dir (join-path lauremacs-d-dir "laurisp"))
+(defconst lauremacs-home-page-dir (join-path lauremacs-core-dir "lauremacs-home-page"))
 (setq user-emacs-directory lauremacs-d-dir)
-(setq lauremacs-buffer-name "*lauremacs*")
-(setq lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
-(setq lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))
+(defconst lauremacs-buffer-name "*lauremacs*")
+(defconst lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
+(defconst lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))
+
+;;;###autoload
+(defun lauremacs/reload-init ()
+	"Reload init.el."
+	(interactive)
+	(load-file (join-path user-emacs-directory "init.el")))
 
 ;; load early-init.el
 (load-file (join-path user-emacs-directory "early-init.el"))

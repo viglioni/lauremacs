@@ -1,5 +1,6 @@
 (require 'org-faces)
 
+
 ;;;###autoload
 (defmacro define-org-cmd (&rest plist)
   "Receives a PLIST (:situation 'command)  as args to define which
@@ -20,6 +21,20 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
       ((org-at-table-p)   (funcall ,(plist-get plist :table)))
       ((org-at-item-p)    (funcall ,(plist-get plist :item))))))
 
+
+;;
+;; org babel
+;;
+
+(with-eval-after-load "ob-core"
+  ;; dont ask before running code
+  (setq org-confirm-babel-evaluate nil))
+
+(with-eval-after-load "ob-lob"
+	;; org babel
+	(org-babel-lob-ingest (join-path
+												 lauremacs-config-dir
+												 "org-mode-extra-configs.org")))
 
 (defun lauremacs/org-font-setup ()
   ;; Replace list hyphen with dot
@@ -62,8 +77,12 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 
 (use-package org
   :hook (org-mode . lauremacs/org-mode-setup)
+	:custom
+	(org-startup-folded t)
+  (org-startup-with-latex-preview nil)
   :init
   (lauremacs/org-font-setup)
+	;; keymaps
   (general-define-key
    :keymaps 'org-mode-map
    "C-<right>"  (define-org-cmd

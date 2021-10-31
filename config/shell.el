@@ -66,7 +66,7 @@ BUFF-NAME the name of the buffer the where shell will be executed."
   "as" '(nil :which-key "shell")
   "ass" (list (lauremacs-pop-shell 'shell) :which-key "shell")
   "ase" (list (lauremacs-pop-shell 'eshell) :which-key "eshell")
-	"ast" (list (lauremacs-pop-shell 'ansi-term "/bin/zsh") :which-key "ansi-term")
+	"ast" (list (lauremacs-pop-shell 'ansi-term (getenv "SHELL")) :which-key "ansi-term")
 	"asi" (list (lauremacs-pop-shell 'ielm) :which-key "ielm")
 	"ash" (list (lauremacs-pop-shell-cmd "ghci" "haskell-ghci") :which-key "haskell ghci")
 	"asH" (list (lauremacs-pop-shell-cmd "stack ghci" "haskell-stack-ghci") :which-key "haskell stack ghci")

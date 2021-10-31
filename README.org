@@ -11,9 +11,6 @@ I'm developing it on
 - MacOS 🍎
 - using Emacs ~27.2.50~
 
-** Some assumptions:
-- The ansi-term shell is configured to open ~/bin/zsh~ instead of ~/bin/bash~
-
 ** How to use it
 Clone this repo to your ~home~ dir and run
 

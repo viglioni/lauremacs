@@ -18,9 +18,6 @@
 																				lauremacs-internal-libs-dir
 																				"lauremacs-org-extensions"))
 
-(org-babel-lob-ingest (join-path
-                       lauremacs-org-extensions-dir
-                       "org-mode-extra-configs.org"))
 
 ;;
 ;; Insert custom headers

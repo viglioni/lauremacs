@@ -4,14 +4,19 @@
 (setq mc/cmds-to-run-for-all
       '(
 				delete-horizontal-space
+				end-of-visual-line
+				haskell-indentation-common-electric-command
 				helm-M-x
 				helm-confirm-and-exit-minibuffer
+				ignore
 				indent-for-tab-command
 				kill-region
 				kmacro-end-macro
 				kmacro-start-macro
 				lsp-signature-stop
 				ns-copy-including-secondary
+				org-cycle
+				org-delete-char
 				org-self-insert-command
 				paredit-doublequote
 				paredit-forward
@@ -27,7 +32,10 @@
 
 (setq mc/cmds-to-run-once
       '(
+				evil-window-right
+				haskell-process-load-file
 				iedit-switch-to-mc-mode
 				lsp-rename
 				lsp-ui-doc--handle-mouse-movement
+				mouse-set-region
 				))

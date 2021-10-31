@@ -44,7 +44,7 @@
 ;;
 
 (let ((config-files (directory-files
-                     (concat lauremacs-dir "/config")
+										 lauremacs-config-dir
                      t (rx (and (+ (| alphanumeric "." "-"))
                                 ".el"
                                 line-end)))))

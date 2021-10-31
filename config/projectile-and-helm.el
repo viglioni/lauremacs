@@ -121,7 +121,7 @@
 (use-package helm-ag
   :after (helm-projectile)
   :init
-  (lauremacs-leader "/" '(helm-do-grep-ag :which-key "search in project")))
+  (lauremacs-leader "/" '(helm-projectile-grep :which-key "search in project")))
 
 (use-package neotree
   :after (projectile)

@@ -10,9 +10,9 @@
   - [X] evil
   - [X] expand-region
   - [X] flycheck
-  - [ ] get some modeline (doom? spacemacs?)
+  - [X] get some modeline (doom? spacemacs?)
   - [X] helm
-  - [X] iedit
+  - [ ] iedit
   - [ ] ispell/aspell
   - [X] magit
   - [X] multicursor
@@ -108,6 +108,9 @@
 - [ ] Ansi colour on compilation buffer
 - [ ] Ansi colour on magit buffer
 - [ ] Buffer list choice is not getting in the correct order
+- [ ] term paste
+- [ ] Use a prettier modeline or build one from scratch
+- [ ] perspective.........
 * Use spacemacs layout/perspective [0%]
 - [ ] Create new persp
 - [ ] switch

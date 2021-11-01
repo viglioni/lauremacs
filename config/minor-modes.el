@@ -9,6 +9,10 @@
 ;; Some minor modes
 ;;
 
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
 (use-package highlight-indentation
 	:commands highlight-indentation-mode)
 

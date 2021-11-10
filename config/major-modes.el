@@ -27,3 +27,14 @@
   :init
   (lauremacs-leader
     "gs" '(magit-status :which-key "magit status")))
+
+;;
+;; Json mode 
+;;
+
+(use-package json-mode
+	:mode "\\.json\\'"
+	:hook ((json-mode . lsp-deferred)
+				 (json-mode . highlight-indentation-mode)
+				 (json-mode . visual-line-mode)))
+

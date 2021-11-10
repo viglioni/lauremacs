@@ -1,5 +1,5 @@
 
-* Basic stuff [80%]
+* Basic stuff [84%]
   - [ ] <leader> x
   - [X] add layout
   - [X] auto-complete
@@ -12,7 +12,7 @@
   - [X] flycheck
   - [X] get some modeline (doom? spacemacs?)
   - [X] helm
-  - [ ] iedit
+  - [X] iedit
   - [ ] ispell/aspell
   - [X] magit
   - [X] multicursor
@@ -41,18 +41,19 @@
   - [ ] mc click selection
   - [ ] themes
   
-* Bikeshedding [50%]
+* Bikeshedding [41%]
   - [ ] company icons
   - [ ] company-fuzzy
   - [X] configure bottom shells
   - [X] configure eshell
   - [ ] emacs meme
   - [X] emojis
+  - [ ] emojify-mode on magit mode
   - [ ] magit go to pull request
   - [ ] magit open pull request from emacs
-  - [ ] pretty symbols
+  - [X] pretty symbols
   - [X] rainbow-mode
-    
+  - [ ] Config doom modeline    
 * Dashboard [50%]
   - [X] gifs
   - [ ] put quotes
@@ -104,13 +105,21 @@
 - [ ] spotilau
 - [ ] sqlau
 - [ ] ts-repl
-* Usability issues/bugs [0%]
-- [ ] Ansi colour on compilation buffer
+* Usability issues/bugs [38%]
+- [X] Ansi colour on compilation buffer
 - [ ] Ansi colour on magit buffer
 - [ ] Buffer list choice is not getting in the correct order
 - [ ] term paste
-- [ ] Use a prettier modeline or build one from scratch
-- [ ] perspective.........
+- [X] perspective.........
+- [X] neotree open in project
+- [X] avoid always opening neotree when switching to project
+- [ ] avoid snippets in org headers
+- [ ] completion " `' " in emacs lisp doc
+- [X] missing icons on neotree
+- [ ] ~Leader Tab~ does not respect persps
+- [ ] Implement ~Leader l Tab~
+- [ ] org table link use font mono (checkout what spacemacs does)
+
 * Use spacemacs layout/perspective [0%]
 - [ ] Create new persp
 - [ ] switch

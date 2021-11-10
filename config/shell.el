@@ -5,6 +5,7 @@
 ;;
 
 (require 'window-purpose)
+(require 'ansi-color)
 
 ;;;###autoload
 (defun lauremacs-pop-shell (shell-fn &rest shell-args)
@@ -88,3 +89,13 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 
 
 
+;;
+;; Colour configs
+;;
+
+(defun lauremacs/colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+
+(add-hook 'compilation-filter-hook 'lauremacs/colorize-compilation-buffer)

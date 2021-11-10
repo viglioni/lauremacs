@@ -4,6 +4,16 @@
 ;; GNU Public License 3.0
 ;;
 
+;;;###autoload
+(defun lauremacs/lsp-organize-imports-before-save ()
+	"Run `lsp-organize-imports' before save."
+	(when (bound-and-true-p lsp-mode)
+		(if (lsp-organize-imports)
+				(message "Organized imports!")
+			(message "Didn't organize imports")))
+	t)
+
+(add-hook 'before-save-hook 'lauremacs/lsp-organize-imports-before-save)
 
 ;;;###autoload
 (defun lauremacs/lsp-mode-setup ()

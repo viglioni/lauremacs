@@ -46,13 +46,3 @@
 (use-package lsp-haskell
 	:after (lsp haskell-mode))
 
-(bind-lazy-function 'explain-error-at-point
-										'lauremacs-ide-explain-error-at-point
-										'lauremacs-ide-extra)
-
-(use-package flycheck
-  :init
-	(global-flycheck-mode)
-	(lauremacs-leader		
-		"e" '(:keymap flycheck-command-map :package flycheck :which-key "errors")
-		"ee" '(explain-error-at-point :which-key "explain error at point")))

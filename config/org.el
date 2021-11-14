@@ -82,7 +82,8 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 										'lauremacs-org-extensions)
 
 (use-package org
-  :hook (org-mode . lauremacs/org-mode-setup)
+  :hook '((org-mode . lauremacs/org-mode-setup)
+					(org-mode-hook . olivetti-mode))
 	:custom
 	(org-startup-folded t)
   (org-startup-with-latex-preview nil)
@@ -121,3 +122,13 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	:hook (org-mode . org-bullets-mode)
 	:custom
 	(org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(use-package olivetti
+	:after org-mode
+	:custom
+	(olivetti-minimum-body-width 80)
+	(olivetti-style 'fancy)
+	:init
+	(set-face-attribute 'olivetti-fringe nil :background "#d0cec7"))
+
+yy

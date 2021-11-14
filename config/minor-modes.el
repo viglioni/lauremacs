@@ -109,3 +109,29 @@
 	:init
 	(lauremacs-leader
 		"se" '(iedit-mode :which-key "iedit mode")))
+
+;;
+;; Flycheck
+;;
+
+(bind-lazy-function 'explain-error-at-point
+										'lauremacs-ide-explain-error-at-point
+										'lauremacs-ide-extra)
+
+(use-package flycheck
+  :init
+	(global-flycheck-mode)
+	(lauremacs-leader		
+		"e" '(:keymap flycheck-command-map :package flycheck :which-key "errors")
+		"ee" '(explain-error-at-point :which-key "explain error at point"))
+	(set-face-attribute 'flycheck-fringe-info nil
+											:background "#3a81c3"
+											:foreground "white")
+	(set-face-attribute 'flycheck-fringe-error nil
+											:background "#e0211d"
+											:foreground "white")
+	(set-face-attribute 'flycheck-fringe-warning nil
+											:background "#dc752f"
+											:foreground "white"))
+
+

@@ -58,11 +58,11 @@
   - [X] gifs
   - [ ] put quotes
 
-* key-bindings [57%]
+* key-bindings [62%]
   - [X] buffers
   - [ ] emojis
   - [ ] help (~C-h~ -> ~<Leader> h~)
-  - [ ] iedit
+  - [X] iedit
   - [ ] layout keys
   - [X] projectile keys
   - [X] shell

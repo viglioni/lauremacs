@@ -91,16 +91,15 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	;; keymaps
   (general-define-key
    :keymaps 'org-mode-map
-   "C-<right>"  (define-org-cmd
-		  :heading 'org-demote-subtree)
-   "C-<left>"   (define-org-cmd
-		  :heading 'org-promote-subtree)
-   "C-<up>"     (define-org-cmd
-		  :heading 'org-move-subtree-up
-		  :item    'org-move-item-up)
-   "C-<down>"   (define-org-cmd
-		  :heading 'org-move-subtree-down
-		  :item    'org-move-item-down))
+   "M-s-m" (define-org-cmd :heading 'org-promote-subtree)
+	 "M-s-," (define-org-cmd
+							 :heading 'org-move-subtree-down
+							 :item    'org-move-item-down)
+   "M-s-." (define-org-cmd
+								 :heading 'org-move-subtree-up
+								 :item    'org-move-item-up)
+   "M-s-/" (define-org-cmd :heading 'org-demote-subtree))
+	
 	(lauremacs-major-mode-leader
 		:keymaps 'org-mode-map
 		"i" '(nil :which-key "insert")
@@ -118,7 +117,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
      (sql . t))))
 
 (use-package org-bullets
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+	:after org
+	:hook (org-mode . org-bullets-mode)
+	:custom
+	(org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))

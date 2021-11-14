@@ -41,7 +41,7 @@
   - [ ] mc click selection
   - [ ] themes
   
-* Bikeshedding [41%]
+* Bikeshedding [50%]
   - [ ] company icons
   - [ ] company-fuzzy
   - [X] configure bottom shells
@@ -53,7 +53,7 @@
   - [ ] magit open pull request from emacs
   - [X] pretty symbols
   - [X] rainbow-mode
-  - [ ] Config doom modeline    
+  - [X] Config doom modeline    
 * Dashboard [50%]
   - [X] gifs
   - [ ] put quotes

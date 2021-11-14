@@ -11,7 +11,12 @@
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode 1)
+	:custom
+	(doom-modeline-buffer-file-name-style 'file-name)
+	(doom-modeline-enable-word-count t)
+	(doom-modeline-display-default-persp-name t)
+	(doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode)))
 
 
 ;;

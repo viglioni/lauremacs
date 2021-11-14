@@ -31,16 +31,26 @@
 ;;
 
 (use-package rainbow-delimiters
+	:commands rainbow-delimiters-mode
   :hook (prog-mode . rainbow-delimiters-mode))
 
+
 ;;
-;; Highlight parentheses
+;; Show paren mode
 ;;
 
-(use-package highlight-parentheses
-  :hook (prog-mode . highlight-parentheses-mode)
+(use-package paren
+	:commands show-paren-mode
+	:hook (prog-mode . show-paren-mode)
 	:init
-	(add-hook 'eshell-mode-hook 'highlight-parentheses-mode))
+	(set-face-attribute 'show-paren-mismatch nil
+											:background "red"
+											:foreground "black"
+											:underline nil)
+	(set-face-attribute 'show-paren-match nil
+											:background "#c93360"
+											:foreground "#f4d6df"
+											:underline nil))
 
 ;;
 ;; Company

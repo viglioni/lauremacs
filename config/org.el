@@ -131,4 +131,4 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	:init
 	(set-face-attribute 'olivetti-fringe nil :background "#d0cec7"))
 
-yy
+

@@ -3,21 +3,28 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+				beginning-of-visual-line
 				delete-horizontal-space
 				end-of-visual-line
+				forward-sexp
 				haskell-indentation-common-electric-command
 				helm-M-x
 				helm-confirm-and-exit-minibuffer
+				hindent-reformat-decl-or-fill
 				ignore
 				indent-for-tab-command
 				kill-region
+				kill-visual-line
 				kmacro-end-macro
 				kmacro-start-macro
 				lsp-signature-stop
 				ns-copy-including-secondary
 				org-cycle
 				org-delete-char
+				org-force-self-insert
+				org-return
 				org-self-insert-command
+				org-yank
 				paredit-doublequote
 				paredit-forward
 				paredit-forward-barf-sexp
@@ -26,8 +33,11 @@
 				paredit-forward-slurp-sexp
 				paredit-kill
 				paredit-open-round
+				sp-forward-sexp
 				sp-forward-slurp-sexp
 				sp-remove-active-pair-overlay
+				yaml-electric-backspace
+				yaml-electric-dash-and-dot
 				))
 
 (setq mc/cmds-to-run-once
@@ -38,4 +48,5 @@
 				lsp-rename
 				lsp-ui-doc--handle-mouse-movement
 				mouse-set-region
+				org-ctrl-c-ctrl-c
 				))

@@ -47,7 +47,7 @@ Return (extension-name icon-value package-name)"
 								 (all-the-icons-material-data)))))
 
 ;;;###autoload
-(defun lauremacs/filter-all-icons (regex)
+(defun lauremacs/icons-filter-by-regex (regex)
 	"Find all icons in `all-the-icons' package that match REGEX."
 	(seq-filter (lambda (icon) (string-match-p regex (car icon)))
 							lauremacs/all-icons))

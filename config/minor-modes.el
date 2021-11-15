@@ -89,8 +89,9 @@
 	:commands (emojify-mode
 						 emojify-insert-emoji
 						 emojify-apropos-emoji)
-	:hook '((org-mode . emojify-mode)
-					(magit-status-mode . emojify-mode)))
+	:hook '((org-mode          . emojify-mode)
+					(magit-status-mode . emojify-mode)
+					(text-mode         . emojify-mode)))
 
 ;;
 ;; Yasnippet

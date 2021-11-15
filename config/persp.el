@@ -262,20 +262,32 @@
     (when (bound-and-true-p persp-mode)
       (persp-helm-setup-bridge))))
 
+(defvar lauremacs/persp-ignore-buffers-rx
+	'("helm" "Minibuf" "^\\*Help\\*$" "^\\*Flycheck" "NeoTree" "^\\*Backtrace")
+	"List of regexes that if any buffer match it won't be added to the currennt persp.")
+
+(defun lauremacs/persp-filter-buffers (buff)
+	"Return t if BUFF must be filtered out of current perspective."
+	(fp/pipe lauremacs/persp-ignore-buffers-rx
+		((mapcar (lambda (regexp) (string-match-p regexp (buffer-name buff))))
+		 (fp/any))))
+
 
 (use-package "persp-mode"
 	:custom
 	;;(setq wg-morph-on nil) ;; switch off animation
   (persp-autokill-buffer-on-remove 'kill-weak)
 	:init
-	(setq persp-add-buffer-on-after-change-major-mode nil
-        persp-auto-resume-time  -1
-				persp-common-buffer-filter-functions nil
-        persp-is-ibc-as-f-supported t
-        persp-nil-name lauremacs-default-layout-name
-        persp-reset-windows-on-nil-window-conf t
-        persp-set-last-persp-for-new-frames t ;; ?
-        persp-set-ido-hooks t)
+	
+	(setq persp-add-buffer-on-after-change-major-mode                  t
+        persp-auto-resume-time                                       -1
+				persp-add-buffer-on-after-change-major-mode-filter-functions (list 'lauremacs/persp-filter-buffers)
+				persp-common-buffer-filter-functions                         nil
+        persp-is-ibc-as-f-supported                                  t
+        persp-nil-name                                               lauremacs-default-layout-name
+        persp-reset-windows-on-nil-window-conf                       t
+        persp-set-last-persp-for-new-frames                          t ;; ?
+        persp-set-ido-hooks                                          t)
 
 	(persp-mode 1)
 	(lauremacs-leader

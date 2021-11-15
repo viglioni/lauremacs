@@ -56,9 +56,12 @@
 
 (use-package projectile
   :custom
+	(projectile-sort-order 'recentf)
   (projectile-indexing-method 'native)
   (projectile-globally-ignored-directories
-   '(".cask"
+   '(
+		 ".cache"
+		 ".cask"
      ".eldev"
      ".git"
      ".log"
@@ -97,19 +100,32 @@
      ".DS_Store"
      ".lein-repl-history"
      ".packages"
+		 "*~"
      ))
   (projectile-project-search-path
-   '("~/Loft/" "~/Personal/"  "~/Loft/webnext/apps"))
+   '("~/Loft/" "~/Personal/"))
 
-  (projectile-switch-project-action '(lambda ()
-				(neotree-projectile-action)
-				(projectile-find-file)))
   :init
   (projectile-mode 1)
+	
   (lauremacs-leader
     "p" '(:keymap projectile-command-map
 		  :package projectile
-		  :which-key "projectile")))
+		  :which-key "projectile"))
+	
+	(projectile-register-project-type
+	 'typescript '("tsconfig.json")
+	 :project-file "package.json"
+	 :src-dir "src"
+	 :test-dir "test"
+	 :test-suffix ".spec")
+	
+	(projectile-register-project-type
+	 'typescript-react '("tsconfig.json" "__tests__")
+	 :project-file "package.json"
+	 :src-dir "src"
+	 :test-dir "__tests__"
+	 :test-suffix ".spec"))
 
 (use-package helm-projectile
   :after (projectile helm)
@@ -127,7 +143,7 @@
   :after (projectile)
   :init
   (lauremacs-leader
-    "pt" '(neotree-toggle :which-key "neotree toggle"))
+    "pt" '(neotree-toggle-project-dir :which-key "neotree toggle"))
   :custom
   (neo-theme (if (display-graphic-p) 'icons 'arrow))
   (neo-show-hidden-files t))

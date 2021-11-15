@@ -37,9 +37,9 @@
 ;; Function
 ;;
 
-(defmacro curry-expr (expr)
-  "Curries an expression
-   e.g. (curry-expr '(+ 1 2 3)) -> (fp/curry + 1 2 3)"
+(defmacro fp/curry-expr (expr)
+  "Curry an expression:
+(fp/curry-expr '(+ 1 2 3)) -> (fp/curry + 1 2 3)."
   `(eval (seq-concatenate 'list '(fp/curry) ,expr)))
 
 (defmacro compose (&rest fn-list)
@@ -47,7 +47,7 @@
    ((y -> z) ... (m -> o) ((a ... n) -> m) ) -> ((a ... n)->z)
    e.g.:
    (compose (+ 1) (* 2)) -> (lambda (arg1 ... argN) (+ 1 (* 2 arg1 ... argN)))"
-  `(let ((curried-fn (quote ,(seq-map (lambda (fn) (curry-expr fn)) fn-list))))
+  `(let ((curried-fn (quote ,(seq-map (lambda (fn) (fp/curry-expr fn)) fn-list))))
      (reduce
       (lambda (f g)
         (lexical-let ((f f) (g g))
@@ -55,14 +55,21 @@
       curried-fn
       :initial-value (fp/curry identity))))
 
+;;;###autoload
+(defmacro fp/convert-to-symbol (anything)
+	"Convert ANYTHING to symbol, if it is already a symbol, do nothing."
+	`(if (ignore-errors (symbolp ,anything))
+			,anything
+		(quote ,anything)))
+
 
 ;;;###autoload
 (defmacro fp/curry (fn &rest initial-args)
-  "Returns the curried function.
-   e.g.:
-   (fp/curry + 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))"
+  "Return the curried function:
+(fp/curry '+ 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))"
   `(lambda (&rest args)
-     (apply (quote ,fn) (seq-concatenate 'list (list ,@initial-args) args))))
+     (apply (fp/convert-to-symbol ,fn)
+						(seq-concatenate 'list (list ,@initial-args) args))))
 
 ;;;###autoload
 (defmacro fp/pipe (arg fn-list)
@@ -72,6 +79,14 @@
    (fp/pipe  5 ((+ 1) (* 2))) -> 12"
   (declare (indent defun))
   `(funcall (compose ,@(reverse  fn-list)) ,arg))
+
+;;;###autoload
+(defmacro fp/for-each (list fn &rest fn-args)
+	"Loop throught LIST applying FN with FN-ARGS and then return LIST.
+E.g.: \(fp/for-each '(1 2) `add-to-list' 'mylist)."
+	`(progn (dolist (el ,list)
+						(funcall (fp/curry ,fn ,@fn-args) el))
+					,list))
 
 ;;;###autoload
 (defmacro fp/const-fn-interactive (fn &rest args)
@@ -129,12 +144,11 @@ e.g.
          lst t)))
 
 ;;;###autoload
-(defun any (lst)
-  "Returns t if at least one element in list is truthy
-   [a] → Boolean"
-  (bool (seq-reduce
-         (lambda (acc val) (or acc val))
-         lst nil)))
+(defun fp/any (lst)
+  "Return t if at least one element in LST is truthy:
+[a] → Boolean."
+			 (bool (seq-reduce (lambda (acc val) (or acc val))
+												 lst nil)))
 
 ;;;###autoload
 (defun contains? (list element)

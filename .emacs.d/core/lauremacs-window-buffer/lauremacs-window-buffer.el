@@ -29,6 +29,7 @@
 
 ;;; Code:
 
+;;;###autoload
 (defun lauremacs--get-prev-buffers ()
   "Return list with previous buffers."
   (seq-filter 'buffer-file-name
@@ -116,6 +117,12 @@ TODO: add throwif"
 	 )
     (delete-other-windows first-window)
     (window-state-put second-window-state (funcall split-fn))))
+
+;;;###autoload
+(defun lauremacs/buffer-indent ()
+	"Indent whole buffer."
+	(interactive)
+	(indent-region (point-min) (point-max)))
 
 (provide 'lauremacs-window-buffer)
 

@@ -90,7 +90,7 @@
 - [ ] [[https://github.com/emacs-helm/helm-system-packages][helm system packages]]
 - [ ] [[helm slime][https://github.com/emacs-helm/helm-slime]]
 
-* personal libs [21%]
+* personal libs [28%]
 - [ ] buttercup-helpers
 - [X] functional
 - [ ] json-utils
@@ -104,8 +104,8 @@
 - [ ] ramda-docs
 - [ ] spotilau
 - [ ] sqlau
-- [ ] ts-repl
-* Usability issues/bugs [38%]
+- [X] ts-repl
+* Usability issues/bugs [53%]
 - [X] Ansi colour on compilation buffer
 - [ ] Ansi colour on magit buffer
 - [ ] Buffer list choice is not getting in the correct order
@@ -113,8 +113,8 @@
 - [X] perspective.........
 - [X] neotree open in project
 - [X] avoid always opening neotree when switching to project
-- [ ] avoid snippets in org headers
-- [ ] completion " `' " in emacs lisp doc
+- [X] avoid snippets in org headers
+- [X] completion " `' " in emacs lisp doc
 - [X] missing icons on neotree
 - [ ] ~Leader Tab~ does not respect persps
 - [ ] Implement ~Leader l Tab~

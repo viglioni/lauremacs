@@ -4,6 +4,34 @@
 ;; GNU Public License 3.0
 ;;
 
+;;
+;; smartparens
+;;
+
+(use-package smartparens 
+  :config
+  (smartparens-global-mode t)
+	:init
+	(require 'smartparens-config)
+	(sp-use-paredit-bindings))
+
+
+;;
+;; Paredit
+;;
+
+(use-package paredit
+  :hook '((emacs-lisp-mode                  . enable-paredit-mode)
+					(eshell-mode                      . enable-paredit-mode)
+          (eval-expression-minibuffer-setup . enable-paredit-mode)
+          (ielm-mode                        . enable-paredit-mode)
+          (lisp-mode                        . enable-paredit-mode)
+					(minibuffer-setup-hook            . enable-paredit-mode)
+          (lisp-interaction-mode            . enable-paredit-mode))
+  :init
+	(add-hook 'eshell-mode-hook 'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
+
 
 ;;
 ;; Doom modeline
@@ -91,7 +119,10 @@
 						 emojify-apropos-emoji)
 	:hook '((org-mode          . emojify-mode)
 					(magit-status-mode . emojify-mode)
-					(text-mode         . emojify-mode)))
+					(text-mode         . emojify-mode))
+	:init
+	(lauremacs-leader
+	 "ie" '(emojify-insert-emoji :which-key "insert emoji")))
 
 ;;
 ;; Yasnippet

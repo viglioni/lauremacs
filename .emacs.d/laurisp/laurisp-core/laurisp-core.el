@@ -86,20 +86,6 @@ E.g. \"(require-without-throw 'functional)\"."
 ;; bash related functions
 ;;
 
-;;;###autoload
-(defun gen-uuid-to-clipboard ()
-  "generates uuid and copies it to clipboard"
-  (interactive)
-  (let ((uuid (uuidgen-4)))
-    (kill-new uuid)
-    (message (format "copied %s to clipboard" uuid))
-    uuid))
-
-;;;###autoload
-(defun insert-uuid ()
-  "inserts random uuid"
-  (interactive)
-  (insert (uuidgen-4))) 
 
 ;;;###autoload
 (defun lpwd (&optional dir)

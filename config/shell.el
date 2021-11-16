@@ -37,13 +37,22 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 				(set-window-dedicated-p (get-buffer-window buff) t)
 				(select-window (purpose-get-bottom-window))))))
 
+
+
 ;;
 ;; eshell config
 ;;
 
-(setq eshell-history-size         10000
-      eshell-buffer-maximum-lines 10000
-      eshell-hist-ignoredups t
+(defun eshell-add-aliases ()
+"Alias to eshell."
+(dolist (var '(("npm" "use-nvmrc.sh && npm $*")
+							 ("node" "use-nvmrc.sh && node $*")))
+    (add-to-list 'eshell-command-aliases-list var)))
+
+
+(setq eshell-history-size              10000
+      eshell-buffer-maximum-lines      10000
+      eshell-hist-ignoredups           t
       eshell-scroll-to-bottom-on-input t)
 
 (use-package eshell-git-prompt
@@ -56,6 +65,7 @@ BUFF-NAME the name of the buffer the where shell will be executed."
     (setq eshell-visual-commands '("htop" "zsh" "vim")))
   (eshell-git-prompt-use-theme 'multiline)
 	:init
+	(add-hook 'eshell-post-command-hook 'eshell-add-aliases)
 	 ;; Save command history when commands are entered
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
 

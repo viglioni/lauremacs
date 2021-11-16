@@ -260,7 +260,7 @@
 
 (defvar lauremacs/persp-ignore-buffers-rx
 	'("helm" "Minibuf" "^\\*Help\\*$" "^\\*Flycheck" "NeoTree" "^\\*Backtrace"
-		"magit-diff" "magit-process")
+		"magit-diff" "magit-process" "markdown-code-fontification")
 	"List of regexes that if any buffer match it won't be added to the currennt persp.")
 
 (defun lauremacs/persp-filter-buffers (buff)

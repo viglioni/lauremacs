@@ -146,7 +146,8 @@
 	:commands iedit-mode
 	:bind (:map iedit-mode-keymap
 							("M-f" . iedit-restrict-function)
-							("M-l" . iedit-rescrit-line)
+							("M-l" . iedit-restrict-current-line)
+							("C-g" . iedit--quit)
 							("M-," . iedit-expand-down-a-line)
 							("M-." . iedit-expand-up-a-line)
 							("TAB" . iedit-toggle-selection)

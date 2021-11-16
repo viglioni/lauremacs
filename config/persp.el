@@ -12,13 +12,13 @@
 
 (use-package "persp-mode"
 	:custom
-  (persp-autokill-buffer-on-remove                              'kill-weak)
+  (persp-autokill-buffer-on-remove                              'kill)
 	(persp-add-buffer-on-after-change-major-mode                  t)
   (persp-auto-resume-time                                       -1)
 	(persp-add-buffer-on-after-change-major-mode-filter-functions (list 'lauremacs/persp-filter-buffers))
 	(persp-common-buffer-filter-functions                         nil)
   (persp-is-ibc-as-f-supported                                  t)
-  (persp-nil-name                                               lauremacs-default-layout-name)
+  (persp-nil-name                                               "Default")
   (persp-reset-windows-on-nil-window-conf                       t)
   (persp-set-last-persp-for-new-frames                          t)
   (persp-set-ido-hooks                                          t)

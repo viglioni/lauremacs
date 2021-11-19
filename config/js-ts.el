@@ -47,14 +47,18 @@
 										'ts-repl-send-last-sexp
 										'ts-repl)
 
-
+(bind-lazy-function 'open-ramda-docs
+										'ramda-docs-open
+										'ramda-docs)
 
 (lauremacs-major-mode-leader
 	:keymaps '(typescript-mode-map web-mode-map)
 	"rf" '(lsp-rename-ts-file     :which-key "rename file")
 	"s"  '(nil :which-key "ts-repl")
 	"sb" '(send-buffer-to-repl    :which-key "send buffer to repl")
-	"se" '(send-last-sexp-to-repl :which-key "send last sexp to repl"))
+	"se" '(send-last-sexp-to-repl :which-key "send last sexp to repl")
+	"d"  '(nil :which-key "docs")
+	"dr" '(open-ramda-docs        :which-key "open ramda docs"))
 
 (use-package prettier-js
   :after (typescript-mode))

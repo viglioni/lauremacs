@@ -4,6 +4,19 @@
 ;; GNU Public License 3.0
 ;;
 
+(defvar previous-major-mode nil)
+(make-variable-buffer-local 'previous-major-mode)
+(put 'previous-major-mode 'permanent-local t)
+
+(defun lauremacs/ts-load-web-mode ()
+	(interactive)
+	"Load `web-mode' and its definitions."
+	(unless (equal previous-major-mode 'web-mode)
+		(progn
+			(setq previous-major-mode 'web-mode)
+			(funcall 'web-mode)			
+			(funcall 'tsx-mode))))
+
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -11,20 +24,18 @@
 				 (typescript-mode . prettier-js-mode)
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
-				 (tsx-mode        . (lambda () (require 'web-mode))))
+				 (tsx-mode        . lauremacs/ts-load-web-mode))
   :custom
   (typescript-indent-level 2)
 	:init
+	(require 'web-mode)
 	(define-derived-mode tsx-mode typescript-mode "tsx")
-	(add-hook 'typescript-mode #'subword-mode)
-	(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-mode))
-	(with-eval-after-load "smartparens"
-		(sp-local-pair 'typescript-mode "<" ">") :when '(sp-point-after-word-p)))
+	(add-hook 'tsx-mode #'subword-mode)
+	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode)))
 
 (use-package tree-sitter
   :ensure t
-  :hook ((typescript-mode . tree-sitter-hl-mode)
-				 (tsx-mode        . tree-sitter-hl-mode)))
+  :hook ((tsx-mode . tree-sitter-hl-mode)))
 
 (use-package tree-sitter-langs
   :ensure t

@@ -106,15 +106,16 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 		"ic" '(org-insert-src :which-key "insert code block source"))
 	(org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell . t)
-     (clojure . t)
+   '((haskell    . t)
+     (clojure    . t)
      (emacs-lisp . t)
-     (python . t)
-     (js . t)
-     (C . t)
-     (latex . t)
-     (shell . t)
-     (sql . t))))
+		 (typescript . t)
+     (python     . t)
+     (js         . t)
+     (C          . t)
+     (latex      . t)
+     (shell      . t)
+     (sql        . t))))
 
 (use-package org-bullets
 	:after org

@@ -8,3 +8,4 @@ recentf
 transient/*
 .dap-*
 persp-confs/*
+request/*

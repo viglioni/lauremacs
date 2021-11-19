@@ -8,6 +8,7 @@
 				end-of-visual-line
 				forward-sexp
 				haskell-indentation-common-electric-command
+				haskell-indentation-newline-and-indent
 				helm-M-x
 				helm-confirm-and-exit-minibuffer
 				hindent-reformat-decl-or-fill

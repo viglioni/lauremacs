@@ -78,38 +78,9 @@
 ;; Toggle
 ;;
 
-(defvar lauremacs-state//pair-programming? nil)
-
-;;;###autoload
-(defun lauremacs/enable-pair-programming ()
-  "Change some display configs to enhance
-pair-programming/sharing screen experience"
-  (interactive)
-	(setq lauremacs-state//pair-programming? t)
-  (set-face-attribute 'default nil :height 175)
-  (global-linum-mode 1)
-  (with-current-buffer " *NeoTree*"
-    (setq-local linum-mode nil))
-  (neotree-toggle)
-  (neotree-toggle))
-
-;;;###autoload
-(defun lauremacs/disable-pair-programming ()
-  "Change some display configs to enhance
-pair-programming/sharing screen experience"
-  (interactive)
-	(setq lauremacs-state//pair-programming? nil)
-  (set-face-attribute 'default nil :height 150)
-  (global-linum-mode 0))
-
-;;;###autoload
-(defun lauremacs/toggle-pair-programming ()
-	"Toggle between pair programming mode and norma mode."
-	(interactive)
-	(if lauremacs-state//pair-programming?
-			(lauremacs/disable-pair-programming)
-		(lauremacs/enable-pair-programming)))
 
 (lauremacs-leader
 	"T"  '(nil :which-key "toggle")
-	"Tp" '(lauremacs/toggle-pair-programming :which-key "pair programming mode"))
+	"Tp" '(lauremacs/toggle-pair-programming :which-key "pair programming mode")
+	"Ts" '(lauremacs/toggle-spacemacs-theme  :which-key "spacemacs theme")
+	"Tt" '(lauremacs/toggle-transparency     :which-key "transparency"))

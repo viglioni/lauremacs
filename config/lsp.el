@@ -13,7 +13,7 @@
 			(message "Didn't organize imports")))
 	t)
 
-(add-hook 'before-save-hook 'lauremacs/lsp-organize-imports-before-save)
+
 
 ;;;###autoload
 (defun lauremacs/lsp-mode-setup ()

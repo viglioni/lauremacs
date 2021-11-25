@@ -34,6 +34,8 @@
 				paredit-forward-slurp-sexp
 				paredit-kill
 				paredit-open-round
+				sp-backward-sexp
+				sp-forward-barf-sexp
 				sp-forward-sexp
 				sp-forward-slurp-sexp
 				sp-remove-active-pair-overlay
@@ -50,4 +52,5 @@
 				lsp-ui-doc--handle-mouse-movement
 				mouse-set-region
 				org-ctrl-c-ctrl-c
+				yas-expand
 				))

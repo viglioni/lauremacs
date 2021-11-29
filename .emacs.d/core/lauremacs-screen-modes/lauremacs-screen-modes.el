@@ -1,6 +1,8 @@
 ;;; lauremacs-screen-modes.el --- some screen modes like pair programming, transparency...
 
 (require 'linum)
+(require 'helm)
+
 ;;
 ;; Pair programming mode
 ;;
@@ -42,27 +44,52 @@
 		(lauremacs/enable-pair-programming)))
 
 ;;
-;; Theme toggle
+;; Themes
 ;;
 
-
 ;;;###autoload
-(defun lauremacs--theme-get-current ()
-	"Get current theme."
-	(car custom-enabled-themes))
-
-;;;###autoload
-(defun lauremacs--theme-get-other ()
-	"Get the other spacemacs theme."
-	(if (equal 'spacemacs-light (lauremacs--theme-get-current))
-			'spacemacs-dark
-		'spacemacs-light))
-
-;;;###autoload
-(defun lauremacs/toggle-spacemacs-theme ()
-	"Toggle between `spacemacs-light' and `spacemacs-dark'."
+(defun lauremacs--theme-load-light ()
+	"Load `spacemacs-light'."
 	(interactive)
-	(load-theme (lauremacs--theme-get-other) t))
+	(load-theme 'spacemacs-light t)
+	(lauremacs/set-transparency 100))
+
+;;;###autoload
+(defun lauremacs--theme-load-dark ()
+	"Load `spacemacs-dark'."
+	(interactive)
+	(load-theme 'spacemacs-dark t)
+	(lauremacs/set-transparency 100))
+
+;;;###autoload
+(defun lauremacs--theme-load-transparent ()
+	"Load a transparent version of `spacemacs-dark'."
+	(interactive)
+	(load-theme 'spacemacs-dark t)
+	(lauremacs/set-transparency)
+	(set-face-attribute 'default nil :background "black"))
+
+;;;###autoload
+(defun lauremacs--theme-load (theme)
+	"Load THEME.  THEME should be `light', `dark' or `transparent'."
+	(cond ((equal theme 'light)       (lauremacs--theme-load-light))
+				((equal theme 'dark)        (lauremacs--theme-load-dark))
+				((equal theme 'transparent) (lauremacs--theme-load-transparent))
+				(t (throw-if t "THEME should be `light', `dark' or `transparent'."))))
+
+
+;;;###autoload
+(defun lauremacs/choose-theme ()
+	"Choose theme."
+	(interactive)
+	(helm
+	 :sources (helm-build-sync-source "themes"
+							:candidates '(("dark"        . dark)
+														("light"       . light)
+														("transparent" . transparent))
+							:action 'lauremacs--theme-load)
+	 :prompt "Choose a theme to load:"))
+
 
 ;;
 ;; Transparency
@@ -87,7 +114,7 @@
 	"Set transparency to OPACITY.
 The default value is `lauremacs-state//opacity'."
 	(interactive "nInsert alpha from 20 to 100: ")
-	(throw-unless (numberp opacity) "OPACITY should be a number")
+	(throw-unless (if (bool opacity) (numberp opacity) t) "OPACITY should be a number")
 	(let* ((alpha (or opacity lauremacs-state//opacity))
 				 (new-alpha (min (max alpha 20) 100))
 				(frame (selected-frame)))

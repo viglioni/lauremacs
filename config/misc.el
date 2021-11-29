@@ -80,7 +80,7 @@
 
 
 (lauremacs-leader
-	"T"  '(nil :which-key "toggle")
+	"T"  '(nil :which-key "toggle/choose")
 	"Tp" '(lauremacs/toggle-pair-programming :which-key "pair programming mode")
-	"Ts" '(lauremacs/toggle-spacemacs-theme  :which-key "spacemacs theme")
+	"TT" '(lauremacs/choose-theme            :which-key "choose theme")
 	"Tt" '(lauremacs/toggle-transparency     :which-key "transparency"))

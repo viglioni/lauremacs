@@ -67,10 +67,11 @@
 	(interactive)
 	(load-theme 'spacemacs-dark t)
 	(lauremacs/set-transparency)
+	(set-face-attribute 'fringe  nil :background "black")
 	(set-face-attribute 'default nil :background "black"))
 
 ;;;###autoload
-(defun lauremacs--theme-load (theme)
+(defun lauremacs/theme-load (theme)
 	"Load THEME.  THEME should be `light', `dark' or `transparent'."
 	(cond ((equal theme 'light)       (lauremacs--theme-load-light))
 				((equal theme 'dark)        (lauremacs--theme-load-dark))
@@ -87,7 +88,7 @@
 							:candidates '(("dark"        . dark)
 														("light"       . light)
 														("transparent" . transparent))
-							:action 'lauremacs--theme-load)
+							:action 'lauremacs/theme-load)
 	 :prompt "Choose a theme to load:"))
 
 

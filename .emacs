@@ -9,10 +9,8 @@
 ;; Theme
 ;;
 
-(load-theme 'spacemacs-dark t)
-(set-face-attribute 'default nil :background "black")
-(set-face-attribute 'fringe  nil :background "black")
-(lauremacs/set-transparency)
+(lauremacs/theme-load 'transparent)
+
 
 ;;
 ;; Loading another packages

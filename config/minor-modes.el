@@ -183,3 +183,28 @@
 											:foreground "white"))
 
 
+;;
+;; Hide show
+;;
+
+(use-package hideshow
+	:hook (prog-mode . hs-minor-mode)
+	:init
+	(lauremacs-leader
+		"cb"  '(nil :which-key "hide/show code blocks")
+		"cbs" '(hs-show-block :which-key "show")
+		"cbh" '(hs-hide-block :which-key "hide")
+		"cbl" '(hs-hide-level :which-key "hide level")
+		"cbt" '(hs-hide-level :which-key "toggle hide/show")
+		"cbS" '(hs-show-all   :which-key "show all")
+		"cbH" '(hs-hide-all   :which-key "hide all"))
+	(general-define-key
+	 :prefix "C-c b"
+	 ""  '(nil :which-key "hide/show code blocks")
+	 "s" '(hs-show-block :which-key "show")
+	 "h" '(hs-hide-block :which-key "hide")
+	 "l" '(hs-hide-level :which-key "hide level")
+	 "t" '(hs-hide-level :which-key "toggle hide/show")
+	 "S" '(hs-show-all   :which-key "show all")
+	 "H" '(hs-hide-all   :which-key "hide all")))
+

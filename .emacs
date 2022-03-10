@@ -30,7 +30,8 @@
   (lauremacs-leader
     "s" '(nil :which-key "search")
     "g" '(nil :which-key "git")
-    "a" '(nil :which-key "applications")))
+    "a" '(nil :which-key "applications")
+		"c" '(nil :which-key "coding")))
 
 
 (use-package expand-region

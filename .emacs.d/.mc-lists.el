@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
 				beginning-of-visual-line
+				company-complete
 				delete-horizontal-space
 				end-of-visual-line
 				forward-sexp
@@ -22,9 +23,12 @@
 				ns-copy-including-secondary
 				org-cycle
 				org-delete-char
+				org-end-of-line
 				org-force-self-insert
+				org-meta-return
 				org-return
 				org-self-insert-command
+				org-todo
 				org-yank
 				paredit-doublequote
 				paredit-forward
@@ -45,12 +49,15 @@
 
 (setq mc/cmds-to-run-once
       '(
+				evil-window-down
 				evil-window-right
+				handle-switch-frame
 				haskell-process-load-file
 				iedit-switch-to-mc-mode
 				lsp-rename
 				lsp-ui-doc--handle-mouse-movement
 				mouse-set-region
 				org-ctrl-c-ctrl-c
+				set-rectangular-region-anchor
 				yas-expand
 				))

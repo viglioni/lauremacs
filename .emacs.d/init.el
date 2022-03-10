@@ -34,9 +34,6 @@
 ;; Initialize package sources
 (require 'package)
 
-;; Initialize package sources
-(require 'package)
-
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
@@ -57,9 +54,9 @@
 ;;
 
 (dolist (dir (list laurisp-dir
-		   lauremacs-core-dir
-		   lauremacs-external-libs-dir
-			 lauremacs-internal-libs-dir))
+									 lauremacs-core-dir
+									 lauremacs-external-libs-dir
+									 lauremacs-internal-libs-dir))
   (let ((default-directory dir))
     (normal-top-level-add-subdirs-to-load-path)))
 
@@ -74,11 +71,11 @@
 
 ;; loads every lib inside `lauremacs-core-dir'
 (let* ((lib-dirs (seq-filter
-		 'file-directory-p
-		 (directory-files lauremacs-core-dir t (rx (| alpha)))))
+									'file-directory-p
+									(directory-files lauremacs-core-dir t (rx (| alpha)))))
        (lib-names (mapcar
-		   (lambda (dir) (replace-regexp-in-string ".*/" "" dir))
-		   lib-dirs)))
+									 (lambda (dir) (replace-regexp-in-string ".*/" "" dir))
+									 lib-dirs)))
   (dolist (lib lib-names)
     (require (intern lib))))
 

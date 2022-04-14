@@ -34,6 +34,7 @@ If mysql, return url \"user:password@tcp(host:port)/db\""
 
 ;;;###autoload
 (defun sqlau--add-to-lsp-sqls-connections (db-type data-src-name)
+	(throw-unless (contains? '("postgresql" "mysql") db-type))
 	(add-to-list 'lsp-sqls-connections
 							 (list (cons 'driver db-type)
 										 (cons 'dataSourceName data-src-name))))
@@ -67,7 +68,7 @@ e.g.:
 	(throw-if (any-nil? user database password host) "there are info missing")
 	(let ((full-uri (sqlau--url-formatter 'postgres host port user password database))
 				(data-src-name (sqlau--format-postgres-sqls host port user password database)))
-		(sqlau--add-to-lsp-sqls-connections "postgres" data-src-name)
+		(sqlau--add-to-lsp-sqls-connections "postgresql" data-src-name)
 		(sqlau--add-to-sql-conection-alist 'postgres name host port user password full-uri)))
 
 

@@ -89,7 +89,9 @@
 	 :map company-search-map
 	 ("s-." . 'company-select-previous)
 	 ("s-," . 'company-select-next))
+	:config
   :init
+	(setq company-dabbrev-downcase nil)
   (global-company-mode 1))
 
 ;;

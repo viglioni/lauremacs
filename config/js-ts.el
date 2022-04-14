@@ -24,11 +24,14 @@
 				 (typescript-mode . prettier-js-mode)
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
-				 (tsx-mode        . lauremacs/ts-load-web-mode))
+				 (tsx-mode        . lauremeacs/ts-load-web-mode)
+				 ;(tsx-mode        . web-minor-mode)
+				 )
   :custom
   (typescript-indent-level 2)
 	:init
 	(require 'web-mode)
+	(require 'web-minor-mode)
 	(define-derived-mode tsx-mode typescript-mode "tsx")
 	(add-hook 'tsx-mode #'subword-mode)
 	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode)))
@@ -48,7 +51,7 @@
 
 (bind-lazy-function 'lsp-rename-ts-file
 										'lauremacs-ide-lsp-ts-rename-file
-										'lauremacs-ide-extra)
+ 										'lauremacs-ide-extra)
 
 (bind-lazy-function 'send-buffer-to-repl
 										'ts-repl-exec-ts-buffer
@@ -91,7 +94,8 @@
     "ic" '(web-mode-element-clone           :which-key "element clone")
     "i/" '(web-mode-element-close           :which-key "element close")
     "ib" '(web-mode-element-beginning       :which-key "element beginning")
-    "ie" '(web-mode-element-end             :which-key "element end"))
+    "ie" '(web-mode-element-end             :which-key "element end")
+		"if" '(web-mode-fold-or-unfold          :which-key "fold/unfold element"))
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)

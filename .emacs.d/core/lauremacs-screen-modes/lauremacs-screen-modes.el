@@ -76,7 +76,8 @@
 	(cond ((equal theme 'light)       (lauremacs--theme-load-light))
 				((equal theme 'dark)        (lauremacs--theme-load-dark))
 				((equal theme 'transparent) (lauremacs--theme-load-transparent))
-				(t (throw-if t "THEME should be `light', `dark' or `transparent'."))))
+				(t (throw-if t "THEME should be `light', `dark' or `transparent'.")))
+	(funcall major-mode))
 
 
 ;;;###autoload

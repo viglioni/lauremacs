@@ -75,6 +75,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 (defun lauremacs/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
+	(lauremacs/org-font-setup)
   (visual-line-mode 1))
 
 (bind-lazy-function 'org-insert-src
@@ -87,7 +88,6 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	(org-startup-folded t)
   (org-startup-with-latex-preview nil)
   :init
-  (lauremacs/org-font-setup)
 	;; keymaps
   (general-define-key
    :keymaps 'org-mode-map

@@ -49,3 +49,5 @@ E.g. \"(require-without-throw 'functional)\"."
      (interactive)
      (load-lib ,package-name)
      (call-interactively ,lib-func-name)))
+
+

@@ -23,8 +23,8 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((lsp-mode . lauremacs/lsp-mode-setup)
-	 (lsp-mode . lsp-ui-mode)
-	 (lsp-mode . lsp-enable-which-key-integration))
+				 (lsp-mode . lsp-ui-mode)
+				 (lsp-mode . lsp-enable-which-key-integration))
   :init
   (setq lsp-keymap-prefix "<f17>")
   (setq lsp-enable-on-type-formatting nil)
@@ -32,7 +32,9 @@
   (define-key lsp-mode-map (kbd "<f17>") lsp-command-map)) 
 
 (use-package lsp-ui
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+	:init
+	(setq lsp-ui-doc-show-with-cursor t))
 
 (use-package helm-lsp
   :after lsp)

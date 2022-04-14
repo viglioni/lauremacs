@@ -9,7 +9,7 @@
 ;; Theme
 ;;
 
-(lauremacs/theme-load 'transparent)
+(lauremacs/theme-load 'light)
 
 
 ;;
@@ -27,11 +27,18 @@
     :prefix "<f17>")
   (general-create-definer lauremacs-leader
     :prefix "<f19>")
+	(require 'web-search)
   (lauremacs-leader
-    "s" '(nil :which-key "search")
-    "g" '(nil :which-key "git")
-    "a" '(nil :which-key "applications")
-		"c" '(nil :which-key "coding")))
+    "g"   '(nil :which-key "git")
+    "a"   '(nil :which-key "applications")
+		"c"   '(nil :which-key "coding")
+		"s"   '(nil :which-key "search")
+		"sw"  '(nil :which-key "web search")
+		"sww" '(web-search            :which-key "web-search")
+		"swg" '(web-search-google     :which-key "google search")
+		"swd" '(web-search-duckduckgo :which-key "duckduckgo search")
+		"swb" '(web-search-brave      :which-key "brave search")
+		"swy" '(web-search-youtube    :which-key "youtube search")))
 
 
 (use-package expand-region

@@ -49,7 +49,8 @@
 		"r"  '(nil :which-key "refactor")
 		"rb" '(hlint-refactor-refactor-buffer   :which-key "refactor buffer")
 		"rp" '(hlint-refactor-refactor-at-point :which-key "refactor at point")
-		)
+		"h"  '(nil :which-key "help/docs")
+		"hh" '(haskell-hoogle                   :which-key "hoogle"))
 	(lauremacs-major-mode-leader
 		:keymaps 'haskell-interactive-mode-map
 		"s"  '(nil :which-key "repl")

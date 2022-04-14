@@ -30,6 +30,7 @@
 				org-self-insert-command
 				org-todo
 				org-yank
+				paredit-backslash
 				paredit-doublequote
 				paredit-forward
 				paredit-forward-barf-sexp
@@ -56,6 +57,7 @@
 				iedit-switch-to-mc-mode
 				lsp-rename
 				lsp-ui-doc--handle-mouse-movement
+				mc/mark-all-in-region
 				mouse-set-region
 				org-ctrl-c-ctrl-c
 				set-rectangular-region-anchor

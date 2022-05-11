@@ -58,3 +58,8 @@
 				 (json-mode . visual-line-mode)))
 
 
+;;
+;; REST Client
+;;
+
+(use-package restclient)

@@ -98,6 +98,10 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 	"asfi" 'ielm)
 
 
+(with-eval-after-load "term"
+  (define-key term-raw-map (kbd "C-c C-y") 'term-paste)
+	(define-key term-raw-map (kbd "s-v") 'term-paste))
+
 
 ;;
 ;; Colour configs

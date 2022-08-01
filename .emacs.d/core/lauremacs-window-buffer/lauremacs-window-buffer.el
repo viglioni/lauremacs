@@ -109,12 +109,11 @@ TODO: add throwif"
   (when (not (= 2 (count-windows)))
     (error "Can't toggle window layout when the number of windows isn't two"))
   (let* ((w-tree (car (window-tree)))
-	 (current-split-is-vertical? (car w-tree))
-	 (first-window (nth 2 w-tree))
-	 (second-window (nth 3 w-tree))
-	 (second-window-state (window-state-get second-window))
-	 (split-fn (if current-split-is-vertical? #'split-window-horizontally #'split-window-vertically))
-	 )
+				 (current-split-is-vertical? (car w-tree))
+				 (first-window (nth 2 w-tree))
+				 (second-window (nth 3 w-tree))
+				 (second-window-state (window-state-get second-window))
+				 (split-fn (if current-split-is-vertical? #'split-window-horizontally #'split-window-vertically)))
     (delete-other-windows first-window)
     (window-state-put second-window-state (funcall split-fn))))
 
@@ -122,7 +121,8 @@ TODO: add throwif"
 (defun lauremacs/buffer-indent ()
 	"Indent whole buffer."
 	(interactive)
-	(indent-region (point-min) (point-max)))
+	(indent-region (point-min) (point-max))
+	(align-entire))
 
 (provide 'lauremacs-window-buffer)
 

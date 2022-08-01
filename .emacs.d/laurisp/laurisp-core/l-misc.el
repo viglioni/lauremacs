@@ -51,3 +51,13 @@ E.g. \"(require-without-throw 'functional)\"."
      (call-interactively ,lib-func-name)))
 
 
+;;;###autoload
+(defun use-dependencies (&rest libs)
+	"Install, if necessary, all libraries and require them.
+Argument &REST libs to be installed and required."
+	(dolist (lib libs)
+		(unless (package-installed-p lib)
+			(package-refresh-contents)
+			(package-install lib))
+		(require lib)))
+

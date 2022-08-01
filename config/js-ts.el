@@ -17,6 +17,12 @@
 			(funcall 'web-mode)			
 			(funcall 'tsx-mode))))
 
+(defun lauremacs/tsx-load-web-mode (fn &rest args)
+	"Run FN with ARGS in `web-mode' then return to `tsx-mode'."
+	(when (equal major-mode 'tsx-mode)
+		(web-mode)
+		(apply fn args)
+		(tsx-mode)))
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -24,9 +30,7 @@
 				 (typescript-mode . prettier-js-mode)
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
-				 (tsx-mode        . lauremeacs/ts-load-web-mode)
-				 ;(tsx-mode        . web-minor-mode)
-				 )
+				 (tsx-mode        . lauremeacs/ts-load-web-mode))
   :custom
   (typescript-indent-level 2)
 	:init
@@ -96,6 +100,19 @@
     "ib" '(web-mode-element-beginning       :which-key "element beginning")
     "ie" '(web-mode-element-end             :which-key "element end")
 		"if" '(web-mode-fold-or-unfold          :which-key "fold/unfold element"))
+
+	(dolist (fn '(web-mode-element-insert-at-point
+								web-mode-element-vanish
+								web-mode-element-kill
+								web-mode-element-select
+								web-mode-element-wrap
+								web-mode-element-rename
+								web-mode-element-clone
+								web-mode-element-close
+								web-mode-element-beginning
+								web-mode-element-end
+								web-mode-fold-or-unfold))
+					(advice-add fn :around 'lauremacs/tsx-load-web-mode))
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)

@@ -39,6 +39,7 @@
 				paredit-forward-slurp-sexp
 				paredit-kill
 				paredit-open-round
+				restclient-toggle-body-visibility-or-indent
 				sp-backward-sexp
 				sp-forward-barf-sexp
 				sp-forward-sexp

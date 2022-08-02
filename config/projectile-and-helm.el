@@ -5,22 +5,70 @@
 ;;
 
 ;;
+;; Projectile extra functions
+;;
+
+
+
+
+(defun find-project-type (project-type) 
+	(seq-find
+	 (lambda (proj) (equal (car proj) project-type))
+	 projectile-project-types))
+
+
+(defun get-project-type-plist (project-type)
+	(let* ((lst (cdr (find-project-type project-type))))
+		(list
+		 :project-file     (plist-get lst (intern "project-file"))
+		 :compilation-dir  (plist-get lst (intern "compilation-dir"))
+		 :compile          (plist-get lst (intern "compile"))
+		 :configure        (plist-get lst (intern "configure"))
+		 :install          (plist-get lst (intern "install"))
+		 :package          (plist-get lst (intern "package"))
+		 :run              (plist-get lst (intern "run"))
+		 :src-dir          (plist-get lst (intern "src-dir"))
+		 :test             (plist-get lst (intern "test"))
+		 :test-dir         (plist-get lst (intern "test-dir"))
+		 :test-prefix      (plist-get lst (intern "test-prefix"))
+		 :test-suffix      (plist-get lst (intern "test-suffix"))
+		 :related-files-fn (plist-get lst (intern "related-files-fn")))))
+
+(defun projectile-register-project-ext (project-type marker-files &key project-file compilation-dir configure compile install package test run test-suffix test-prefix src-dir test-dir related-files-fn ext))
+
+
+;;
+;; Neotree funcs, probably will moved do /core
+;;
+
+;;;###autoload
+(defun lauremacs/neotree-show-file (&optional buff-name)
+	"Show current file in neotree if it is open and there is a project open."
+	(interactive)
+	(let ((project-dir (projectile-project-root))
+				(file-name (or buff-name (buffer-file-name))))
+		(when (and project-dir (neo-global--window-exists-p))
+			(neotree-dir project-dir)
+			(neotree-find file-name))))
+
+;;;###autoload
+(defun neotree-toggle-project-dir ()
+  "Toggle NeoTree using the project root (if any) and find file."
+  (interactive)
+	(let ((curr-name (buffer-file-name)))
+		(neotree-toggle)
+		(lauremacs/neotree-show-file curr-name)))
+
+
+;;
 ;; Always display candidates at bottom window
 ;;
 
-(defvar spacemacs-helm-display-help-buffer-regexp '("\\*.*Helm.*Help.*\\*"))
-(defvar spacemacs-helm-display-buffer-regexp `("\\*.*helm.*\\*"
-                                               (display-buffer-in-side-window)
-                                               (inhibit-same-window . nil)
-                                               (side . bottom)
-                                               (window-width . 0.6)
-                                               (window-height . 0.4)))
-
-(defun display-helm-at-bottom (buffer &optional _resume)
-  (let ((display-buffer-alist (list spacemacs-helm-display-help-buffer-regexp
-                                    spacemacs-helm-display-buffer-regexp)))
-    (display-buffer buffer)))
-
+(add-to-list 'display-buffer-alist
+                    `(,(rx bos "*helm" (* not-newline) "*" eos)
+                         (display-buffer-in-side-window)
+                         (inhibit-same-window . t)
+                         (window-height . 0.4)))
 
 
 ;;

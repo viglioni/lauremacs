@@ -89,8 +89,13 @@
 	 :map company-search-map
 	 ("s-." . 'company-select-previous)
 	 ("s-," . 'company-select-next))
+	:config
   :init
+	(setq company-dabbrev-downcase nil)
   (global-company-mode 1))
+
+(use-package company
+	:after '(company org))
 
 ;;
 ;; Evil
@@ -207,4 +212,5 @@
 	 "t" '(hs-hide-level :which-key "toggle hide/show")
 	 "S" '(hs-show-all   :which-key "show all")
 	 "H" '(hs-hide-all   :which-key "hide all")))
+
 

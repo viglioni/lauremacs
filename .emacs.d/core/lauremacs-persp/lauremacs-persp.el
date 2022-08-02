@@ -91,7 +91,6 @@
     (defvar helm-mini-tail-sources (cdr helm-mini-default-sources))
     (defvar helm-persp-completing-read-handlers
       '((switch-to-buffer                 . helm-persp-buffer-list-bridge)
-        (kill-buffer                      . helm-persp-buffer-list-bridge)
         (persp-kill-buffer                . helm-persp-buffer-list-bridge)
         (persp-temporarily-display-buffer . helm-persp-buffer-list-bridge)
         (persp-add-buffer                 . helm-persp-buffer-list-bridge)

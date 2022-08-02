@@ -69,18 +69,31 @@ E.g. \"(require-without-throw 'functional)\"."
    Usage example:
    (bind-lazy-function 'spotify-func 'spotify-status 'spotilau)
    (global-set-key (kbd \"M-p M-p\") 'spotify-func)"
-  `(defun ,(eval func-name) ()
-     (interactive)
-     (load-lib ,package-name)
-     (call-interactively ,lib-func-name)))
+	(let ((str-doc (format "Check `%s' docs at `%s'."
+												 (eval lib-func-name)
+												 (eval package-name))))
+		`(defun ,(eval func-name) ()
+			 ,str-doc
+			 (interactive)
+			 (load-lib ,package-name)
+			 (call-interactively ,lib-func-name))))
+
+
+;;;###autoload
+(defun use-dependencies (&rest libs)
+	"Install, if necessary, all libraries and require them.
+Argument &REST libs to be installed and required."
+	(dolist (lib libs)
+		(unless (package-installed-p lib)
+			(package-refresh-contents)
+			(package-install lib))
+		(require lib)))
+
 ;;
 ;; @author Laura Viglioni
 ;; 2020
 ;; GNU Public License 3.0
 ;;
-;;(require 'functional)
-;; (require 'l-string)
-;; (require 'l-general)
 
 ;;
 ;; bash related functions

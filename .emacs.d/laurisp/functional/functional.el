@@ -84,6 +84,7 @@
 (defmacro fp/for-each (list fn &rest fn-args)
 	"Loop throught LIST applying FN with FN-ARGS and then return LIST.
 E.g.: \(fp/for-each '(1 2) `add-to-list' 'mylist)."
+	(declare (indent defun))
 	`(progn (dolist (el ,list)
 						(funcall (fp/curry ,fn ,@fn-args) el))
 					,list))
@@ -147,8 +148,8 @@ e.g.
 (defun fp/any (lst)
   "Return t if at least one element in LST is truthy:
 [a] → Boolean."
-			 (bool (seq-reduce (lambda (acc val) (or acc val))
-												 lst nil)))
+	(bool (seq-reduce (lambda (acc val) (or acc val))
+										lst nil)))
 
 ;;;###autoload
 (defun contains? (list element)
@@ -162,7 +163,7 @@ e.g.
    [a] -> a | nil"
   (car list))
 
-;TODO: implement last, init
+																				;TODO: implement last, init
 
 ;;;###autoload
 (defun not-contains? (list element)
@@ -204,7 +205,7 @@ e.g.
 (defun inc (n)
   "Returns the increment of n
    Number -> Number"
-(+ 1 n))
+	(+ 1 n))
 
 ;;
 ;; Type
@@ -227,7 +228,7 @@ e.g.
 ;;
 ;; alist
 ;;
-;TODO: test it
+																				;TODO: test it
 ;;;###autoload
 (defun fp/alist-sort-by-car (alist)
   (sort alist (lambda (a b) (string< (car a) (car b)))))

@@ -5,8 +5,14 @@
 ;;
 
 
-(require 'request)
+;;; Code:
+
+
+
+(require 'laurisp-core)
 (message "loading ramda-docs...")
+
+(use-dependencies 'request 'helm)
 
 ;;
 ;; ramda-docs related functions

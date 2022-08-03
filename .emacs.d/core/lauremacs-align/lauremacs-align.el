@@ -16,4 +16,4 @@ Should be called when pointer is inside the function."
 	(let ((preffix "\\(\\s-*\\)"))
 		(align-regexp (region-beginning) (region-end) (concat preffix " ") 0  align-default-spacing t)))
 
-(provide lauremacs-align)
+(provide 'lauremacs-align)

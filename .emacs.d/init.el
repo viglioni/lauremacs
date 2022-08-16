@@ -32,12 +32,6 @@
 ;; Packages
 ;;
 
-(dolist (pkg '(bind-key
-							 uuuidgen
-							 helm
-							 spacemacs-theme
-							 window-purpose))
-	(add-to-list 'package-selected-packages pkg))
 
 ;; Initialize package sources
 (require 'package)
@@ -54,8 +48,14 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-(require 'use-package)
 (setq use-package-always-ensure t)
+
+(dolist (pkg '(bind-key
+							 uuuidgen
+							 helm
+							 spacemacs-theme
+							 window-purpose))
+	(add-to-list 'package-selected-packages pkg))
 
 (package-install-selected-packages)
 

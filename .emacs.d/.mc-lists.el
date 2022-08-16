@@ -19,6 +19,8 @@
 				kill-visual-line
 				kmacro-end-macro
 				kmacro-start-macro
+				latex/beginning-of-line
+				lsp-format-buffer
 				lsp-signature-stop
 				ns-copy-including-secondary
 				org-cycle
@@ -31,6 +33,7 @@
 				org-todo
 				org-yank
 				paredit-backslash
+				paredit-backward
 				paredit-doublequote
 				paredit-forward
 				paredit-forward-barf-sexp

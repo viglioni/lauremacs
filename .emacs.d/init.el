@@ -17,6 +17,7 @@
 (defconst lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
 (defconst lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))
 
+
 ;;;###autoload
 (defun lauremacs/reload-init ()
 	"Reload init.el."
@@ -30,6 +31,13 @@
 ;;
 ;; Packages
 ;;
+
+(dolist (pkg '(bind-key
+							 uuuidgen
+							 helm
+							 spacemacs-theme
+							 window-purpose))
+	(add-to-list 'package-selected-packages pkg))
 
 ;; Initialize package sources
 (require 'package)
@@ -48,6 +56,8 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+(package-install-selected-packages)
 
 ;;
 ;; Adds relevant dirs to load path

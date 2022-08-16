@@ -1,10 +1,12 @@
+(require 'laurisp-core)
+
 ;;;###autoload
 (defun lauremacs-align-general-sexp ()
 	"Align binding functions from `general.el'.
 Should be called when pointer is inside the function."
 	(interactive)
 	(let ((preffix "\\(\\s-*\\)"))
-		(mark-paragraph)
+		(unless (region-active-p) (mark-paragraph))
 		(align-regexp (region-beginning) (region-end) (concat preffix "'("))
 		(align-regexp (region-beginning) (region-end) (concat preffix ":which-key"))))
 
@@ -14,6 +16,7 @@ Should be called when pointer is inside the function."
 	(interactive)
 	(throw-unless (region-active-p) "Should be called only when a region is marked!")
 	(let ((preffix "\\(\\s-*\\)"))
-		(align-regexp (region-beginning) (region-end) (concat preffix " ") 0  align-default-spacing t)))
+		(align-regexp (region-beginning) (region-end) (concat preffix " ")
+									0  align-default-spacing t)))
 
 (provide 'lauremacs-align)

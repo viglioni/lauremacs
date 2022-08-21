@@ -43,12 +43,6 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 ;; eshell config
 ;;
 
-(defun eshell-add-aliases ()
-"Alias to eshell."
-(dolist (var '(("npm" "use-nvmrc.sh && npm $*")
-							 ("node" "use-nvmrc.sh && node $*")))
-    (add-to-list 'eshell-command-aliases-list var)))
-
 
 (setq eshell-history-size              10000
       eshell-buffer-maximum-lines      10000
@@ -65,7 +59,6 @@ BUFF-NAME the name of the buffer the where shell will be executed."
     (setq eshell-visual-commands '("htop" "zsh" "vim")))
   (eshell-git-prompt-use-theme 'multiline)
 	:init
-	(add-hook 'eshell-post-command-hook 'eshell-add-aliases)
 	 ;; Save command history when commands are entered
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
 

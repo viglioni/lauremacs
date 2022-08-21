@@ -156,7 +156,7 @@
 		 "*~"
      ))
   (projectile-project-search-path
-   '("~/Loft/" "~/Personal/"))
+   '("~/Company/" "~/Personal/"))
 
   :init
   (projectile-mode 1)

@@ -51,8 +51,11 @@
 (setq use-package-always-ensure t)
 
 (dolist (pkg '(bind-key
-							 uuuidgen
 							 helm
+							 general
+							 which-key
+							 expand-region
+							 ob-typescript
 							 spacemacs-theme
 							 window-purpose))
 	(add-to-list 'package-selected-packages pkg))

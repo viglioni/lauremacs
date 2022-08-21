@@ -8,6 +8,7 @@
 (make-variable-buffer-local 'previous-major-mode)
 (put 'previous-major-mode 'permanent-local t)
 
+;;;###autoload
 (defun lauremacs/ts-load-web-mode ()
 	(interactive)
 	"Load `web-mode' and its definitions."
@@ -112,9 +113,23 @@
 								web-mode-element-beginning
 								web-mode-element-end
 								web-mode-fold-or-unfold))
-					(advice-add fn :around 'lauremacs/tsx-load-web-mode))
+		(advice-add fn :around 'lauremacs/tsx-load-web-mode))
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2))
 
+(use-package nvm
+	:after '(typescript-mode web-mode))
+
+;;;###autoload
+(defun lauremacs/use-project-node-version ()
+	"If .nvmrc is provided inside the project
+uses this version on Emacs."
+	(interactive)
+	(throw-unless (projectile-project-root) "not in a project!")
+	(let* ((nvm-file (join-path (projectile-project-root) ".nvmrc"))
+				 (node-version (when (file-exists-p nvm-file)
+												 (shell-command-to-string (concat "cat" nvm-file)))))
+		(require 'nvm)
+		(when node-version (use-nvm node-version))))

@@ -80,7 +80,12 @@
   :init
 	(helm-mode 1)
 	;; bindings
-  (lauremacs-leader "<f19>" '(helm-M-x :which-key "M-x"))
+  (lauremacs-leader
+		"<f19>" '(helm-M-x							:which-key "M-x")
+		"cc"		'(helm-bookmarks				:which-key "bookmarks")
+		"cr"		'(helm-bookmark-rename	:which-key "bookmark rename")
+		"cd"		'(bookmark-delete				:which-key "bookmark delete")
+		"cD"		'(bookmark-delete-all		:which-key "delete all bookmarks"))
 	(general-define-key
 	 :prefix "C-x"
 	 "C-f" '(helm-find-files :which-key "find files")

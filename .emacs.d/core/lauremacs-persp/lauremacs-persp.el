@@ -209,7 +209,6 @@
         (or
          (helm :sources helm-mini-default-sources
                :ff-transformer-show-only-basename nil
-               :fuzzy-match helm-mode-fuzzy-match
                :buffer "*helm persp mini*"
                :keymap helm-buffer-map
                :truncate-lines helm-buffers-truncate-lines
@@ -227,7 +226,6 @@
       (let ((deflt (or default "")))
         (or
          (helm :sources helm-persp-sources-list
-               :fuzzy-match helm-mode-fuzzy-match
                :prompt prompt
                :buffer buffer
                :input init

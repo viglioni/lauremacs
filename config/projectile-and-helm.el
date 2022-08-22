@@ -200,3 +200,6 @@
   :custom
   (neo-theme (if (display-graphic-p) 'icons 'arrow))
   (neo-show-hidden-files t))
+
+(use-package helm-make
+	:after helm)

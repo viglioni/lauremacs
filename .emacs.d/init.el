@@ -16,7 +16,8 @@
 (defconst lauremacs-buffer-name "*lauremacs*")
 (defconst lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
 (defconst lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))
-
+(defconst lauremacs-private-files-dir "~/private-files/emacs-files")
+(defconst lauremacs-agenda-dir (join-path lauremacs-private-files-dir "org-agenda"))
 
 ;;;###autoload
 (defun lauremacs/reload-init ()
@@ -68,6 +69,7 @@
 
 (dolist (dir (list laurisp-dir
 									 lauremacs-core-dir
+									 lauremacs-private-files-dir
 									 lauremacs-external-libs-dir
 									 lauremacs-internal-libs-dir))
   (let ((default-directory dir))

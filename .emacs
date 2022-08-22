@@ -66,6 +66,9 @@
 ;; Load secret env variables
 (require-without-throw 'env-private)
 
+;; auto revert mode
+(global-auto-revert-mode 1)
+
 ;;
 ;; exec path from shell
 ;;

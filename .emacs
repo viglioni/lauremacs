@@ -1,9 +1,3 @@
-;;
-;; Constants
-;;
-
-(setq private-files-dir "~/private-files/emacs-files")
-(add-to-list 'load-path private-files-dir)
 
 ;;
 ;; Theme

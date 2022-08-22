@@ -93,6 +93,15 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	(lauremacs/org-font-setup)
   (visual-line-mode 1))
 
+(defun lauremacs/add-org-agenda-files ()
+	"Add all org files inside `lauremacs-agenda-dir' to `org-agenda-files'."
+	(interactive)
+	(let ((agenda-files (directory-files lauremacs-agenda-dir t "[a-zA-Z0-9-.]+\\.org$")))
+		(defvar org-agenda-files nil)
+		(print agenda-files)
+		(dolist (file agenda-files)
+			(add-to-list 'org-agenda-files file))))
+
 (bind-lazy-function 'org-insert-src
 										'lauremacs/org-insert-source 
 										'lauremacs-org-extensions)
@@ -105,7 +114,11 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (org-startup-with-latex-preview nil)
 	(haskell-process-type 'stack-ghci)
 	(org-highlight-latex-and-related '(latex script entities))
+	
   :init
+	;; org-agenda
+	(lauremacs/add-org-agenda-files)
+	
 	;; keymaps
   (general-define-key
    :keymaps 'org-mode-map

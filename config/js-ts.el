@@ -119,17 +119,23 @@
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2))
 
-(use-package nvm
-	:after '(typescript-mode web-mode))
+;; (use-package nvm
+;; 	:after '(typescript-mode web-mode))
 
-;;;###autoload
-(defun lauremacs/use-project-node-version ()
-	"If .nvmrc is provided inside the project
-uses this version on Emacs."
-	(interactive)
-	(throw-unless (projectile-project-root) "not in a project!")
-	(let* ((nvm-file (join-path (projectile-project-root) ".nvmrc"))
-				 (node-version (when (file-exists-p nvm-file)
-												 (shell-command-to-string (concat "cat" nvm-file)))))
-		(require 'nvm)
-		(when node-version (use-nvm node-version))))
+;; ;;;###autoload
+;; (defun lauremacs/use-project-node-version ()
+;; 	"If .nvmrc is provided inside the project
+;; uses this version on Emacs."
+;; 	(interactive)
+;; 	(throw-unless (projectile-project-root) "not in a project!")
+;; 	(let* ((nvm-file (join-path (projectile-project-root) ".nvmrc"))
+;; 				 (node-version (when (file-exists-p nvm-file)
+;; 												 (fp/pipe nvm-file
+;; 													 ((concat "cat ")
+;; 														(shell-command-to-string)
+;; 														(replace-regexp-in-string "[^0-9.]" ""))))))
+;; 		(require 'nvm)
+		
+;; 		;; (if node-version (nvm-use node-version)
+;; 		;; 	(error "Incorrect or inexistent .nvmrc file"))
+;; 		(nvm-use node-version)))

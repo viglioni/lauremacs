@@ -61,3 +61,11 @@ Argument &REST libs to be installed and required."
 			(package-install lib))
 		(require lib)))
 
+
+;;;###autoload
+(defun add-multiple-into-list (lst items)
+	"Add each item from ITEM into LST."
+	(throw-unless (symbolp lst) "List should be a symbol.")
+	(dolist (item items)
+		(add-to-list lst item)))
+

@@ -69,14 +69,10 @@ E.g. \"(require-without-throw 'functional)\"."
    Usage example:
    (bind-lazy-function 'spotify-func 'spotify-status 'spotilau)
    (global-set-key (kbd \"M-p M-p\") 'spotify-func)"
-	(let ((str-doc (format "Check `%s' docs at `%s'."
-												 (eval lib-func-name)
-												 (eval package-name))))
-		`(defun ,(eval func-name) ()
-			 ,str-doc
-			 (interactive)
-			 (load-lib ,package-name)
-			 (call-interactively ,lib-func-name))))
+  `(defun ,(eval func-name) ()
+     (interactive)
+     (load-lib ,package-name)
+     (call-interactively ,lib-func-name)))
 
 
 ;;;###autoload
@@ -88,6 +84,14 @@ Argument &REST libs to be installed and required."
 			(package-refresh-contents)
 			(package-install lib))
 		(require lib)))
+
+
+;;;###autoload
+(defun add-multiple-into-list (lst items)
+	"Add each item from ITEM into LST."
+	(throw-unless (symbolp lst) "List should be a symbol.")
+	(dolist (item items)
+		(add-to-list lst item)))
 
 ;;
 ;; @author Laura Viglioni

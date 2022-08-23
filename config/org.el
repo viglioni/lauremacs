@@ -198,3 +198,5 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 (use-package org-fragtog
 	:after org)
 
+(use-package ob-elixir
+	:after org)

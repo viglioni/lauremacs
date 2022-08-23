@@ -83,6 +83,7 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 	"asn" (list (lauremacs-pop-shell-cmd "npx ts-node" "ts-node") :which-key "ts node")
 	"asN" (list (lauremacs-pop-shell-cmd "node" "node") :which-key "node")
 	"asc" (list (lauremacs-pop-shell-cmd "lein repl" "clojure-lein-repl") :which-key "clojure lein repl")
+	"asc" (list (lauremacs-pop-shell-cmd "iex" "elixir-repl") :which-key "elixir repl")
 	;; full buffer shell
 	"asf" '(nil :which-key "full buffer shell")
 	"asfs" 'shell

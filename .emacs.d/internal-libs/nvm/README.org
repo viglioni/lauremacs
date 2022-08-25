@@ -1,3 +1,4 @@
+# -*- olivetti-minimum-body-width: 100; -*-
 #+title: nvm.el
 
 Although there is already a library called =nvm.el= on ELPA, I decided to create this one that integrates with [[https://github.com/emacs-helm/helm][helm]] and [[https://github.com/bbatsov/projectile][projectile]]. Also allows you to download both [[https://github.com/nvm-sh/nvm][nvm]] and node versions.
@@ -8,22 +9,15 @@ If you already have nvm installed and it is not Emacs env =NVM_DIR= or it is not
 ** API
 Check functions' doc.
 
-- *nvm-use-project-version*
+|-------------------------+------------------------------------------------------------------------|
+| *nvm-use-project-version* | Use (install if necessary) nvm set in the current roject's =.nvmrc= file |
+| *nvm-get-current*         | Return the current node version in Emacs path                          |
+| *nvm-install*             | Installs a node version                                                |
+| *nvm-donwload*            | Download =nvm= using =cur= or  =wget=                                        |
+| *nvm-run-command*         | Runs =nvm CMD=                                                           |
+|-------------------------+------------------------------------------------------------------------|
 
-Use (install if necessary) nvm set in the current project's =.nvmrc= file
+** Install
+Download this =nvm.el= and put it on your =load-path=.
 
-- *nvm-get-current*
-
-Return the current node version in Emacs path
-
-- *nvm-install*
-
-Installs a node version
-
-- *nvm-donwload*
-
-Download =nvm= using =cur= or  =wget=
-
-- *nvm-run-command*
-
-Runs =nvm CMD=
+Notice that =nvm.el= uses helm, projectile and two of my own libs: =lauremacs/.emacs.d/laurisp/functional= and =~lauremacs/.emacs.d/laurisp/laurisp-core=.

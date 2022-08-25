@@ -151,11 +151,19 @@ e.g.
 	(bool (seq-reduce (lambda (acc val) (or acc val))
 										lst nil)))
 
+;TODO: REMOVE THIS FUNC
 ;;;###autoload
 (defun contains? (list element)
   "Returns t/nil if element is in list
    ([a] a) -> bool"
   (bool (member element list)))
+
+;;;###autoload
+(defun fp/contains? (list element)
+  "Returns t/nil if element is in list
+   ([a] a) -> bool"
+  (bool (member element list)))
+
 
 ;;;###autoload
 (defun head (list)

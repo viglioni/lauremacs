@@ -20,4 +20,4 @@ Check functions' doc.
 ** Install
 Download this =nvm.el= and put it on your =load-path=.
 
-Notice that =nvm.el= uses helm, projectile and two of my own libs: =lauremacs/.emacs.d/laurisp/functional= and =~lauremacs/.emacs.d/laurisp/laurisp-core=.
+Notice that =nvm.el= uses helm, projectile and two of my own libs: =lauremacs/.emacs.d/laurisp/functional= and =lauremacs/.emacs.d/laurisp/laurisp-core=.

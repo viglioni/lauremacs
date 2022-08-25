@@ -113,9 +113,7 @@ BEGIN {
 
     # timezone offsets
     # TODO: this is stupid
-    tz_offsets["America/Los_Angeles"] = 0
-    tz_offsets["America/Chicago"] = 2
-
+		tz_offsets["Europe/Amsterdam"] = 5
     ### end config section
 
     # use a colon to separate the type of data line from the actual contents

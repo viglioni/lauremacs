@@ -38,6 +38,20 @@
 		"xag" '(lauremacs-align-general-sexp		:which-key "align general.el statements")
 		"xat" '(lauremacs-align-region-as-table :which-key "align region as table")))
 
+;;
+;; NVM
+;;
+
+(require 'nvm)
+(lauremacs-leader
+	"cn"	'(nil											:which-key "nvm")
+	"cnp" '(nvm-use-project-version :which-key "use .nvmrc")
+	"cnn" '(nvm-use									:which-key "nvm use")
+	"cni" '(nvm-install							:which-key "nvm install")
+	"cnr" '(nvm-run-command					:which-key "nvm run command")
+	"cnd" '(nvm-download						:which-key "download nvm")
+	"cnc" '(nvm-get-current					:which-key "show current nvm"))
+
 
 (use-package expand-region
   :init
@@ -59,6 +73,9 @@
 
 ;; Load secret env variables
 (require-without-throw 'env-private)
+
+;; Require company related functions
+(require-without-throw 'fh.el)
 
 ;; auto revert mode
 (global-auto-revert-mode 1)

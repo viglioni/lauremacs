@@ -7,6 +7,7 @@
 				company-complete
 				cycle-spacing
 				delete-horizontal-space
+				end-of-buffer
 				end-of-visual-line
 				forward-sexp
 				haskell-indentation-common-electric-command
@@ -24,10 +25,12 @@
 				lsp-format-buffer
 				lsp-signature-stop
 				ns-copy-including-secondary
+				org-beginning-of-line
 				org-cycle
 				org-delete-char
 				org-end-of-line
 				org-force-self-insert
+				org-kill-line
 				org-meta-return
 				org-return
 				org-self-insert-command
@@ -35,6 +38,7 @@
 				org-yank
 				paredit-backslash
 				paredit-backward
+				paredit-close-round
 				paredit-doublequote
 				paredit-forward
 				paredit-forward-barf-sexp
@@ -64,7 +68,5 @@
 				lsp-ui-doc--handle-mouse-movement
 				mc/mark-all-in-region
 				mouse-set-region
-				org-ctrl-c-ctrl-c
 				set-rectangular-region-anchor
-				yas-expand
 				))

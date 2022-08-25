@@ -15,6 +15,7 @@
 (require 'eval-sexp-fu)
 (add-hook 'emacs-lisp-mode-hook 'eval-sexp-fu-flash-mode)
 (require 'laurisp-core)
+(require 'header2)
 
 
 ;;;###autoload
@@ -28,8 +29,15 @@
 	"="		'(nil														:which-key "format")
 	"=="	'(lauremacs/buffer-indent				:which-key "indent buffer")
 	"=r"	'(indent-region									:which-key "indent region")
-	"=g"	'(lauremacs-align-general-sexp :which-key "format codeblocks of general.el functions")
-	"=d"	'(checkdoc											:which-key "checkdoc"))
+	"=g"	'(lauremacs-align-general-sexp	:which-key "format codeblocks of general.el functions")
+	"=d"	'(checkdoc											:which-key "checkdoc")
+	"d"		'(nil														:which-key "documentation")
+	"dh"	'(make-header										:which-key "make lib header")
+	"du"	'(update-file-header						:which-key "update lib header")
+	"dr"	'(make-revision									:which-key "make revision")
+	"dd"	'(make-divider									:which-key "make divider")
+	"dc"	'(make-box-comment							:which-key "make box comment")
+	"dC"	'(make-box-comment-region				:which-key "make box comment region"))
 
 
 ;;

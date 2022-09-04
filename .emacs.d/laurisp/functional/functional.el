@@ -3,7 +3,7 @@
 ;; Author: Laura Viglioni <viglionilaura@gmail.com>
 ;; URL: https://github.com/Viglioni/laurisp
 ;; Keywords: functional programming
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Package-Requires: ((emacs "25.1") (seq "2.21"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -33,9 +33,40 @@
 (require 'seq)
 (require 'cl)
 
+
+
+
 ;;
-;; Function
+;; V2 (wip and not tested yet)
 ;;
+
+(defun fp/id (arg)
+	"Identity function.  Return ARG."
+	arg)
+
+(defun fp/partial (fn &rest init-args)
+	"Return lambda with FN applied with INIT-ARGS."
+	(lambda (&rest args)
+		(apply fn (append init-args args))))
+
+(defun fp/upipe (arg &rest fn-list)
+  "Pipe ARG into uncurried functions (as FN-LIST)."
+  (declare (indent defun))
+	(seq-reduce (lambda (args fn) (apply fn (list args)))
+							fn-list
+							arg))
+
+(defun fp/compose (&rest fs)
+	"Compose a list of functions FS from right to left."
+	(seq-reduce (lambda (f g) (lambda (&rest args)
+												 (funcall f (apply g args))))
+							fs
+							(fp/partial 'fp/id)))
+
+;;
+;; V1
+;;
+
 
 (defmacro fp/curry-expr (expr)
   "Curry an expression:
@@ -43,7 +74,9 @@
   `(eval (seq-concatenate 'list '(fp/curry) ,expr)))
 
 (defmacro compose (&rest fn-list)
-  "Compose functions (and curries them) from right to left.
+  "DEPRECATED. See `fp/compose'.
+
+Compose functions (and curries them) from right to left.
    ((y -> z) ... (m -> o) ((a ... n) -> m) ) -> ((a ... n)->z)
    e.g.:
    (compose (+ 1) (* 2)) -> (lambda (arg1 ... argN) (+ 1 (* 2 arg1 ... argN)))"
@@ -65,7 +98,8 @@
 
 ;;;###autoload
 (defmacro fp/curry (fn &rest initial-args)
-  "Return the curried function:
+  "DEPRECATED. See `fp/partial'.
+Return the curried function:
 (fp/curry '+ 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))"
   `(lambda (&rest args)
      (apply (fp/convert-to-symbol ,fn)
@@ -73,7 +107,9 @@
 
 ;;;###autoload
 (defmacro fp/pipe (arg fn-list)
-  "Pipe an argument into composed functions from left to right.
+  "DEPRECATED. See `fp/upipe'.
+
+Pipe an argument into composed functions from left to right.
    a -> ((a -> b) (b -> c) ... (n -> m)) -> m
    e.g.:
    (fp/pipe  5 ((+ 1) (* 2))) -> 12"
@@ -106,10 +142,11 @@ e.g.
   `(funcall (compose ,@fn-list) ,@args))
 
 (defun identity (arg)
-  "Identity function.
+  "DEPRECATED. See `fp/id'.
+Identity function.
    a -> a"
   arg)
-
+ (lambda (args) )
 ;;
 ;; Logic 
 ;;

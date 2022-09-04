@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+				LaTeX-insert-left-brace
 				beginning-of-visual-line
 				company-complete
 				cycle-spacing
@@ -47,6 +48,7 @@
 				paredit-forward-slurp-sexp
 				paredit-kill
 				paredit-open-round
+				paredit-semicolon
 				restclient-toggle-body-visibility-or-indent
 				sp-backward-sexp
 				sp-forward-barf-sexp
@@ -55,6 +57,7 @@
 				sp-remove-active-pair-overlay
 				yaml-electric-backspace
 				yaml-electric-dash-and-dot
+				yas-expand
 				))
 
 (setq mc/cmds-to-run-once
@@ -68,5 +71,6 @@
 				lsp-ui-doc--handle-mouse-movement
 				mc/mark-all-in-region
 				mouse-set-region
+				org-ctrl-c-ctrl-c
 				set-rectangular-region-anchor
 				))

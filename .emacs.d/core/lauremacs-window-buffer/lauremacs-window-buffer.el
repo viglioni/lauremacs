@@ -124,6 +124,14 @@ TODO: add throwif"
 	(indent-region (point-min) (point-max))
 	(align-entire))
 
+(defun lauremacs/new-frame-projectile ()
+	(interactive)
+	(make-frame-command)
+	(switch-to-buffer lauremacs-buffer-name)
+	(lauremacs/window-split-single-column)
+	(helm-projectile-switch-project))
+
+
 (provide 'lauremacs-window-buffer)
 
 ;;; lauremacs-window-buffer.el ends here

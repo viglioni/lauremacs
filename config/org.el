@@ -114,7 +114,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (org-startup-with-latex-preview nil)
 	(haskell-process-type 'stack-ghci)
 	(org-highlight-latex-and-related '(latex script entities))
-	
+	(org-image-actual-width nil)
   :init
 	;; org-agenda
 	(lauremacs/add-org-agenda-files)
@@ -160,16 +160,17 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	
 	(org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell				. t)
-     (clojure				. t)
-     (emacs-lisp		. t)
-		 (typescript		. t)
-     (python				. t)
-     (js						. t)
-     (C							. t)
-     (latex					. t)
-     (shell					. t)
-     (sql						. t)))
+   '((elixir			. t)
+		 (haskell			. t)
+     (clojure			. t)
+     (emacs-lisp	. t)
+		 (typescript	. t)
+     (python			. t)
+     (js					. t)
+     (C						. t)
+     (latex				. t)
+     (shell				. t)
+     (sql					. t)))
 
 	(setq-local company-backends
               (append '((company-math-symbols-latex company-latex-commands))

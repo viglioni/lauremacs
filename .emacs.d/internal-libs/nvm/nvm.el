@@ -184,7 +184,7 @@ E.g.:
 		(let ((version (fp/pipe nvmrc
 										 ((concat "cat ")
 											(shell-command-to-string)
-											(regex-matches "v[0-9.]+")
+											(regex-matches "^v?[0-9.]+$")
 											(car)))))
 			(throw-unless version "invalid version")
 			(nvm--use-version version))))

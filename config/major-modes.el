@@ -15,7 +15,13 @@
 (require 'eval-sexp-fu)
 (add-hook 'emacs-lisp-mode-hook 'eval-sexp-fu-flash-mode)
 (require 'laurisp-core)
-(require 'header2)
+
+
+(add-hook 'emacs-lisp-mode-hook
+					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
+																				 '(("fp/upipe"		. "▷")
+																					 ("fp/partial"	. "∂")
+																					 ("fp/compose"	. "○")))))
 
 
 ;;;###autoload

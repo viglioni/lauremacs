@@ -37,6 +37,7 @@
 	:init
 	(require 'web-mode)
 	(require 'web-minor-mode)
+	(require 'nvm)
 	(define-derived-mode tsx-mode typescript-mode "tsx")
 	(add-hook 'tsx-mode #'subword-mode)
 	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode)))
@@ -72,12 +73,12 @@
 
 (lauremacs-major-mode-leader
 	:keymaps '(typescript-mode-map web-mode-map)
-	"rf" '(lsp-rename-ts-file     :which-key "rename file")
+	"rf" '(lsp-rename-ts-file :which-key "rename file")
 	"s"  '(nil :which-key "ts-repl")
-	"sb" '(send-buffer-to-repl    :which-key "send buffer to repl")
+	"sb" '(send-buffer-to-repl :which-key "send buffer to repl")
 	"se" '(send-last-sexp-to-repl :which-key "send last sexp to repl")
 	"d"  '(nil :which-key "docs")
-	"dr" '(open-ramda-docs        :which-key "open ramda docs"))
+	"dr" '(open-ramda-docs :which-key "open ramda docs"))
 
 (use-package prettier-js
   :after (typescript-mode))
@@ -119,23 +120,3 @@
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2))
 
-;; (use-package nvm
-;; 	:after '(typescript-mode web-mode))
-
-;; ;;;###autoload
-;; (defun lauremacs/use-project-node-version ()
-;; 	"If .nvmrc is provided inside the project
-;; uses this version on Emacs."
-;; 	(interactive)
-;; 	(throw-unless (projectile-project-root) "not in a project!")
-;; 	(let* ((nvm-file (join-path (projectile-project-root) ".nvmrc"))
-;; 				 (node-version (when (file-exists-p nvm-file)
-;; 												 (fp/pipe nvm-file
-;; 													 ((concat "cat ")
-;; 														(shell-command-to-string)
-;; 														(replace-regexp-in-string "[^0-9.]" ""))))))
-;; 		(require 'nvm)
-		
-;; 		;; (if node-version (nvm-use node-version)
-;; 		;; 	(error "Incorrect or inexistent .nvmrc file"))
-;; 		(nvm-use node-version)))

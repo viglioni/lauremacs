@@ -9,11 +9,11 @@
 ;;
 
 (lauremacs-leader
-	"i"   '(nil :which-key "insert")
-	"iu"  '(nil :which-key "uuid")
-	"iuu" '(lauremacs/insert-uuid              :which-key "insert uuid")
-	"iuc" '(lauremacs/insert-uuid-to-clipboard :which-key "copy uuid")
-	"ii"  '(all-the-icons-insert               :which-key "insert icon"))
+	"i"   '(nil																	:which-key "insert")
+	"iu"  '(nil																	:which-key "uuid")
+	"iuu" '(lauremacs/insert-uuid								:which-key "insert uuid")
+	"iuc" '(lauremacs/insert-uuid-to-clipboard	:which-key "copy uuid")
+	"ii"  '(all-the-icons-insert								:which-key "insert icon"))
 
 ;;
 ;; Lang scripts
@@ -54,25 +54,25 @@
 
 (general-define-key
  :prefix "<f17> <f17> <f17>"
- ""  '(nil :which-key "common commands")
- "h" '(hide-script-buffer  :which-key "hide script buffer")
- "o" '(open-script-buffer  :which-key "open script buffer")
- "g" '(go-to-script-buffer :which-key "go to script buffer"))
+ ""		'(nil									:which-key "common commands")
+ "h"	'(hide-script-buffer	:which-key "hide script buffer")
+ "o"	'(open-script-buffer	:which-key "open script buffer")
+ "g"	'(go-to-script-buffer :which-key "go to script buffer"))
 
 (general-define-key
  :prefix "<f17> <f17> n"
- ""   '(nil :which-key "npm scripts")
- "r"  '(npm-choose-and-run  :which-key "run package.json script")
- "l"  '(import-default-lib  :which-key "import default lib")
- "i"  '(npm-install-lib     :which-key "install lib")
+ ""   '(nil									:which-key "npm scripts")
+ "r"  '(npm-choose-and-run	:which-key "run package.json script")
+ "l"  '(import-default-lib	:which-key "import default lib")
+ "i"  '(npm-install-lib			:which-key "install lib")
  "d"  '(npm-install-dev-lib :which-key "install dev lib")
- "o"  '(nil :which-key "open file")
- "op" '(open-package-json   :which-key "package.json"))
+ "o"  '(nil									:which-key "open file")
+ "op" '(open-package-json		:which-key "package.json"))
 
 (general-define-key
  :prefix "<f17> <f17> m"
- ""  '(nil :which-key "makefile scripts")
- "r" '(run-make-cmd :which-key "run make command"))
+ ""		'(nil						:which-key "makefile scripts")
+ "r"	'(run-make-cmd	:which-key "run make command"))
 
 ;;
 ;; Toggle
@@ -80,7 +80,8 @@
 
 
 (lauremacs-leader
-	"T"  '(nil :which-key "toggle/choose")
-	"Tp" '(lauremacs/toggle-pair-programming :which-key "pair programming mode")
-	"TT" '(lauremacs/choose-theme            :which-key "choose theme")
-	"Tt" '(lauremacs/toggle-transparency     :which-key "transparency"))
+	"T"		'(nil																:which-key "toggle/choose")
+	"Tp"	'(lauremacs/toggle-pair-programming :which-key "pair programming mode")
+	"TT"	'(lauremacs/choose-theme						:which-key "choose theme")
+	"Tt"	'(lauremacs/toggle-transparency			:which-key "transparency")
+	"Tl"	'(linum-mode												:which-key "linum mode"))

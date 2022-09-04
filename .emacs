@@ -10,6 +10,8 @@
 ;; Loading another packages
 ;;
 
+;(require 'asoc)
+
 (use-package which-key
   :init (which-key-mode)
   :config
@@ -32,11 +34,7 @@
 		"swg" '(web-search-google								:which-key "google search")
 		"swd" '(web-search-duckduckgo						:which-key "duckduckgo search")
 		"swb" '(web-search-brave								:which-key "brave search")
-		"swy" '(web-search-youtube							:which-key "youtube search")
-		"x"		'(nil															:which-key "words")
-		"xa"	'(nil															:which-key "align")
-		"xag" '(lauremacs-align-general-sexp		:which-key "align general.el statements")
-		"xat" '(lauremacs-align-region-as-table :which-key "align region as table")))
+		"swy" '(web-search-youtube							:which-key "youtube search")))
 
 ;;
 ;; NVM

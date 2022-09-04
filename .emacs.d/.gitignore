@@ -10,3 +10,5 @@ transient/*
 persp-confs/*
 request/*
 url/*
+diary/*
+backups/*

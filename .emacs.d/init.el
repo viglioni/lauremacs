@@ -19,6 +19,9 @@
 (defconst lauremacs-private-files-dir "~/private-files/emacs-files")
 (defconst lauremacs-agenda-dir (join-path lauremacs-private-files-dir "org-agenda"))
 
+(setq backup-directory-alist
+          `(("." . ,(concat user-emacs-directory "backups"))))
+
 ;;;###autoload
 (defun lauremacs/reload-init ()
 	"Reload init.el."

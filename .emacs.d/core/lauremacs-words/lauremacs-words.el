@@ -65,3 +65,5 @@ Should be called when pointer is inside the function."
 		"xtt" '(lauremacs-translate/en->pt			:which-key "translate en -> pt")
 		"xte" '(lauremacs-translate/pt->en			:which-key "translate pt -> en")
 		"xc"	'(count-words											:which-key "count words")))
+
+(provide 'lauremacs-words)

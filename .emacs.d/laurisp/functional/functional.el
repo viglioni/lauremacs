@@ -40,6 +40,21 @@
 ;; V2 (wip and not tested yet)
 ;;
 
+;;;###autoload
+(defun fp/any (lst)
+  "Return t if at least one element in LST is truthy:
+[a] → Boolean."
+	(bool (seq-reduce (lambda (acc val) (or acc val))
+										lst nil)))
+
+(defun fp/odd? (n)
+	"Return if N is odd"
+	(= (% n 2) 1))
+
+(defun fp/even? (n)
+	"Return if N is even."
+	(= (% n 2) 0))
+
 (defun fp/id (arg)
 	"Identity function.  Return ARG."
 	arg)
@@ -62,6 +77,28 @@
 												 (funcall f (apply g args))))
 							fs
 							(fp/partial 'fp/id)))
+
+(defun fp/map (fn &rest args)
+	"Return a lambda with map applied to FN and ARGS.
+E.g.:
+\(funcall \(fp/map '1+) '\(1 2 3)) ;; '\(2 3 4)
+\(funcall \(fp/map '* 2) '\(1 2 3)) ;; '\(2 4 6)
+\(fp/upipe '\(\"string\" \"asd\")
+  \(fp/map 'replace-regexp-in-string \"s\" \"S\")) ;; '\(\"String\" \"aSd\")"
+	(fp/partial 'seq-map (apply 'fp/partial (cons fn args))))
+
+(defun fp/filter (fn &rest args)
+	"Return a lambda with filter applied to FN and ARGS.
+E.g.:
+\(funcall \(fp/filter 'fp/odd?) '\(1 2 3)) ;; '\(2 3 4)
+\(fp/upipe '\(\"string\" \"asd\")
+  \(fp/filter 'string-match-p \"g\")) ;; '\(\"string\")"
+	(fp/partial 'seq-filter (apply 'fp/partial (cons fn args))))
+
+(defun fp/reduce (initial-val fn)
+	"Return a lambda with reduce applied with FN and INITIAL-VAL."
+	(lambda (lst)
+		(seq-reduce fn lst initial-val)))
 
 ;;
 ;; V1
@@ -117,13 +154,13 @@ Pipe an argument into composed functions from left to right.
   `(funcall (compose ,@(reverse  fn-list)) ,arg))
 
 ;;;###autoload
-(defmacro fp/for-each (list fn &rest fn-args)
-	"Loop throught LIST applying FN with FN-ARGS and then return LIST.
-E.g.: \(fp/for-each '(1 2) `add-to-list' 'mylist)."
-	(declare (indent defun))
-	`(progn (dolist (el ,list)
-						(funcall (fp/curry ,fn ,@fn-args) el))
-					,list))
+;; (defmacro fp/for-each (list fn &rest fn-args)
+;; 	"Loop throught LIST applying FN with FN-ARGS and then return LIST.
+;; E.g.: \(fp/for-each '(1 2) `add-to-list' 'mylist)."
+;; 	(declare (indent defun))
+;; 	`(progn (dolist (el ,list)
+;; 						(funcall (fp/curry ,fn ,@fn-args) el))
+;; 					,list))
 
 ;;;###autoload
 (defmacro fp/const-fn-interactive (fn &rest args)
@@ -181,12 +218,6 @@ Identity function.
          (lambda (acc val) (and acc val))
          lst t)))
 
-;;;###autoload
-(defun fp/any (lst)
-  "Return t if at least one element in LST is truthy:
-[a] → Boolean."
-	(bool (seq-reduce (lambda (acc val) (or acc val))
-										lst nil)))
 
 ;TODO: REMOVE THIS FUNC
 ;;;###autoload

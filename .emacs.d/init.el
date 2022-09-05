@@ -66,6 +66,19 @@
 
 (package-install-selected-packages)
 
+(use-package which-key
+  :init (which-key-mode)
+  :config
+  (setq which-key-idle-delay 0.3))
+
+(use-package general
+  :init
+  (general-create-definer lauremacs-major-mode-leader
+    :prefix "<f17>")
+  (general-create-definer lauremacs-leader
+    :prefix "<f19>"))
+
+
 ;;
 ;; Adds relevant dirs to load path
 ;;

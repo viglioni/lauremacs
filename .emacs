@@ -10,32 +10,20 @@
 ;; Loading another packages
 ;;
 
-;(require 'asoc)
+																				;(require 'asoc)
 
-(use-package which-key
-  :init (which-key-mode)
-  :config
-  (setq which-key-idle-delay 0.3))
-
-(use-package general
-  :init
-  (general-create-definer lauremacs-major-mode-leader
-    :prefix "<f17>")
-  (general-create-definer lauremacs-leader
-    :prefix "<f19>")
-	(require 'web-search)
-  (lauremacs-leader
-    "g"   '(nil															:which-key "git")
-    "a"   '(nil															:which-key "applications")
-		"c"   '(nil															:which-key "coding")
-		"s"   '(nil															:which-key "search")
-		"sw"  '(nil															:which-key "web search")
-		"sww" '(web-search											:which-key "web-search")
-		"swg" '(web-search-google								:which-key "google search")
-		"swd" '(web-search-duckduckgo						:which-key "duckduckgo search")
-		"swb" '(web-search-brave								:which-key "brave search")
-		"swy" '(web-search-youtube							:which-key "youtube search")))
-
+(require 'web-search)
+(lauremacs-leader
+  "g"   '(nil															:which-key "git")
+  "a"   '(nil															:which-key "applications")
+	"c"   '(nil															:which-key "coding")
+	"s"   '(nil															:which-key "search")
+	"sw"  '(nil															:which-key "web search")
+	"sww" '(web-search											:which-key "web-search")
+	"swg" '(web-search-google								:which-key "google search")
+	"swd" '(web-search-duckduckgo						:which-key "duckduckgo search")
+	"swb" '(web-search-brave								:which-key "brave search")
+	"swy" '(web-search-youtube							:which-key "youtube search"))
 ;;
 ;; NVM
 ;;

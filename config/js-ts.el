@@ -4,6 +4,8 @@
 ;; GNU Public License 3.0
 ;;
 
+(require 'projectile)
+
 (defvar previous-major-mode nil)
 (make-variable-buffer-local 'previous-major-mode)
 (put 'previous-major-mode 'permanent-local t)
@@ -24,6 +26,17 @@
 		(web-mode)
 		(apply fn args)
 		(tsx-mode)))
+
+(defun lauremacs/jest-test-this-file ()
+  (interactive)
+	(let ((compilation-read-command nil))
+		(projectile--run-project-cmd
+		 (concat "npm test -- " (buffer-file-name))
+		 projectile-test-cmd-map
+		 :show-prompt nil
+		 :prompt-prefix "Test command: "
+		 :save-buffers t
+		 :use-comint-mode projectile-test-use-comint-mode)))
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -71,18 +84,26 @@
 										'ramda-docs-open
 										'ramda-docs)
 
+(bind-lazy-function 'open-ramda-docs-eww
+										'ramda-docs-open-eww
+										'ramda-docs)
+
+
 (lauremacs-major-mode-leader
 	:keymaps '(typescript-mode-map web-mode-map)
-	"rf" '(lsp-rename-ts-file :which-key "rename file")
-	"s"  '(nil :which-key "ts-repl")
-	"sb" '(send-buffer-to-repl :which-key "send buffer to repl")
-	"se" '(send-last-sexp-to-repl :which-key "send last sexp to repl")
-	"d"  '(nil :which-key "docs")
-	"dr" '(open-ramda-docs :which-key "open ramda docs"))
+  "rf"     '(lauremacs-ide-lsp-ts-rename-file :which-key "rename file")
+	"s"      '(nil                              :which-key "ts-repl")
+	"sb"     '(send-buffer-to-repl              :which-key "send buffer to repl")
+	"se"     '(send-last-sexp-to-repl           :which-key "send last sexp to repl")
+  "t"      '(nil                              :which-key "test")
+  "tj"     '(lauremacs/jest-test-this-file    :which-key "test this file (jest)")
+	"d"      '(nil                              :which-key "docs")
+	"dr"     '(nil                              :which-key "ramda")
+	"drr"    '(open-ramda-docs-eww              :which-key "open ramda docs inside emacs")
+	"drw"    '(open-ramda-docs                  :which-key "open ramda docs"))
 
 (use-package prettier-js
   :after (typescript-mode))
-
 
 (use-package web-mode
 	:mode "\\.html\\'"

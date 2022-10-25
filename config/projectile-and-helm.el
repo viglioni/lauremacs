@@ -10,33 +10,6 @@
 
 
 
-
-(defun find-project-type (project-type) 
-	(seq-find
-	 (lambda (proj) (equal (car proj) project-type))
-	 projectile-project-types))
-
-
-(defun get-project-type-plist (project-type)
-	(let* ((lst (cdr (find-project-type project-type))))
-		(list
-		 :project-file     (plist-get lst (intern "project-file"))
-		 :compilation-dir  (plist-get lst (intern "compilation-dir"))
-		 :compile          (plist-get lst (intern "compile"))
-		 :configure        (plist-get lst (intern "configure"))
-		 :install          (plist-get lst (intern "install"))
-		 :package          (plist-get lst (intern "package"))
-		 :run              (plist-get lst (intern "run"))
-		 :src-dir          (plist-get lst (intern "src-dir"))
-		 :test             (plist-get lst (intern "test"))
-		 :test-dir         (plist-get lst (intern "test-dir"))
-		 :test-prefix      (plist-get lst (intern "test-prefix"))
-		 :test-suffix      (plist-get lst (intern "test-suffix"))
-		 :related-files-fn (plist-get lst (intern "related-files-fn")))))
-
-(defun projectile-register-project-ext (project-type marker-files &key project-file compilation-dir configure compile install package test run test-suffix test-prefix src-dir test-dir related-files-fn ext))
-
-
 ;;
 ;; Neotree funcs, probably will moved do /core
 ;;
@@ -65,10 +38,10 @@
 ;;
 
 (add-to-list 'display-buffer-alist
-                    `(,(rx bos "*helm" (* not-newline) "*" eos)
-                         (display-buffer-in-side-window)
-                         (inhibit-same-window . t)
-                         (window-height . 0.4)))
+             `(,(rx bos "*helm" (* not-newline) "*" eos)
+               (display-buffer-in-side-window)
+               (inhibit-same-window . t)
+               (window-height . 0.4)))
 
 
 ;;
@@ -82,10 +55,11 @@
 	;; bindings
   (lauremacs-leader
 		"<f19>" '(helm-M-x							:which-key "M-x")
-		"cc"		'(helm-bookmarks				:which-key "bookmarks")
-		"cr"		'(helm-bookmark-rename	:which-key "bookmark rename")
-		"cd"		'(bookmark-delete				:which-key "bookmark delete")
-		"cD"		'(bookmark-delete-all		:which-key "delete all bookmarks"))
+		"cb"		'(nil										:which-key "bookmarks")
+		"cbc"		'(helm-bookmarks				:which-key "bookmarks")
+		"cbr"		'(helm-bookmark-rename	:which-key "bookmark rename")
+		"cbd"		'(bookmark-delete				:which-key "bookmark delete")
+		"cbD"		'(bookmark-delete-all		:which-key "delete all bookmarks"))
 	(general-define-key
 	 :prefix "C-x"
 	 "C-f" '(helm-find-files :which-key "find files")
@@ -113,7 +87,7 @@
   (projectile-indexing-method 'native)
   (projectile-globally-ignored-directories
    '(
-		 ".cache"
+		 "^.cache"
 		 ".cask"
      ".eldev"
      ".git"
@@ -125,10 +99,10 @@
      ".svn"
      ".vscode"
      "android"
-     "bundle*"
+     "bundle.*"
      "coverage"
      "dist"
-     "dist-*"
+     "dist-.*"
      "ios"
      "node_modules"
      "out"
@@ -136,8 +110,7 @@
      "rush"
      "target"
      "temp"
-     "venv"
-     "webnext/common"))
+     "venv"))
   (projectile-globally-ignored-files
    '(
      "*-lock.json"
@@ -162,30 +135,16 @@
   (projectile-mode 1)
 	
   (lauremacs-leader
-    "p" '(:keymap projectile-command-map
-		  :package projectile
-		  :which-key "projectile"))
-	
-	(projectile-register-project-type
-	 'typescript '("tsconfig.json")
-	 :project-file "package.json"
-	 :src-dir "src"
-	 :test-dir "test"
-	 :test-suffix ".spec")
-	
-	(projectile-register-project-type
-	 'typescript-react '("tsconfig.json" "__tests__")
-	 :project-file "package.json"
-	 :src-dir "src"
-	 :test-dir "__tests__"
-	 :test-suffix ".spec"))
+    "p" '( :keymap projectile-command-map
+		       :package projectile
+		       :which-key "projectile")))
 
 (use-package helm-projectile
   :after (projectile helm)
   :init
   (lauremacs-leader
     "pp" '(helm-projectile-switch-project :which-key "switch project")
-    "pf" '(helm-projectile-find-file :which-key "find file")))
+    "pf" '(helm-projectile-find-file      :which-key "find file")))
 
 (use-package helm-ag
   :after (helm-projectile)

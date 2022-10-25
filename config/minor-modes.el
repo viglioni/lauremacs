@@ -39,12 +39,20 @@
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1)
+  :init
+  (doom-modeline-mode 1)
+
+  (doom-modeline-def-modeline 'lauremacs-modeline
+  '(bar window-number buffer-info matches selection-info media-info)
+  '(checker lsp word-count pdf-pages major-mode workspace-name vcs hud buffer-position))
+
+  (doom-modeline-set-modeline 'lauremacs-modeline 'default)
+  
 	:custom
 	(doom-modeline-buffer-file-name-style 'file-name)
 	(doom-modeline-enable-word-count t)
-	(doom-modeline-display-default-persp-name t)
-	(doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode)))
+  (doom-modeline-buffer-encoding nil)
+	(doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode emacs-lisp-mode)))
 
 
 ;;
@@ -86,9 +94,9 @@
 
 (use-package company
   :bind (("C-/" . 'company-complete)
-	 :map company-search-map
-	 ("s-." . 'company-select-previous)
-	 ("s-," . 'company-select-next))
+	       :map company-search-map
+	       ("s-." . 'company-select-previous)
+	       ("s-," . 'company-select-next))
 	:config
   :init
 	(setq company-dabbrev-downcase nil)
@@ -103,10 +111,10 @@
 
 (use-package evil
 	:commands (evil-mode
-							evil-window-down
-							evil-window-left
-							evil-window-up
-							evil-window-right))
+						 evil-window-down
+						 evil-window-left
+						 evil-window-up
+						 evil-window-right))
 
 ;;
 ;; Prettify symbols
@@ -127,7 +135,7 @@
 					(text-mode         . emojify-mode))
 	:init
 	(lauremacs-leader
-	 "ie" '(emojify-insert-emoji :which-key "insert emoji")))
+	  "ie" '(emojify-insert-emoji :which-key "insert emoji")))
 
 ;;
 ;; Yasnippet
@@ -149,16 +157,7 @@
 
 (use-package iedit
 	:commands iedit-mode
-	:bind (:map iedit-mode-keymap
-							("M-f" . iedit-restrict-function)
-							("M-l" . iedit-restrict-current-line)
-							("C-g" . iedit--quit)
-							("M-," . iedit-expand-down-a-line)
-							("M-." . iedit-expand-up-a-line)
-							("TAB" . iedit-toggle-selection)
-							("C-n" . iedit-next-occurrence)
-							("C-p" . iedit-prev-occurence)
-							("M-c" . iedit-toggle-case-sensitive))
+	:bind (:map iedit-mode-keymap)
 	:init
 	(lauremacs-leader
 		"se" '(iedit-mode :which-key "iedit mode")))
@@ -175,8 +174,8 @@
   :init
 	(global-flycheck-mode)
 	(lauremacs-leader		
-		"e" '(:keymap flycheck-command-map :package flycheck :which-key "errors")
-		"ee" '(explain-error-at-point :which-key "explain error at point"))
+		"e"		'(:keymap flycheck-command-map :package flycheck	:which-key "errors")
+		"ee"	'(explain-error-at-point													:which-key "explain error at point"))
 	(set-face-attribute 'flycheck-fringe-info nil
 											:background "#3a81c3"
 											:foreground "white")
@@ -195,22 +194,39 @@
 (use-package hideshow
 	:hook (prog-mode . hs-minor-mode)
 	:init
-	(lauremacs-leader
-		"cb"  '(nil :which-key "hide/show code blocks")
-		"cbs" '(hs-show-block :which-key "show")
-		"cbh" '(hs-hide-block :which-key "hide")
-		"cbl" '(hs-hide-level :which-key "hide level")
-		"cbt" '(hs-hide-level :which-key "toggle hide/show")
-		"cbS" '(hs-show-all   :which-key "show all")
-		"cbH" '(hs-hide-all   :which-key "hide all"))
 	(general-define-key
 	 :prefix "C-c b"
-	 ""  '(nil :which-key "hide/show code blocks")
-	 "s" '(hs-show-block :which-key "show")
-	 "h" '(hs-hide-block :which-key "hide")
-	 "l" '(hs-hide-level :which-key "hide level")
-	 "t" '(hs-hide-level :which-key "toggle hide/show")
-	 "S" '(hs-show-all   :which-key "show all")
-	 "H" '(hs-hide-all   :which-key "hide all")))
+	 ""		'(nil						:which-key "hide/show code blocks")
+	 "s"	'(hs-show-block :which-key "show")
+	 "h"	'(hs-hide-block :which-key "hide")
+	 "l"	'(hs-hide-level :which-key "hide level")
+	 "t"	'(hs-hide-level :which-key "toggle hide/show")
+	 "S"	'(hs-show-all   :which-key "show all")
+	 "H"	'(hs-hide-all   :which-key "hide all")))
+
+
+;;
+;; Better jumper
+;;
+
+(use-package better-jumper
+	:hook (prog-mode . better-jumper-mode)
+	:init
+	(lauremacs-leader
+		"cj"	'(nil													:which-key "jumper")
+		"cjj" '(better-jumper-set-jump			:which-key "set jump")
+		"cjb" '(better-jumper-jump-backward :which-key "jump backward")
+		"cjf" '(better-jumper-jump-forward	:which-key "jump forward")))
+
+
+;;
+;; smerge
+;;
+
+(with-eval-after-load smerge-mode
+  (lauremacs-leader
+    "gd" '( :keymap smerge-basic-map
+            :package smerge-mode
+            :which-key "git diff - smerge")))
 
 

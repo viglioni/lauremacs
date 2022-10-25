@@ -170,6 +170,27 @@ e.g.
   `(lambda () (interactive) (apply ,fn (quote ,args))))
 
 ;;;###autoload
+(defun fp/const (result)
+  "Return a function that will always return RESULT."
+  (lambda (&rest _args) result))
+
+(defun fp/range (to &optional from step)
+  "Return a list with a range of numbers [FROM=0, TO[ using STEP=1."
+  (let ((start (or from 0))
+        (nstep (or step 1))
+        (final (- to 1)))
+    (number-sequence start final nstep)))
+
+
+
+;;;###autoload
+(defun fp/repeat (value number-of-times)
+  "Return a list with VALUE repeated NUMBER-OF-TIMES."
+  (fp/upipe (number-sequence 0 (- number-of-times 1))
+    (fp/map (fp/const value))))
+
+
+;;;###autoload
 (defmacro compose-and-call (fn-list &rest args)
   "Since compose returns a function, this helper receives a list of
    functions and args and apply them to composed funcs

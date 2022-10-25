@@ -17,6 +17,13 @@
 ;;
 
 ;;;###autoload
+(defun LauTex-clear (&optional dir)
+	"Clear LaTeX compile files from DIR."
+	(interactive)
+	(let ((directory (or dir default-directory)))
+		(shell-command-to-string "rm *.aux *.log")))
+
+;;;###autoload
 (defun LauTex-compile-org-to-pdf ()
 	"Compile org file to pdf."
   (interactive)
@@ -121,6 +128,13 @@ Or args is just text."
 				"Add emph-nameasis to region"
 				(interactive)
 				(funcall 'org-extra--add-emphasis emph-name)))))
+
+(defun org-extra-scale-inline-imgs ()
+	(interactive)
+	(let ((max-size 800)
+				(osize (or olivetti-body-width 0))
+				(wsize (window-pixel-width)))
+		(min max-size osize wsize)))
 
 
 (provide 'org-extra)

@@ -29,11 +29,22 @@
 
 ;;; Code:
 
+(require 'functional)
+(require 'laurisp-core)
+(use-dependencies 'helm 'projectile)
+
+;;;###autoload
+(defun lauremacs--get-buffers ()
+  (if (projectile-project-p)
+      (projectile-project-buffers)
+    (buffer-list)))
+
+
 ;;;###autoload
 (defun lauremacs--get-prev-buffers ()
   "Return list with previous buffers."
-  (seq-filter 'buffer-file-name
-              (delq (current-buffer) (buffer-list))))
+  (fp/upipe (lauremacs--get-buffers)
+    (fp/filter (fp/compose 'not 'get-buffer-window))))
 
 ;;;###autoload
 (defun lauremacs/window-split-single-column ()
@@ -124,12 +135,21 @@ TODO: add throwif"
 	(indent-region (point-min) (point-max))
 	(align-entire))
 
+;;;###autoload
 (defun lauremacs/new-frame-projectile ()
 	(interactive)
 	(make-frame-command)
 	(switch-to-buffer lauremacs-buffer-name)
 	(lauremacs/window-split-single-column)
 	(helm-projectile-switch-project))
+
+;;;###autoload
+(defun lauremacs/switch-buffer ()
+  "Choose which switch buffer function must be used depending if it is on a project or not."
+  (interactive)
+  (if (projectile-project-p)
+      (helm-projectile-switch-to-buffer)
+    (helm-buffers-list)))
 
 
 (provide 'lauremacs-window-buffer)

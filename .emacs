@@ -44,6 +44,9 @@
   (lauremacs-leader
     "v" '(er/expand-region :which-key "expand region")))
 
+(add-hook 'prog-mode-hook
+					(lambda () (setq indent-tabs-mode nil)))
+
 
 
 ;;

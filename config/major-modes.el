@@ -72,8 +72,11 @@
 (use-package json-mode
 	:mode "\\.json\\'"
 	:hook ((json-mode . lsp-deferred)
+				 (json-mode . prettier-js-mode)
 				 (json-mode . highlight-indentation-mode)
-				 (json-mode . visual-line-mode)))
+				 (json-mode . visual-line-mode))
+  :init
+  (setq js-indent-level 2))
 
 
 ;;

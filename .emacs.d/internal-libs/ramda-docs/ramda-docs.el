@@ -12,7 +12,7 @@
 (require 'laurisp-core)
 (message "loading ramda-docs...")
 
-(use-dependencies 'request 'helm)
+(use-dependencies 'request 'helm 'eww)
 
 ;;
 ;; ramda-docs related functions
@@ -61,6 +61,10 @@
 (defun open-ramda-doc-url (fn-name)
   (browse-url (concat ramda-docs-url "#" fn-name)))
 
+;;;###autoload
+(defun open-ramda-doc-url-eww (fn-name)
+  (eww (concat ramda-docs-url "#" fn-name)))
+
 
 ;;;###autoload
 (defun ramda-docs-open ()
@@ -70,6 +74,15 @@
         :sources (helm-build-sync-source "ramda functions"
                    :candidates 'helm-ramda-candidates
                    :action 'open-ramda-doc-url)))
+
+;;;###autoload																		
+(defun ramda-docs-open-eww ()
+  (interactive)
+  (download-ramda-html)
+  (helm :prompt "Choose function: "
+        :sources (helm-build-sync-source "ramda functions"
+                   :candidates 'helm-ramda-candidates
+                   :action 'open-ramda-doc-url-eww)))
 
 
 (provide 'ramda-docs)

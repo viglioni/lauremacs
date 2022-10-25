@@ -102,6 +102,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 		(dolist (file agenda-files)
 			(add-to-list 'org-agenda-files file))))
 
+(defun lauremacs/get-agenda-file-path (filename)
+	(join-path lauremacs-agenda-dir (concat filename ".org")))
+
 (bind-lazy-function 'org-insert-src
 										'lauremacs/org-insert-source 
 										'lauremacs-org-extensions)
@@ -118,6 +121,25 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   :init
 	;; org-agenda
 	(lauremacs/add-org-agenda-files)
+
+	(setq org-capture-templates
+				`(;; Health
+					("h" "Health")
+					
+					("hs" "To Schedule" entry
+					 (file+olp ,(lauremacs/get-agenda-file-path "health") "Todo")
+					 "* TOSCHEDULE %?\n DEADLINE: %^t" :empty-lines 0)
+					
+					("ht" "To Schedule" entry
+					 (file+olp ,(lauremacs/get-agenda-file-path "health") "Todo")
+					 "* TODO %?\n DEADLINE: %^t" :empty-lines 0)
+					
+					("ha" "Appointment" entry
+					 (file+olp+datetree ,(lauremacs/get-agenda-file-path "health"))
+					 ,(concat "* %? :appoitments:\n"
+										"<%<%Y-%m-%d %a %^{Time}>>")
+					 :time-prompt t
+					 :empty-lines 0)))
 	
 	;; keymaps
   (general-define-key
@@ -155,9 +177,15 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 		"plt" '(org-latex-preview		       			:which-key "toggle LaTeX preview at point")
 		"t"		'(nil															:which-key "toggle")
 		"tf"	'(org-fragtog-mode								:which-key "toggle fragtog mode"))
-	
+
+	;; LaTeX
 	(sp-local-pair 'org-mode "$" "$" )
+
+	(setq-local company-backends
+              (append '((company-math-symbols-latex company-latex-commands))
+                      company-backends))
 	
+	;; Org babel
 	(org-babel-do-load-languages
    'org-babel-load-languages
    '((elixir			. t)
@@ -171,10 +199,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
      (latex				. t)
      (shell				. t)
      (sql					. t)))
-
-	(setq-local company-backends
-              (append '((company-math-symbols-latex company-latex-commands))
-                      company-backends)))
+	)
 
 (use-package org-bullets
 	:after org

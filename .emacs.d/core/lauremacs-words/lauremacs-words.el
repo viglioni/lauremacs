@@ -12,19 +12,26 @@ Should be called when pointer is inside the function."
 	(interactive)
 	(let ((preffix "\\(\\s-*\\)"))
 		(unless (region-active-p) (mark-paragraph))
-		(align-regexp (region-beginning) (region-end) (concat preffix "'("))
+		(align-regexp (region-beginning) (region-end) (concat preffix (rx (| "'(" "(list (fp/const-fn-interactive"))))
 		(align-regexp (region-beginning) (region-end) (concat preffix ":which-key"))))
 
 ;;;###autoload
-(defun lauremacs-align-region-as-table ()
-	"Align region at every space character."
-	(interactive)
+(defun lauremacs-align-region-as-table (&optional regexp)
+	"Align region at every REGEXP character."
+	(interactive "sEnter regexp: ")
 	(throw-unless (region-active-p) "Should be called only when a region is marked!")
-	(let ((preffix "\\(\\s-*\\)"))
-		(align-regexp (region-beginning) (region-end) (concat preffix " ")
-									0  align-default-spacing t)))
+	(let ((preffix "\\(\\s-*\\)")
+				(regex (or regexp " ")))
+		(align-regexp (region-beginning) (region-end) (concat preffix regex)
+									1  align-default-spacing t)))
 
 
+(defun LauTeX-align-table ()
+	(interactive)
+	(let ((beg (region-beginning))
+				(end (region-end)))
+		(lauremacs-align-region-as-table "&")
+		(lauremacs-align-region-as-table "\\\\\\\\")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;; translate ;;;;;;;;;;;;;;;;;
@@ -57,13 +64,24 @@ Should be called when pointer is inside the function."
 
 (with-eval-after-load "general"
 	(lauremacs-leader
-		"x"		'(nil															:which-key "words")
-		"xa"	'(nil															:which-key "align")
-		"xag" '(lauremacs-align-general-sexp		:which-key "align general.el statements")
+		"x"		'(nil                             :which-key "words")
+		"xa"	'(nil                             :which-key "align")
+		"xag" '(lauremacs-align-general-sexp    :which-key "align general.el statements")
 		"xat" '(lauremacs-align-region-as-table :which-key "align region as table")
-		"xt"	'(nil															:which-key "translate")
-		"xtt" '(lauremacs-translate/en->pt			:which-key "translate en -> pt")
-		"xte" '(lauremacs-translate/pt->en			:which-key "translate pt -> en")
-		"xc"	'(count-words											:which-key "count words")))
+		"xt"	'(nil                             :which-key "translate")
+		"xtt" '(lauremacs-translate/en->pt      :which-key "translate en -> pt")
+		"xte" '(lauremacs-translate/pt->en      :which-key "translate pt -> en")
+		"xC"	'(count-words                     :which-key "count words")))
+
+(use-package string-inflection
+  :ensure t
+  :init
+  (lauremacs-leader
+    "xc"  '(nil                               :which-key "convert word case")
+    "xcs" '(string-inflection-underscore      :which-key "convert to snake-case")
+    "xsc" '(string-inflection-lower-camelcase :which-key "convert to camelCase")
+    "csp" '(string-inflection-camelcase       :which-key "convert to PascalCase")
+    "csk" '(string-inflection-kebab-case      :which-key "convert to kebab-case")
+    "csu" '(string-inflection-upcase          :which-key "convert to UPPER_CASE")))
 
 (provide 'lauremacs-words)

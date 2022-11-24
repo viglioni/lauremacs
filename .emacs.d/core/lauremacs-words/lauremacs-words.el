@@ -10,10 +10,19 @@
 	"Align binding functions from `general.el'.
 Should be called when pointer is inside the function."
 	(interactive)
-	(let ((preffix "\\(\\s-*\\)"))
-		(unless (region-active-p) (mark-paragraph))
-		(align-regexp (region-beginning) (region-end) (concat preffix (rx (| "'(" "(list (fp/const-fn-interactive"))))
-		(align-regexp (region-beginning) (region-end) (concat preffix ":which-key"))))
+  (save-excursion
+	  (let ((preffix "\\(\\s-*\\)"))
+      (search-backward-regexp (rx (| "(lauremacs-leader"
+                                     "(lauremacs-major-mode-leader"
+                                     "(general-define-key")))
+      (er/expand-region 1)
+      (align-regexp (region-beginning)
+                    (region-end)
+                    (concat preffix (rx (| "'(" "(list (fp/const-fn-interactive"))))
+		  (align-regexp (region-beginning)
+                    (region-end)
+                    (concat preffix ":which-key"))
+      (deactivate-mark))))
 
 ;;;###autoload
 (defun lauremacs-align-region-as-table (&optional regexp)
@@ -79,9 +88,9 @@ Should be called when pointer is inside the function."
   (lauremacs-leader
     "xc"  '(nil                               :which-key "convert word case")
     "xcs" '(string-inflection-underscore      :which-key "convert to snake-case")
-    "xsc" '(string-inflection-lower-camelcase :which-key "convert to camelCase")
-    "csp" '(string-inflection-camelcase       :which-key "convert to PascalCase")
-    "csk" '(string-inflection-kebab-case      :which-key "convert to kebab-case")
-    "csu" '(string-inflection-upcase          :which-key "convert to UPPER_CASE")))
+    "xcc" '(string-inflection-lower-camelcase :which-key "convert to camelCase")
+    "xcp" '(string-inflection-camelcase       :which-key "convert to PascalCase")
+    "xck" '(string-inflection-kebab-case      :which-key "convert to kebab-case")
+    "xcu" '(string-inflection-upcase          :which-key "convert to UPPER_CASE")))
 
 (provide 'lauremacs-words)

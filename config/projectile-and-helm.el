@@ -87,9 +87,9 @@
   (projectile-indexing-method 'native)
   (projectile-globally-ignored-directories
    '(
-		 "^.cache"
-		 ".cask"
+     ".cask"
      ".eldev"
+     ".elixir_ls"
      ".git"
      ".log"
      ".next"
@@ -98,9 +98,11 @@
      ".rush"
      ".svn"
      ".vscode"
+     "_build"
      "android"
      "bundle.*"
      "coverage"
+     "deps"
      "dist"
      "dist-.*"
      "ios"
@@ -110,7 +112,9 @@
      "rush"
      "target"
      "temp"
-     "venv"))
+     "venv"
+     "^.cache"
+     ))
   (projectile-globally-ignored-files
    '(
      "*-lock.json"

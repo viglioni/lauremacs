@@ -225,7 +225,7 @@
 ;; smerge
 ;;
 
-(with-eval-after-load smerge-mode
+(with-eval-after-load "smerge-mode"
   (lauremacs-leader
     "gd" '( :keymap smerge-basic-map
             :package smerge-mode

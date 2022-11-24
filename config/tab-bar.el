@@ -1,4 +1,5 @@
 (require 'projectile)
+(require 'functional)
 
 (defun lauremacs-tab--crop-name (name)
   "Crop NAME and add ..."
@@ -76,9 +77,10 @@
 (use-package tab-bar
   :init
   (setq tab-bar-mode t)
-  (lauremacs-leader    
+  (lauremacs-leader
     "l"     '(nil                                         :which-key "workspaces")
     "lp"    '(lauremacs-tab-new-project-tab               :which-key "new project workspace")
+    "ln"    '(tab-bar-new-tab                             :which-key "new tab")
     "ll"    '(tab-switch                                  :which-key "switch workspace")
     "l TAB" '(tab-bar-switch-to-recent-tab                :which-key "switch to last tab")
     "lx"    '(tab-close                                   :which-key "kill workspace")
@@ -92,6 +94,7 @@
     "l8"    (list (fp/const-fn-interactive 'tab-select 8) :which-key "move to tab 8")
     "l9"    (list (fp/const-fn-interactive 'tab-select 9) :which-key "move to tab 9"))
 
+  (setq tab-bar-tab-hints t)
   (setq tab-bar-new-tab-choice "*lauremacs*")
   (setq tab-bar-new-tab-to 'rightmost))
 

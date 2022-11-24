@@ -45,7 +45,10 @@
     "v" '(er/expand-region :which-key "expand region")))
 
 (add-hook 'prog-mode-hook
-					(lambda () (setq indent-tabs-mode nil)))
+					(lambda ()
+            (setq indent-tabs-mode nil)
+            (flyspell-mode 1)))
+
 
 
 
@@ -53,12 +56,30 @@
 ;; Load config files
 ;;
 
+(defconst elisp-file-rx  (rx line-start
+                             (+ (| "-" "." alphanumeric))
+                             ".el"
+                             line-end))
+
 (let ((config-files (directory-files
 										 lauremacs-config-dir
-                     t (rx (and (+ (| alphanumeric "." "-"))
-                                ".el"
-                                line-end)))))
+                     t
+                     elisp-file-rx)))
   (mapcar 'load-file config-files))
+
+;;
+;; require private files
+;;
+
+(dolist (file (directory-files
+               lauremacs-elisp-private-files
+               nil
+               elisp-file-rx))
+  (fp/upipe file
+    'file-name-sans-extension
+    'intern
+    'require-without-throw))
+
 
 ;; Load secret env variables
 (require-without-throw 'env-private)

@@ -18,6 +18,7 @@
 (defconst lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))
 (defconst lauremacs-private-files-dir "~/private-files/emacs-files")
 (defconst lauremacs-agenda-dir (join-path lauremacs-private-files-dir "org-agenda"))
+(defconst lauremacs-elisp-private-files (join-path lauremacs-private-files-dir "elisp-files"))
 
 (setq backup-directory-alist
           `(("." . ,(concat user-emacs-directory "backups"))))

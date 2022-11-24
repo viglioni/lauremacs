@@ -136,5 +136,10 @@ Or args is just text."
 				(wsize (window-pixel-width)))
 		(min max-size osize wsize)))
 
+(defun org-extra-recalc-buffer ()
+  (interactive)
+  (org-table-recalculate-buffer-tables)
+  (org-babel-execute-buffer))
+
 
 (provide 'org-extra)

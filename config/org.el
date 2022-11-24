@@ -58,6 +58,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 
 
 (defun lauremacs/org-font-setup ()
+  (interactive)
   ;; Replace list hyphen with dot
   (font-lock-add-keywords
    'org-mode
@@ -79,13 +80,18 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (set-face-attribute 'org-meta-line nil :height 100)
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil						:foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil							:inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil						:inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil					:inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil	:inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil				:inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil					:inherit 'fixed-pitch))
+  (set-face-attribute  'org-block            nil  :inherit  'fixed-pitch              :foreground  nil  )
+  (set-face-attribute  'org-code             nil  :inherit  '(shadow                  fixed-pitch))
+  (set-face-attribute  'org-formula          nil  :inherit  '(fixed-pitch)
+                       :weight 'semi-bold
+                       :background (face-attribute 'org-table :background)
+                       :foreground  "#3a81c3")
+  (set-face-attribute  'org-table            nil  :inherit  '(shadow                  fixed-pitch))
+  (set-face-attribute  'org-date             nil  :inherit  '(shadow                  fixed-pitch))
+  (set-face-attribute  'org-verbatim         nil  :inherit  '(shadow                  fixed-pitch))
+  (set-face-attribute  'org-special-keyword  nil  :inherit  '(font-lock-comment-face  fixed-pitch))
+  (set-face-attribute  'org-meta-line        nil  :inherit  '(font-lock-comment-face  fixed-pitch))
+  (set-face-attribute  'org-checkbox         nil  :inherit  'fixed-pitch))
 
 (defun lauremacs/org-mode-setup ()
   (org-indent-mode)
@@ -175,8 +181,16 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 		"plb" '(org-preview-latex-on-buffer			:which-key "preview LaTeX on buffer")
 		"plc" '(org-clear-latex-preview					:which-key "clear LaTeX preview")
 		"plt" '(org-latex-preview		       			:which-key "toggle LaTeX preview at point")
-		"t"		'(nil															:which-key "toggle")
-		"tf"	'(org-fragtog-mode								:which-key "toggle fragtog mode"))
+		"T"		'(nil															:which-key "toggle")
+		"Tf"	'(org-fragtog-mode								:which-key "toggle fragtog mode")
+    "t"   '(nil                             :which-key "table")
+    "ti"  '(nil                             :which-key "insert")
+    "tih" '(org-table-insert-hline          :which-key "insert horizontal line")
+    "tim" '(org-table-hline-and-move)       :which-key "insert hline and move"
+    "tic" '(org-table-insert-column         :which-key "insert column")
+    "tir" '(org-table-insert-row            :which-key "insert row")
+    "td"  '(nil                             :which-key "delete")
+    "tdc" '(org-table-delete-column         :which-key "delete column"))
 
 	;; LaTeX
 	(sp-local-pair 'org-mode "$" "$" )

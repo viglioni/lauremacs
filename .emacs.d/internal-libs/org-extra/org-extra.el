@@ -136,10 +136,71 @@ Or args is just text."
 				(wsize (window-pixel-width)))
 		(min max-size osize wsize)))
 
+;;
+;; Table 
+;;
+
+;;;###autoload
 (defun org-extra-recalc-buffer ()
   (interactive)
   (org-table-recalculate-buffer-tables)
   (org-babel-execute-buffer))
 
+;;;###autoload
+(defun org-extra-kill-line ()
+  (interactive)
+  (throw-unless (org-at-table-p) "Cursor is not over a table")
+  (previous-line)
+  (save-excursion
+    (next-line)
+    (beginning-of-line)
+    (kill-line)
+    (org-delete-backward-char 1)))
+
+;;;###autoload
+(defun org-extra-generate-index-table (heading-rx)
+  "Generate a table with index of all headings level 2 that match HEADING-RX."
+  (require 'asoc)
+
+  (let  ((headings '()))
+    (defun make-pair (len d)
+      (cons (% len d) d))
+
+    (defun calc-chunk-size (len)
+      (let* ((divisors '(15 14 13 12 11 10 9 8 7 6 5))
+             (size (fp/upipe divisors
+                     (fp/partial 'mapcar (fp/partial 'make-pair len))
+                     (fp/partial 'asoc-filter-keys (fp/partial '= 0))
+                     (lambda (alist) (asoc-sort-keys alist '>))
+                     'car-safe
+                     'cdr-safe)))
+        (or size (calc-chunk-size (inc len)))))
+
+
+    (defun format-link (heading-text)
+      (let ((link (replace-regexp-in-string " " "-" heading-text))
+            (text (replace-regexp-in-string "[^0-9]" "" heading-text)))
+        (format "[[readme.org#%s][%s]]" link text)))
+
+    (defun chunks (lst)
+      (seq-partition lst (calc-chunk-size (length lst))))
+
+
+    (defun add-hlines (table)
+      (append '(hline) table '(hline)))
+
+    (org-map-entries
+     (lambda ()
+       (add-to-list 'headings
+                    (org-element-property :title (org-element-at-point))
+                    t))
+     "LEVEL=2")
+
+
+    (fp/upipe headings
+      (fp/filter 'regex-matches heading-rx)
+      (fp/map 'format-link)
+      'chunks
+      'add-hlines)))
 
 (provide 'org-extra)

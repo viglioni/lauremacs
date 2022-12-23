@@ -1,19 +1,33 @@
 #+title: org babel typescript
 
 ** About
-- Library to run typescript blocks inside org-babel using ES6 syntax and importing libraries
+Library to run typescript blocks inside org-babel using ES6 syntax and importing libraries
 
-- Example:
+Example:
 
-  #+begin_src typescript :exports both :results output 
+#+begin_src text :exports both :results output 
+  ,#+begin_src typescript :exports both :results output 
   import * as O from 'fp-ts/Option' // import instead of require
 
   console.log(O.some("fp-ts inside org-babel!"))
-  
+
+  ,#+end_src
+
+  ,#+RESULTS:
+  : { _tag: 'Some', value: 'fp-ts inside org-babel' }
+#+end_src
+
+Execution:
+
+#+begin_src typescript :exports both :results output 
+  import * as O from 'fp-ts/Option' // import instead of require
+
+  console.log(O.some("fp-ts inside org-babel!"))
 #+end_src
 
 #+RESULTS:
-: { _tag: 'Some', value: 'fp-ts inside org-babel' }
+: { _tag: 'Some', value: 'fp-ts inside org-babel!' }
+
 
 ** Install
 - Save [[./org-babel-ts.org][org-babel-ts.el]] on your configs and load it =(load-file "path/to/org-babel-ts.el")=

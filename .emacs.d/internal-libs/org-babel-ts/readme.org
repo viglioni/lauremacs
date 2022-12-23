@@ -23,17 +23,17 @@
     (org-babel-do-load-languages
      'org-babel-load-languages
      '(;; example
-       (elixir		 . t)
-       (haskell		 . t)
-       (clojure		 . t)
+       (elixir . t)
+       (haskell . t)
+       (clojure . t)
        (emacs-lisp . t)
        (typescript . t)
-       (python		 . t)
-       (js				 . t)
-       (C					 . t)
-       (latex			 . t)
-       (shell			 . t)
-       (sql				 . t)))
+       (python . t)
+       (js . t)
+       (C . t)
+       (latex . t)
+       (shell . t)
+       (sql . t)))
 
 #+end_src
 

@@ -157,7 +157,8 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
    "M-s-." (define-org-cmd
 						:heading 'org-move-subtree-up
 						:item    'org-move-item-up)
-   "M-s-/" (define-org-cmd :heading 'org-demote-subtree))
+   "M-s-/" (define-org-cmd :heading 'org-demote-subtree)
+   "s-d" 'org-table-copy-down)
 	
 	(lauremacs-major-mode-leader
 		:keymaps 'org-mode-map
@@ -200,6 +201,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
                       company-backends))
 	
 	;; Org babel
+  (require 'org-babel-ts)
 	(org-babel-do-load-languages
    'org-babel-load-languages
    '((elixir			. t)

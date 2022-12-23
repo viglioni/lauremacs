@@ -1,0 +1,48 @@
+#+title: org babel typescript
+
+** About
+- Library to run typescript blocks inside org-babel using ES6 syntax and importing libraries
+
+- Example:
+
+  #+begin_src typescript :exports both :results output 
+  import * as O from 'fp-ts/Option' // import instead of require
+
+  console.log(O.some("fp-ts inside org-babel!"))
+  
+#+end_src
+
+#+RESULTS:
+: { _tag: 'Some', value: 'fp-ts inside org-babel' }
+
+** Install
+- Save [[./org-babel-ts.org][org-babel-ts.el]] on your configs and load it =(load-file "path/to/org-babel-ts.el")=
+- Add typescript to your babel configuration
+  
+  #+begin_src emacs-lisp :exports both :results output 
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '(;; example
+       (elixir			. t)
+       (haskell			. t)
+       (clojure			. t)
+       (emacs-lisp	. t)
+       (typescript	. t)
+       (python			. t)
+       (js					. t)
+       (C						. t)
+       (latex				. t)
+       (shell				. t)
+       (sql					. t)))
+    
+#+end_src
+
+** Usage
+- This library will create a TS project on your =.emacs.d/org-babel/typescript=, you can change the location with the variable =org-babel-ts-project-dir=.
+- To create it, run =M-x org-babel-ts-create-project=
+- To add any TS library, just run =M-x org-babel-ts-install-lib RET lib-name RET=, it will run =npm i lib-name= inside the project.
+- Now you are able to run ES6 syntax and importing libs
+
+** Licence
+GPL-3
+

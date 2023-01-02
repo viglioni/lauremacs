@@ -83,6 +83,7 @@
 ;; REST Client
 ;;
 
-(use-package restclient)
+(use-package restclient
+  :mode ("\\.rest\\'" . restclient-mode))
 
 

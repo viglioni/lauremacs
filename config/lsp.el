@@ -27,7 +27,9 @@
 				 (lsp-mode . lsp-enable-which-key-integration))
   :init
   (setq lsp-keymap-prefix "<f17>")
-  (setq lsp-enable-on-type-formatting nil)
+																				;(setq lsp-enable-on-type-formatting nil)
+	(setq lsp-auto-guess-root t)
+	(setq lsp-use-workspace-root-for-server-default-directory t)
   :config
   (define-key lsp-mode-map (kbd "<f17>") lsp-command-map)) 
 

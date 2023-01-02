@@ -59,6 +59,12 @@
 (defvar nvm-dir (or (getenv "NVM_DIR") (file-truename "~/.nvm"))
 	"Directory where nvm is installed.")
 
+(defun nvm--exec-path-from-shell-initialize ()
+	"When on macos, updates exec path."
+	(use-dependencies 'exec-path-from-shell)
+	(when (memq window-system '(mac ns x))
+		(exec-path-from-shell-initialize)))
+
 (defun nvm--path-rx ()
 	"Return a regex string of the node bin path."
 	(format "%s/versions/node/v[0-9.]+/bin:?" nvm-dir))
@@ -74,7 +80,8 @@
 VERSION should be of the form \"vXX.XX.X\"."
 	(fp/pipe (getenv "PATH")
 		((concat (format "%s/versions/node/%s/bin:" nvm-dir version))
-		 (setenv "PATH"))))
+		 (setenv "PATH")))
+	(nvm--exec-path-from-shell-initialize))
 
 (defun nvm--use-version (version)
 	"Add node to Emacs path.

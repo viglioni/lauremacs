@@ -44,7 +44,12 @@
 				 (typescript-mode . prettier-js-mode)
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
-				 (tsx-mode        . lauremeacs/ts-load-web-mode))
+				 (tsx-mode        . lauremeacs/ts-load-web-mode)
+         (typescript-mode . (lambda () (add-multiple-into-list 'prettify-symbols-alist
+																											'((">="  . "≥")
+																												("<="  . "≤")
+																												("!==" . "≠")
+                                                        ("=>"  . "⇒"))))))
   :custom
   (typescript-indent-level 2)
 	:init
@@ -95,7 +100,6 @@
 	"s"      '(nil                              :which-key "ts-repl")
 	"sb"     '(send-buffer-to-repl              :which-key "send buffer to repl")
 	"se"     '(send-last-sexp-to-repl           :which-key "send last sexp to repl")
-  "t"      '(nil                              :which-key "test")
   "tj"     '(lauremacs/jest-test-this-file    :which-key "test this file (jest)")
 	"d"      '(nil                              :which-key "docs")
 	"dr"     '(nil                              :which-key "ramda")

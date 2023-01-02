@@ -5,6 +5,22 @@
 ;;
 
 ;;
+;; prog mode
+;;
+
+(with-eval-after-load "prog-mode"
+  (lauremacs-major-mode-leader
+    :keymaps 'prog-mode-map
+    "t"  '(nil
+           :which-key "test")
+    "tt" '(projectile-toggle-between-implementation-and-test
+           :which-key "toggle between test and implementation")
+    "to" '(projectile-find-implementation-or-test-other-window
+           :which-key "find implementation or test other window")
+    "tp" '(projectile-test-project
+           :which-key "test project")))
+
+;;
 ;; smartparens
 ;;
 
@@ -161,7 +177,7 @@
     "se" '(iedit-mode :which-key "iedit mode")))
 
 ;;
-;; Flycheck
+;; Flycheck / Flyspell
 ;;
 
 (bind-lazy-function 'explain-error-at-point
@@ -188,6 +204,9 @@
                       :background "#dc752f"
                       :foreground "white"))
 
+(with-eval-after-load "flyspell"
+  (setq flyspell-default-dictionary "en_GB")
+  (add-hook 'org-mode-hook 'flyspell-mode))
 
 ;;
 ;; Hide show

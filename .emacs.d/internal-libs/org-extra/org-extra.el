@@ -11,6 +11,7 @@
 (load "./org-headers-skeleton.el")
 (require 'helm)
 (require 'functional)
+(require 'ispell)
 
 ;;
 ;; LaTeX functions
@@ -136,6 +137,22 @@ Or args is just text."
 				(wsize (window-pixel-width)))
 		(min max-size osize wsize)))
 
+
+;;;###autoload
+(defun org-extra-set-file-dictionary ()
+  (interactive)
+  (helm
+   :prompt "Choose a dictionary: "
+   :sources (helm-build-sync-source "Valid dictionaries"
+              :candidates 'ispell-valid-dictionary-list
+              :action '(lambda (dic)
+                         (funcall-interactively
+                          'add-file-local-variable-prop-line
+                          'ispell-local-dictionary dic)
+                         (save-buffer)
+                         (revert-buffer nil t)
+                         (flyspell-buffer)))))
+
 ;;
 ;; Table 
 ;;
@@ -157,6 +174,23 @@ Or args is just text."
     (kill-line)
     (org-delete-backward-char 1)))
 
+
+(defun org-extra--calc-chunk-size (len)
+  (let* ((divisors '(15 14 13 12 11 10 9 8 7 6 5))
+         (size (fp/upipe divisors
+                 (fp/partial 'mapcar (fp/partial 'make-pair len))
+                 (fp/partial 'asoc-filter-keys (fp/partial '= 0))
+                 (lambda (alist) (asoc-sort-keys alist '>))
+                 'car-safe
+                 'cdr-safe)))
+    (or size (org-extra--calc-chunk-size (inc len)))))
+
+(defun org-extra--chunks (lst)
+  (seq-partition lst (org-extra--calc-chunk-size (length lst))))
+
+(defun org-extra--add-hlines (table)
+  (append '(hline) table '(hline)))
+
 ;;;###autoload
 (defun org-extra-generate-index-table (heading-rx)
   "Generate a table with index of all headings level 2 that match HEADING-RX."
@@ -166,28 +200,10 @@ Or args is just text."
     (defun make-pair (len d)
       (cons (% len d) d))
 
-    (defun calc-chunk-size (len)
-      (let* ((divisors '(15 14 13 12 11 10 9 8 7 6 5))
-             (size (fp/upipe divisors
-                     (fp/partial 'mapcar (fp/partial 'make-pair len))
-                     (fp/partial 'asoc-filter-keys (fp/partial '= 0))
-                     (lambda (alist) (asoc-sort-keys alist '>))
-                     'car-safe
-                     'cdr-safe)))
-        (or size (calc-chunk-size (inc len)))))
-
-
     (defun format-link (heading-text)
       (let ((link (replace-regexp-in-string " " "-" heading-text))
             (text (replace-regexp-in-string "[^0-9]" "" heading-text)))
         (format "[[readme.org#%s][%s]]" link text)))
-
-    (defun chunks (lst)
-      (seq-partition lst (calc-chunk-size (length lst))))
-
-
-    (defun add-hlines (table)
-      (append '(hline) table '(hline)))
 
     (org-map-entries
      (lambda ()
@@ -200,7 +216,33 @@ Or args is just text."
     (fp/upipe headings
       (fp/filter 'regex-matches heading-rx)
       (fp/map 'format-link)
-      'chunks
-      'add-hlines)))
+      'org-extra--chunks
+      'org-extra--add-hlines)))
+
+;;
+;; Org roam
+;;
+(defun org-extra-node-insert-immediate (arg &rest args)
+  (interactive "P")
+  (let ((args (cons arg args))
+        (org-roam-capture-templates (list (append (car org-roam-capture-templates)
+                                                  '(:immediate-finish t)))))
+    (apply #'org-roam-node-insert args)))
+
+(defmacro org-extra-create-language-template-item (keybind name lang-code)
+  `'(,keybind
+     ,name
+     plain
+     "\n\n%?"
+     :if-new
+     (file+head
+      "%<%Y%m%d%H%M%S>-${slug}.org"
+      ,(concat "# -*- ispell-local-dictionary: \"" lang-code "\"; -*-"
+               "\n"
+               "#+title: ${title}"
+               "\n"
+               "#+filetags: :" name ":" 
+               "\n"))
+     :unnarrowed t))
 
 (provide 'org-extra)

@@ -5,6 +5,7 @@
 ;;
 
 (require 'org-faces)
+(require 'org-extra)
 
 (bind-lazy-function 'org-compile-to-pdf 'LauTeX-compile-org-to-pdf 'org-extra)
 (bind-lazy-function 'org-preview-latex-on-buffer 'LauTeX-preview-latex-on-buffer 'org-extra)
@@ -23,14 +24,14 @@
 
 ;;;###autoload
 (defmacro define-org-cmd (&rest plist)
-  "Receives a PLIST (:situation 'command)  as args to define which
-command should be called on each situation. 
+  "Receive a PLIST (:situation 'command) as args to define which
+command should be called on each situation.
 Obs.: the command will ONLY be called on the specific situation.
 *~*~*
 For now the supported keys are
 :heading -> runs when cursor is over a heading
 :table -> runs when cursor is over a table
-:item -> runs when cursor is over an item 
+:item -> runs when cursor is over an item
 *~*~*
 example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (throw-if (oddp (length plist)) "arg list must have an even number of args")
@@ -116,7 +117,17 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 										'lauremacs-org-extensions)
 
 (use-package org
-  :hook '((org-mode . lauremacs/org-mode-setup))
+  :hook '((org-mode . lauremacs/org-mode-setup)
+          (org-mode . hl-line-mode)
+          (org-mode . prettify-symbols-mode)
+          (org-mode . '(lambda () (add-multiple-into-list 'prettify-symbols-alist
+																										 '((">=" . "≥")
+																											 ("<=" . "≤")
+																											 ("!=" . "≠")
+                                                       ("=>" . "⇒")
+                                                       ("<=" . "⇐")
+                                                       ("->" . "→")
+                                                       ("<-" . "←"))))))
 	:custom
 	(org-hide-emphasis-markers t)
 	(org-startup-folded t)
@@ -127,7 +138,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   :init
 	;; org-agenda
 	(lauremacs/add-org-agenda-files)
-
+  (with-eval-after-load "ol"
+    (add-to-list 'org-link-frame-setup '(file . find-file)))
+  
 	(setq org-capture-templates
 				`(;; Health
 					("h" "Health")
@@ -166,7 +179,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 		"ic"  '(org-insert-src									:which-key "insert code block source")
 		"im"  '(nil															:which-key "insert math")
 		"imb" '(org-insert-mathbb      					:which-key "insert mathbb")
-		"imc" '(org-insert-mathbb								:which-key "insert mathcal")
+		"imc" '(org-insert-mathcal							:which-key "insert mathcal")
 		"l"   '(nil															:which-key "LaTeX")
 		"le"  '(nil															:which-key "export")
 		"lep" '(org-compile-to-pdf							:which-key "export to pdf")
@@ -245,3 +258,52 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 
 (use-package ob-elixir
 	:after org)
+
+;;
+;; Org roam
+;;
+
+(defconst default-org-roam-template
+  '("d" "default" plain
+    "%?"
+    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+    :unnarrowed t))
+
+(defun set-org-roam-templates ()
+  (setq org-roam-capture-templates
+        (list
+         default-org-roam-template    
+         (org-extra-create-language-template-item "i" "italiano" "it")
+         (org-extra-create-language-template-item "n" "nederlands" "dutch")
+         (org-extra-create-language-template-item "e" "español" "es")
+         (org-extra-create-language-template-item "r" "ruskij" "ru"))))
+
+
+(use-package org-roam
+  :hook
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory lauremacs-org-roam-files)
+  (org-roam-complete-everywhere t)
+  
+  :init
+  (set-org-roam-templates)
+  (setq org-roam-v2-ack t)
+  (setq org-roam-node-display-template "${title:*}${tags:20}")
+  (lauremacs-leader
+    "r"  '(nil                               :which-key "org-roam")
+    "rt" '(org-roam-buffer-toggle            :which-key "toggle buffer")
+    "rf" '(lauremacs-tabs-find-org-roam-node :which-key "node find")
+    "rI" '(org-roam-node-insert              :which-key "node insert")
+    "ri" '(org-extra-node-insert-immediate   :which-key "node insert"))
+  :config
+  (org-roam-db-autosync-enable)
+  :bind
+  (("C-c n l" . org-roam-buffer-toggle)
+   ("C-c n t" . org-roam-buffer-toggle)
+   ("C-c n f" . lauremacs-tabs-find-org-roam-node)
+   ("C-c n I" . org-roam-node-insert)
+   ("C-c n i" . org-extra-node-insert-immediate)))
+
+(use-package org-roam-ui
+  :after 'org-roam)

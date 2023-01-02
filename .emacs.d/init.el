@@ -19,9 +19,11 @@
 (defconst lauremacs-private-files-dir "~/private-files/emacs-files")
 (defconst lauremacs-agenda-dir (join-path lauremacs-private-files-dir "org-agenda"))
 (defconst lauremacs-elisp-private-files (join-path lauremacs-private-files-dir "elisp-files"))
+(defconst lauremacs-org-roam-files (join-path lauremacs-private-files-dir "org-roam-files"))
+
 
 (setq backup-directory-alist
-          `(("." . ,(concat user-emacs-directory "backups"))))
+          `(("." . ,(join-path user-emacs-directory "backups"))))
 
 ;;;###autoload
 (defun lauremacs/reload-init ()
@@ -60,7 +62,6 @@
 							 general
 							 which-key
 							 expand-region
-							 ob-typescript
 							 spacemacs-theme
 							 window-purpose))
 	(add-to-list 'package-selected-packages pkg))

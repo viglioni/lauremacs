@@ -201,21 +201,24 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
                       company-backends))
 	
 	;; Org babel
-  (require 'org-babel-ts)
+  (require 'ob-ts)
 	(org-babel-do-load-languages
    'org-babel-load-languages
-   '((elixir			. t)
-		 (haskell			. t)
-     (clojure			. t)
-     (emacs-lisp	. t)
-		 (typescript	. t)
-     (python			. t)
-     (js					. t)
-     (C						. t)
-     (latex				. t)
-     (shell				. t)
-     (sql					. t)))
-	)
+   '((elixir		 . t)
+		 (haskell		 . t)
+     (clojure		 . t)
+     (emacs-lisp . t)
+		 (ts         . t)
+     (python		 . t)
+     (js				 . t)
+     (C					 . t)
+     (latex			 . t)
+     (shell			 . t)
+     (sql				 . t)))
+  :bind
+  (:map org-mode-map
+        (("C-c C-b" . org-mark-ring-goto)))
+  )
 
 (use-package org-bullets
 	:after org

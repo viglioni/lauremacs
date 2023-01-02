@@ -115,9 +115,11 @@ package-lock.json", "Initial gitignore file.")
   (interactive "s/Insert lib name: ")
   (org-babel-ts--exec-cmd (concat "npm i " lib)))
 
-(defun org-babel-execute:typescript (body params)
+(defun org-babel-execute:ts (body params)
   "Execute typescript block allowing ES6 syntax and external libraries.
 BODY and PARAMS will be passed to `org-babel-execute:js'."
+  (print body)
+  (print params)
   (org-babel-ts--delete-files)
   (let* ((ts-file (org-babel-ts--create-file-name))
          (org-babel-js-cmd (concat "npx ts-node " ts-file)))
@@ -126,7 +128,7 @@ BODY and PARAMS will be passed to `org-babel-execute:js'."
     (org-babel-execute:js body params)))
 
 
-(provide 'org-babel-ts)
+(provide 'ob-ts)
 
 ;;; org-babel-ts.el ends here
 (make-directory "~/Desktop/asd/asd/asd/asd" t)

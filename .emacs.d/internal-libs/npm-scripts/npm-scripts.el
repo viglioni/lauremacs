@@ -30,7 +30,7 @@
    () -> bool"
   (file-exists-p (join-path (projectile-project-root) "package.json")))
 
-(defvar NS--use-nvm "sh ~/.sh/bin/use-nvmrc.sh && "
+(defvar NS--use-nvm " " ;"sh ~/.sh/bin/use-nvmrc.sh && "
 	"Command to execute script use-nvmrc")
 
 ;;
@@ -105,7 +105,7 @@ TODO: put this use nvm script in a clever way."
 ;; Import default
 ;;
 
-(defvar NS--default-import-lib-list
+(defconst NS--default-import-lib-list
   '(("fp-ts/Array"        . "A")
     ("fp-ts/Either"       . "E")
 		("fp-ts/lib/function" . "f")
@@ -116,6 +116,7 @@ TODO: put this use nvm script in a clever way."
     ("fp-ts/Task"         . "T")
     ("io-ts/Decoder"      . "D")
 		("fp-ts/Random"       . "rand")
+    ("fp-ts/number"       . "N")
     ("ramda"              . "R")
     ("lodash/fp"          . "_")
     ("rxjs/operators"     . "rx")))

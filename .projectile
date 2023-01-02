@@ -1,2 +1,4 @@
 -/.emacs.d/elpa
+-/.emacs.d/.cache
+~/.emacs.d/backups
 -*~

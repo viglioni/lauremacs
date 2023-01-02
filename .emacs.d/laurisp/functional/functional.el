@@ -41,7 +41,7 @@
 ;;
 
 ;;;###autoload
-(defun fp/any (lst)
+(defun fp/any? (lst)
   "Return t if at least one element in LST is truthy:
 [a] → Boolean."
 	(bool (seq-reduce (lambda (acc val) (or acc val))

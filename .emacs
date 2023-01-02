@@ -10,9 +10,10 @@
 ;; Loading another packages
 ;;
 
-																				;(require 'asoc)
 
 (require 'web-search)
+(require 'zap)
+
 (lauremacs-leader
   "g"   '(nil															:which-key "git")
   "a"   '(nil															:which-key "applications")

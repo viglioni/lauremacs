@@ -295,7 +295,8 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
     "rt" '(org-roam-buffer-toggle            :which-key "toggle buffer")
     "rf" '(lauremacs-tabs-find-org-roam-node :which-key "node find")
     "rI" '(org-roam-node-insert              :which-key "node insert")
-    "ri" '(org-extra-node-insert-immediate   :which-key "node insert"))
+    "ri" '(org-extra-node-insert-immediate   :which-key "node insert")
+    "ra" '(org-roam-tag-add                  :which-key "add tag"))
   :config
   (org-roam-db-autosync-enable)
   :bind

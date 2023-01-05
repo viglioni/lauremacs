@@ -25,6 +25,7 @@
 	"swd" '(web-search-duckduckgo						:which-key "duckduckgo search")
 	"swb" '(web-search-brave								:which-key "brave search")
 	"swy" '(web-search-youtube							:which-key "youtube search"))
+
 ;;
 ;; NVM
 ;;
@@ -96,6 +97,18 @@
 ;;
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
+
+;;
+;; Dealing with macos too many open files problem
+;;
+(defun file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
+
 
 ;;
 ;; Custom variables

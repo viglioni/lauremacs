@@ -19,7 +19,7 @@
 (defconst lauremacs-private-files-dir "~/private-files/emacs-files")
 (defconst lauremacs-agenda-dir (join-path lauremacs-private-files-dir "org-agenda"))
 (defconst lauremacs-elisp-private-files (join-path lauremacs-private-files-dir "elisp-files"))
-(defconst lauremacs-org-roam-files (join-path lauremacs-private-files-dir "org-roam-files"))
+(defconst lauremacs-org-roam-files "~/org-roam-files")
 
 
 (setq backup-directory-alist

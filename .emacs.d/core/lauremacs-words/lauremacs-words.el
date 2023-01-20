@@ -155,7 +155,7 @@ Should be called when pointer is inside the function."
   (interactive "sInsert noun: ")
   (unless (lauremacs-words-nl--get-article noun)
     (message "Fetching data from www.ensie.nl...")
-    (let ((data (or (lauremacs-words-nl--request noun) "asd")))
+    (let ((data (or (lauremacs-words-nl--request noun) "")))
       (message data)
       (add-to-list 'lauremacs-words-nl-nouns
                    (cons noun (lauremacs-words-nl--article data)))))

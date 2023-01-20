@@ -16,8 +16,8 @@
   (let* ((filename "laurisp-core.el")
          (files (directory-files "." t "^l-[a-z\\-].*\\.el$"))
          (content (fp/pipe files
-                     ((mapcar 'get-string-from-file)
-                      (string-join)))))
+                    ((mapcar 'get-string-from-file)
+                     (string-join)))))
     (with-temp-buffer
       (insert content)
       (insert "\n\n(provide 'laurisp-core)\n")
@@ -68,4 +68,24 @@ Argument &REST libs to be installed and required."
 	(throw-unless (symbolp lst) "List should be a symbol.")
 	(dolist (item items)
 		(add-to-list lst item)))
+
+
+;;;###autoload
+(defun lauremacs-request-sync-get (url &optional on-failure)
+  "URL must be a valid url.
+ON-FAILURE is a function expecting one parameter: error-thrown."
+  (require 'request)
+  (let ((lauremacs-request-result nil)
+        (on-fail (or on-failure
+                     (lambda (err) (message "Got error: %S" err)))))
+    (request url
+      :sync t
+      :success (cl-function
+                (lambda (&key data &allow-other-keys)
+                  (setq lauremacs-request-result data)))
+      :error
+      (cl-function (lambda (&rest args &key error-thrown &allow-other-keys)
+                     (funcall on-fail error-thrown))))
+    lauremacs-request-result))
+
 

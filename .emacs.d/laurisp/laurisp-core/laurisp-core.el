@@ -93,6 +93,25 @@ Argument &REST libs to be installed and required."
 	(dolist (item items)
 		(add-to-list lst item)))
 
+
+;;;###autoload
+(defun lauremacs-request-sync (url &optional on-failure)
+  "URL must be a valid url.
+ON-FAILURE is a function expecting one parameter: error-thrown."
+  (require 'request)
+  (let ((lauremacs-request-result)
+        (on-fail (or on-failure (lambda (err) (error "Got error: %S" err)))))
+    (request url
+             :sync t
+             :success (cl-function
+                       (lambda (&key data &allow-other-keys) (setq lauremacs-request-result data)))
+             :error  (cl-function
+                      (lambda (&key error-thrown &allow-other-keys&rest _)
+                        (funcall on-fail error-thrown))))
+    lauremacs-request-result))
+
+
+
 ;;
 ;; @author Laura Viglioni
 ;; 2020

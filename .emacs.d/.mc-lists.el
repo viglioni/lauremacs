@@ -19,6 +19,7 @@
         hindent-reformat-decl-or-fill
         ignore
         indent-for-tab-command
+        ispell-minor-check
         kill-region
         kill-visual-line
         kmacro-end-macro

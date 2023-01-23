@@ -131,4 +131,4 @@ BODY and PARAMS will be passed to `org-babel-execute:js'."
 (provide 'ob-ts)
 
 ;;; org-babel-ts.el ends here
-(make-directory "~/Desktop/asd/asd/asd/asd" t)
+

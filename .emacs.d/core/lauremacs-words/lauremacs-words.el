@@ -152,7 +152,7 @@ Should be called when pointer is inside the function."
 
 (defun lauremacs-words-nl-het-of-de (noun)
   "Return if a dutch NOUN should be used with het or de article."
-  (interactive "sInsert noun: ")
+  (interactive (list (read-string "Insert noun: " (word-at-point))))
   (unless (lauremacs-words-nl--get-article noun)
     (message "Fetching data from www.ensie.nl...")
     (let ((data (or (lauremacs-words-nl--request noun) "")))
@@ -160,6 +160,7 @@ Should be called when pointer is inside the function."
       (add-to-list 'lauremacs-words-nl-nouns
                    (cons noun (lauremacs-words-nl--article data)))))
   (message (lauremacs-words-nl--get-article noun)))
+
 
 
 (provide 'lauremacs-words)

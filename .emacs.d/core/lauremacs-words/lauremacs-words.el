@@ -42,57 +42,6 @@ Should be called when pointer is inside the function."
 		(lauremacs-align-region-as-table "&")
 		(lauremacs-align-region-as-table "\\\\\\\\")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;; translate ;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package go-translate
-  :init
-  (setq gts-translate-list '())
-  (setq gts-default-translator nil))
-
-(defun lauremacs-translate (from to)
-  "Translate words FROM language TO language."
-  (let ((gts-translate-list  (list (list from to)))
-				(gts-default-translator
-				 (gts-translator
-					:picker (gts-prompt-picker :single t)
-					:engines (list (gts-bing-engine) (gts-google-engine))
-					:render (gts-buffer-render))))
-    (print gts-translate-list)
-		(gts-translate gts-default-translator)))
-
-(defun lauremacs-translate/pt->en ()
-	"Translate words from pt to en."
-	(interactive)
-	(lauremacs-translate "pt" "en"))
-
-
-(defun lauremacs-translate/en->pt ()
-	"Translate "
-	(interactive)
-	(lauremacs-translate "pt" "en"))
-
-(defun lauremacs-translate/en->it ()
-	"Translate from english to italian."
-	(interactive)
-  (lauremacs-translate "en" "it"))
-
-(defun lauremacs-translate/it->en ()
-	"Translate from italian to english."
-	(interactive)
-  (lauremacs-translate "it" "en"))
-
-(defun lauremacs-translate/en->nl ()
-	"Translate from english to dutch."
-	(interactive)
-  (lauremacs-translate "en" "nl"))
-
-(defun lauremacs-translate/nl->en ()
-	"Translate from dutch to english."
-	(interactive)
-  (lauremacs-translate "nl" "en"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;; Align ;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -140,7 +89,7 @@ Should be called when pointer is inside the function."
   "Get article from DATA."
   (cond ((lauremacs-words-nl--is-de  data) "de")
         ((lauremacs-words-nl--is-het data) "het")
-        (t (error "word not found!"))))
+        (t (error "Word not found!"))))
 
 (defun lauremacs-words-nl--get-article (noun)
   "Get article from NOUN in `lauremacs-words-nl-nouns'."

@@ -79,6 +79,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 
   ;; set a smaller font size for meta lines
   (set-face-attribute 'org-meta-line nil :height 100)
+  (set-face-attribute 'org-drawer nil :height 100)
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute  'org-block            nil  :inherit  'fixed-pitch              :foreground  nil  )
@@ -92,7 +93,10 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (set-face-attribute  'org-verbatim         nil  :inherit  '(shadow                  fixed-pitch))
   (set-face-attribute  'org-special-keyword  nil  :inherit  '(font-lock-comment-face  fixed-pitch))
   (set-face-attribute  'org-meta-line        nil  :inherit  '(font-lock-comment-face  fixed-pitch))
-  (set-face-attribute  'org-checkbox         nil  :inherit  'fixed-pitch))
+  (set-face-attribute  'org-checkbox         nil  :inherit  'fixed-pitch)
+
+  ;; Enlarge org inline latex previews
+  (plist-put org-format-latex-options :scale 1.6))
 
 (defun lauremacs/org-mode-setup ()
   (org-indent-mode)
@@ -120,14 +124,15 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   :hook '((org-mode . lauremacs/org-mode-setup)
           (org-mode . hl-line-mode)
           (org-mode . prettify-symbols-mode)
+          (org-mode . (lambda () ))
           (org-mode . '(lambda () (add-multiple-into-list 'prettify-symbols-alist
-																										 '((">=" . "≥")
-																											 ("<=" . "≤")
-																											 ("!=" . "≠")
-                                                       ("=>" . "⇒")
-                                                       ("<=" . "⇐")
-                                                       ("->" . "→")
-                                                       ("<-" . "←"))))))
+																										      '((">=" . "≥")
+																											      ("<=" . "≤")
+																											      ("!=" . "≠")
+                                                            ("=>" . "⇒")
+                                                            ("<=" . "⇐")
+                                                            ("->" . "→")
+                                                            ("<-" . "←"))))))
 	:custom
 	(org-hide-emphasis-markers t)
 	(org-startup-folded t)
@@ -135,7 +140,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	(haskell-process-type 'stack-ghci)
 	(org-highlight-latex-and-related '(latex script entities))
 	(org-image-actual-width nil)
+  (org-startup-with-inline-images t)
   :init
+  
 	;; org-agenda
 	(lauremacs/add-org-agenda-files)
   (with-eval-after-load "ol"
@@ -208,7 +215,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 
 	;; LaTeX
 	(sp-local-pair 'org-mode "$" "$" )
-
+  (exec-path-when-cmd-not-found "latex")
 	(setq-local company-backends
               (append '((company-math-symbols-latex company-latex-commands))
                       company-backends))
@@ -226,6 +233,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
      (js				 . t)
      (C					 . t)
      (latex			 . t)
+     (restclient . t)
      (shell			 . t)
      (sql				 . t)))
   :bind
@@ -243,7 +251,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	:after org
 	:hook '((org-mode				. olivetti-mode)
 					(olivetti-mode	. '(lambda () (set-face-attribute 'olivetti-fringe nil
-																											 :background "#d0cec7"))))
+																											      :background "#d0cec7"))))
 	:custom
 	(olivetti-minimum-body-width 80)
 	(olivetti-style 'fancy))
@@ -259,6 +267,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 (use-package ob-elixir
 	:after org)
 
+(use-package ob-restclient
+  :after org)
+
 ;;
 ;; Org roam
 ;;
@@ -269,10 +280,25 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
     :unnarrowed t))
 
+(defconst org-roam-math-template
+  '("m" "math" plain
+    "\n\n%?"
+    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                       "
+# -*- eval: (org-math-mode 1); ispell-local-dictionary: \"en\"; -*-
+#+title: ${title}
+#+options: tex:t
+#+startup: latexpreview
+#+filetags: :math:"
+                       )
+    :unnarrowed t))
+
+
 (defun set-org-roam-templates ()
   (setq org-roam-capture-templates
         (list
-         default-org-roam-template    
+         default-org-roam-template
+         org-roam-math-template
          (org-extra-create-language-template-item "i" "italiano" "it")
          (org-extra-create-language-template-item "n" "nederlands" "dutch")
          (org-extra-create-language-template-item "e" "español" "es")
@@ -290,21 +316,96 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (set-org-roam-templates)
   (setq org-roam-v2-ack t)
   (setq org-roam-node-display-template "${title:*}${tags:20}")
+
   (lauremacs-leader
-    "r"  '(nil                               :which-key "org-roam")
-    "rt" '(org-roam-buffer-toggle            :which-key "toggle buffer")
-    "rf" '(lauremacs-tabs-find-org-roam-node :which-key "node find")
-    "rI" '(org-roam-node-insert              :which-key "node insert")
-    "ri" '(org-extra-node-insert-immediate   :which-key "node insert")
-    "ra" '(org-roam-tag-add                  :which-key "add tag"))
+    "r"   '(nil                               :which-key "org-roam")
+    "rd"  '(nil                               :which-key "DB")
+    "rds" '(org-roam-db-sync                  :which-key "db sync")
+    "ru"  '(org-id-get-create                 :which-key "add UUID to section")
+    "rt"  '(org-roam-buffer-toggle            :which-key "toggle buffer")
+    "rf"  '(lauremacs-tabs-find-org-roam-node :which-key "node find")
+    "rI"  '(org-roam-node-insert              :which-key "node insert")
+    "ri"  '(org-extra-node-insert-immediate   :which-key "node insert")
+    "ra"  '(org-roam-tag-add                  :which-key "add tag"))
   :config
   (org-roam-db-autosync-enable)
   :bind
   (("C-c n l" . org-roam-buffer-toggle)
    ("C-c n t" . org-roam-buffer-toggle)
+   ("C-c n u" . org-id-get-create)
    ("C-c n f" . lauremacs-tabs-find-org-roam-node)
    ("C-c n I" . org-roam-node-insert)
    ("C-c n i" . org-extra-node-insert-immediate)))
 
 (use-package org-roam-ui
-  :after 'org-roam)
+  :after 'org-roam
+  :init
+  (lauremacs-leader
+    "ro" '(org-roam-ui-open :which-key "open org-roam-ui")))
+
+(use-package ox-gfm
+  :after 'org)
+
+(with-eval-after-load "org-num"
+  (setq org-num-skip-unnumbered t))
+
+
+(use-package org-download
+  :after org
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "./pics")
+  (org-download-screenshot-method "screencapture -i %s")
+  (org-download-image-org-width 600)
+  :init
+  (lauremacs-major-mode-leader
+    :keymaps 'org-mode-map
+    "d"  '(nil                           :which-key "org download")
+    "dd" '(org-download-delete           :which-key "delete")
+    "ds" '(org-download-screenshot       :which-key "screenshot")
+    "dr" '(org-download-rename-at-point  :which-key "rename at point")
+    "dR" '(org-download-rename-last-file :which-key "rename last file")
+    "de" '(org-download-edit             :which-key "edit")
+    "du" '(org-download-image            :which-key "image from url")
+    "dy" '(org-download-yank             :which-key "paste image from clipboard"))
+  :bind
+  (("C-c C-d d" . org-download-delete)
+   ("C-c C-d s" . org-download-screenshot)
+   ("C-c C-d r" . org-download-rename-at-point)
+   ("C-c C-d R" . org-download-rename-last-file)
+   ("C-c C-d e" . org-download-edit)          
+   ("C-c C-d u" . org-download-image)
+   ("C-c C-d y" . org-download-yank)))
+
+;;
+;; Org math mode
+;;
+
+(use-package cdlatex
+  :bind
+  (("C-;" . (lambda () (interactive)
+              (cdlatex-ensure-math)
+              (cdlatex-math-symbol))))
+  :init
+  (setq cdlatex-math-symbol-prefix ?\;)) 
+
+(define-minor-mode org-math-mode
+  "Some config to write math on `org-mode'."
+  :lighter "org-math-mode"
+  (org-fragtog-mode 1)
+  (org-cdlatex-mode 1)
+  (lauremacs-cdlatex-add-math-symbols))
+
+(defun lauremacs-cdlatex-add-math-symbols ()
+  (add-multiple-into-list
+   'cdlatex-math-symbol-alist-comb
+   '(
+     (?.  "\\cdot"   "\\dots")
+     (?\; "\\;")
+     (?C  ""         "\\mathbb{C}"   "\\arccos")  
+     (?N  "\\nabla"  "\\mathbb{N}"   "\\exp")     
+     (?Q  "\\Theta"  "\\mathbb{Q}")  
+     (?R  "\\Re"     "\\mathbb{R}")  
+     (?Z  ""         "\\mathbb{Z}")
+     )))
+

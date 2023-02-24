@@ -81,39 +81,41 @@
 	:after helm
 	:init (helm-flx-mode 1))
 
+
+
 (use-package projectile
   :custom
 	(projectile-sort-order 'recentf)
-  (projectile-indexing-method 'native)
+  (projectile-indexing-method 'alien)
   (projectile-globally-ignored-directories
    '(
-     ".cask"
-     ".eldev"
-     ".elixir_ls"
-     ".git"
-     ".log"
-     ".next"
-     ".nyc_output"
-     ".pub-cache"
-     ".rush"
-     ".svn"
-     ".vscode"
-     "_build"
-     "android"
-     "bundle.*"
-     "coverage"
-     "deps"
-     "dist"
-     "dist-.*"
-     "ios"
-     "node_modules"
-     "out"
-     "repl"
-     "rush"
-     "target"
-     "temp"
-     "venv"
-     "^.cache"
+     "^\\.cache$"
+     "^\\.cask$"
+     "^\\.eldev$"
+     "^\\.elixir_ls$"
+     "^\\.git$"
+     "^\\.log$"
+     "^\\.next$"
+     "^\\.nyc_output$"
+     "^\\.pub-cache$"
+     "^\\.rush$"
+     "^\\.svn$"
+     "^\\.vscode$"
+     "^_build$"
+     "^android$"
+     "^bundle.*$"
+     "^coverage$"
+     "^deps$"
+     "^dist$"
+     "^dist-.*"
+     "^ios$"
+     "*node_modules"
+     "^out$"
+     "^repl$"
+     "^rush$"
+     "^target$"
+     "^temp$"
+     "^venv$"
      ))
   (projectile-globally-ignored-files
    '(
@@ -122,15 +124,17 @@
      "*.gz"
      "*.jar"
      "*.log"
+     "*.min.*"
      "*.png"
      "*.pyc"
+     "*.storyshot"
      "*.tar.gz"
      "*.tgz"
      "*.zip"
      ".DS_Store"
      ".lein-repl-history"
      ".packages"
-		 "*~"
+     "*~"
      ))
   (projectile-project-search-path
    '("~/Company/" "~/Personal/"))
@@ -161,6 +165,8 @@
   (lauremacs-leader
     "pt" '(neotree-toggle-project-dir :which-key "neotree toggle"))
   :custom
+  (neo-window-width 35)
+  (neo-window-position 'right)
   (neo-theme (if (display-graphic-p) 'icons 'arrow))
   (neo-show-hidden-files t))
 

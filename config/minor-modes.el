@@ -206,7 +206,11 @@
 
 (with-eval-after-load "flyspell"
   (setq flyspell-default-dictionary "en_GB")
-  (add-hook 'org-mode-hook 'flyspell-mode))
+  (add-hook 'org-mode-hook 'flyspell-mode)
+  (add-hook 'flyspell-mode-hook
+            '(lambda ()
+               (define-key flyspell-mode-map (kbd "C-;") nil)
+               (setq flyspell-mode-map (make-sparse-keymap)))))
 
 ;;
 ;; Hide show
@@ -246,7 +250,7 @@
 
 (with-eval-after-load "smerge-mode"
   (lauremacs-leader
-    "gd" '( :keymap smerge-basic-map
+    "ge" '( :keymap smerge-basic-map
             :package smerge-mode
             :which-key "git diff - smerge")))
 

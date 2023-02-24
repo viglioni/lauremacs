@@ -100,6 +100,12 @@ E.g.:
 	(lambda (lst)
 		(seq-reduce fn lst initial-val)))
 
+(defun fp/const-fn (fn &rest args)
+  "Return an interactive function that call FN applying ARGS."
+  (lambda ()
+    (interactive)
+    (apply fn args)))
+
 ;;
 ;; V1
 ;;

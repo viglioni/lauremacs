@@ -53,7 +53,9 @@
 (use-package yaml-mode
 	:mode "\\.ya?ml\\'"
 	:hook ((yaml-mode . highlight-indentation-mode)
-				 (yaml-mode . prettier-js-mode)))
+				 (yaml-mode . prettier-js-mode)
+         (yaml-mode . visual-line-mode)
+         (yaml-mode . lsp-deferred)))
 
 
 ;;
@@ -63,7 +65,41 @@
 (use-package magit
   :init
   (lauremacs-leader
-    "gs" '(magit-status :which-key "magit status")))
+    "gs" '(magit-status    :which-key "magit status")
+    "gf" '(magit-find-file :which-key "find file")
+    "gd" '(magit-diff-dwim :which-key "diff")))
+
+(with-eval-after-load "magit"
+  (defun lauremacs-gh--get-repo ()
+    "Get Organization/Repo."
+    (replace-regexp-in-string
+     "\\`.+github\\.com:\\(.+\\)\\.git\\'" "\\1"
+     (magit-get "remote"
+                (magit-get-push-remote)
+                "url")))
+
+  (defun lauremacs-gh--title ()
+    "Get PR title from branch-name."
+    (cl-destructuring-bind
+        (prefix code &rest description)
+        (split-string (magit-get-current-branch) "-")
+      (format "[%s-%s] - %s"
+              prefix
+              code
+              (string-join description " "))))
+
+  (defun lauremacs-gh-open-pr ()
+    "Visit the current branch's PR on GitHub."
+    (interactive)
+    (let ((base-url "https://github.com/")
+          (repo (lauremacs-gh--get-repo))
+          (title (lauremacs-gh--title))
+          (branch (magit-get-current-branch)))
+      (browse-url
+       (concat base-url repo "/compare/" branch
+               "?quick_pull=1"
+               "&title=" title
+               "&assignees=Viglioni")))))
 
 ;;
 ;; Json mode 
@@ -87,3 +123,9 @@
   :mode ("\\.rest\\'" . restclient-mode))
 
 
+;;
+;; Mafile
+;;
+
+(with-eval-after-load "make-mode"
+  (add-hook 'makefile-mode-hook 'whitespace-mode))

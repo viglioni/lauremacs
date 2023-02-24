@@ -42,6 +42,7 @@
   :mode "\\.ts\\'"
   :hook ((typescript-mode . lsp-deferred)
 				 (typescript-mode . prettier-js-mode)
+         (typescript-mode . (lambda () (exec-path-when-cmd-not-found "node")))
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
 				 (tsx-mode        . lauremeacs/ts-load-web-mode)

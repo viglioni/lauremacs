@@ -40,8 +40,8 @@
   (let* ((filename "laurisp-core.el")
          (files (directory-files "." t "^l-[a-z\\-].*\\.el$"))
          (content (fp/pipe files
-                     ((mapcar 'get-string-from-file)
-                      (string-join)))))
+                    ((mapcar 'get-string-from-file)
+                     (string-join)))))
     (with-temp-buffer
       (insert content)
       (insert "\n\n(provide 'laurisp-core)\n")
@@ -95,23 +95,36 @@ Argument &REST libs to be installed and required."
 
 
 ;;;###autoload
-(defun lauremacs-request-sync (url &optional on-failure)
+(defun lauremacs-request-sync-get (url &optional on-failure)
   "URL must be a valid url.
 ON-FAILURE is a function expecting one parameter: error-thrown."
   (require 'request)
-  (let ((lauremacs-request-result)
-        (on-fail (or on-failure (lambda (err) (error "Got error: %S" err)))))
+  (let ((lauremacs-request-result nil)
+        (on-fail (or on-failure
+                     (lambda (err) (message "Got error: %S" err)))))
     (request url
-             :sync t
-             :success (cl-function
-                       (lambda (&key data &allow-other-keys) (setq lauremacs-request-result data)))
-             :error  (cl-function
-                      (lambda (&key error-thrown &allow-other-keys&rest _)
-                        (funcall on-fail error-thrown))))
+      :sync t
+      :success (cl-function
+                (lambda (&key data &allow-other-keys)
+                  (setq lauremacs-request-result data)))
+      :error
+      (cl-function (lambda (&rest args &key error-thrown &allow-other-keys)
+                     (funcall on-fail error-thrown))))
     lauremacs-request-result))
 
+;;;###autoload
+(defun exec-path-when-cmd-not-found (cmd)
+  "Run `exec-path-from-shell-initialize' when CMD is not found."
+  (unless (executable-find cmd)
+    (require 'exec-path-from-shell)
+    (exec-path-from-shell-initialize)))
 
-
+;;;###autoload
+(defun display-ansi-colours ()
+  "Display ansi-colours on current buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
 ;;
 ;; @author Laura Viglioni
 ;; 2020

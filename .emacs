@@ -95,8 +95,7 @@
 ;;
 ;; exec path from shell
 ;;
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+(exec-path-from-shell-initialize)
 
 ;;
 ;; Dealing with macos too many open files problem
@@ -108,7 +107,7 @@
    (lambda (key _value)
      (file-notify-rm-watch key))
    file-notify-descriptors))
-
+(setq auto-revert-use-notify nil)
 
 ;;
 ;; Custom variables

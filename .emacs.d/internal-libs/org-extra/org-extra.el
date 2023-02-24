@@ -158,6 +158,15 @@ Or args is just text."
 ;;
 
 ;;;###autoload
+(defun org-extra-money-round (val)
+  (fp/upipe val
+    (fp/partial '* 100)
+    'round
+    'float
+    (lambda (v) (/ v 100))))
+
+
+;;;###autoload
 (defun org-extra-recalc-buffer ()
   (interactive)
   (org-table-recalculate-buffer-tables)
@@ -223,11 +232,11 @@ Or args is just text."
 ;; Org roam
 ;;
 (defun org-extra-node-insert-immediate (arg &rest args)
+  "Insert org-roam node even if it doesnt exist yet."
   (interactive "P")
-  (let ((args (cons arg args))
-        (org-roam-capture-templates (list (append (car org-roam-capture-templates)
-                                                  '(:immediate-finish t)))))
+  (let ((args (cons arg args)))
     (apply #'org-roam-node-insert args)))
+
 
 (defmacro org-extra-create-language-template-item (keybind name lang-code)
   `'(,keybind
@@ -237,12 +246,12 @@ Or args is just text."
      :if-new
      (file+head
       "%<%Y%m%d%H%M%S>-${slug}.org"
-      ,(concat "# -*- ispell-local-dictionary: \"" lang-code "\"; -*-"
-               "\n"
-               "#+title: ${title}"
-               "\n"
-               "#+filetags: :" name ":" 
-               "\n"))
+      ,(concat "# -*- ispell-local-dictionary: \"" lang-code "\"; -*-" "\n"
+               "#+title: ${title}" "\n"
+               "#+filetags: :" name ":" "\n"))
      :unnarrowed t))
+
+
+
 
 (provide 'org-extra)

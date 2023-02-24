@@ -15,3 +15,5 @@ request/*
 transient/*
 url/*
 .org-id-locations
+projects
+*.sqlite

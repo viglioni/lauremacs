@@ -19,6 +19,7 @@
         hindent-reformat-decl-or-fill
         ignore
         indent-for-tab-command
+        indent-region
         ispell-minor-check
         kill-region
         kill-visual-line
@@ -50,6 +51,7 @@
         paredit-forward-slurp-sexp
         paredit-kill
         paredit-open-round
+        paredit-open-square
         paredit-semicolon
         restclient-toggle-body-visibility-or-indent
         sp-backward-sexp

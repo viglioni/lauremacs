@@ -103,7 +103,8 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 
 (defun lauremacs/colorize-compilation-buffer ()
   (toggle-read-only)
-  (ansi-color-apply-on-region compilation-filter-start (point))
+  (ansi-color-apply-on-region 1 (point))
   (toggle-read-only))
 
 (add-hook 'compilation-filter-hook 'lauremacs/colorize-compilation-buffer)
+

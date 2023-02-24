@@ -85,3 +85,21 @@
 	"TT"	'(lauremacs/choose-theme						:which-key "choose theme")
 	"Tt"	'(lauremacs/toggle-transparency			:which-key "transparency")
 	"Tl"	'(linum-mode												:which-key "linum mode"))
+
+;;
+;; Calibre
+;;
+
+(use-package calibredb
+  :init
+  (setq calibredb-root-dir "~/boeken")
+  (setq calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+  (setq calibredb-program "/Applications/calibre.app/Contents/MacOS/calibredb")
+  (setq calibredb-device-dir "/Volumes/Kindle")
+  (setq calibredb-format-all-the-icons t)
+  (lauremacs-leader
+    "ac" '(nil :which-key "calibre")
+    "acc" '(calibredb :which-key "calibre")
+    "aca" '(calibredb-add :which-key "add book")
+    "acf" '(calibredb-find-helm :which-key "find")))
+

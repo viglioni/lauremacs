@@ -88,4 +88,16 @@ ON-FAILURE is a function expecting one parameter: error-thrown."
                      (funcall on-fail error-thrown))))
     lauremacs-request-result))
 
+;;;###autoload
+(defun exec-path-when-cmd-not-found (cmd)
+  "Run `exec-path-from-shell-initialize' when CMD is not found."
+  (unless (executable-find cmd)
+    (require 'exec-path-from-shell)
+    (exec-path-from-shell-initialize)))
 
+;;;###autoload
+(defun display-ansi-colours ()
+  "Display ansi-colours on current buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))

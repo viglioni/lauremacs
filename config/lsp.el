@@ -18,7 +18,9 @@
 ;;;###autoload
 (defun lauremacs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+  (lsp-headerline-breadcrumb-mode)
+
+  (add-to-list 'lsp-file-watch-ignored-directories ".nvm"))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)

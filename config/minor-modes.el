@@ -213,6 +213,14 @@
                (setq flyspell-mode-map (make-sparse-keymap)))))
 
 ;;
+;; Rainbow mode
+;;
+
+(use-package rainbow-mode
+  :hook (prog-mode . rainbow-mode))
+
+
+;;
 ;; Hide show
 ;;
 

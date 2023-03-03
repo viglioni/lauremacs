@@ -124,8 +124,20 @@
 
 
 ;;
-;; Mafile
+;; Makefile
 ;;
 
 (with-eval-after-load "make-mode"
   (add-hook 'makefile-mode-hook 'whitespace-mode))
+
+;;
+;; Reading modes
+;; epub & pdf
+;;
+
+(use-package nov
+  :mode ("\\.epub\\'" . nov-mode))
+
+(use-package pdf-tools
+  :init
+  (pdf-loader-install))

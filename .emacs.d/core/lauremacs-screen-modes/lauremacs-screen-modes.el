@@ -71,12 +71,51 @@
 	(set-face-attribute 'default nil :background "black"))
 
 ;;;###autoload
+(defun lauremacs--theme-load-grey-ink ()
+	"Load a transparent version of `grey-ink'."
+	(interactive)
+	(load-theme 'greyink t)
+	(lauremacs/set-transparency 100)
+
+  ;;
+  ;; Flycheck colours
+  ;;
+  (defconst greyink-warning-colour "#c0c0c0")
+  (defconst greyink-error-colour   "#848884")
+  (defconst greyink-info-colour    "#E5E4E2")
+
+  ;; info
+  (set-face-attribute 'flycheck-info nil
+                      :foreground "black"
+                      :underline (list :color greyink-info-colour))
+  (set-face-attribute 'flycheck-fringe-info nil
+                      :background greyink-error-colour
+                      :foreground "white")
+
+  ;; error
+  (set-face-attribute 'flycheck-error nil
+                      :foreground "black"
+                      :underline (list :color greyink-error-colour))
+  (set-face-attribute 'flycheck-fringe-error nil
+                      :background greyink-error-colour
+                      :foreground "white")
+  ;; warning
+  (set-face-attribute 'flycheck-warning nil
+                      :foreground "black"
+                      :underline (list :color greyink-warning-colour))
+  (set-face-attribute 'flycheck-fringe-warning nil
+                      :background greyink-warning-colour
+                      :foreground "white"))
+
+
+;;;###autoload
 (defun lauremacs/theme-load (theme)
-	"Load THEME.  THEME should be `light', `dark' or `transparent'."
+	"Load THEME.  THEME should be `light', `dark', `grey-ink' or `transparent'."
 	(cond ((equal theme 'light)       (lauremacs--theme-load-light))
 				((equal theme 'dark)        (lauremacs--theme-load-dark))
 				((equal theme 'transparent) (lauremacs--theme-load-transparent))
-				(t (throw-if t "THEME should be `light', `dark' or `transparent'.")))
+        ((equal theme 'grey-ink)    (lauremacs--theme-load-grey-ink))
+				(t (throw-if t "THEME should be `light', `dark', `grey-ink' or `transparent'.")))
 	(funcall major-mode))
 
 
@@ -88,6 +127,7 @@
 	 :sources (helm-build-sync-source "themes"
 							:candidates '(("dark"        . dark)
 														("light"       . light)
+                            ("grey"        . grey-ink)
 														("transparent" . transparent))
 							:action 'lauremacs/theme-load)
 	 :prompt "Choose a theme to load:"))
@@ -106,8 +146,8 @@
 	(interactive)
 	(let* ((frame (selected-frame))
 				 (current-alpha (or (car (frame-parameter frame
-																								 'alpha)) 100))
-				(new-alpha (if (= current-alpha 100) lauremacs-state//opacity 100)))
+																								  'alpha)) 100))
+				 (new-alpha (if (= current-alpha 100) lauremacs-state//opacity 100)))
 		(set-frame-parameter frame 'alpha
 												 (cons new-alpha new-alpha))))
 
@@ -119,7 +159,7 @@ The default value is `lauremacs-state//opacity'."
 	(throw-unless (if (bool opacity) (numberp opacity) t) "OPACITY should be a number")
 	(let* ((alpha (or opacity lauremacs-state//opacity))
 				 (new-alpha (min (max alpha 20) 100))
-				(frame (selected-frame)))
+				 (frame (selected-frame)))
 		(set-frame-parameter frame 'alpha
 												 (cons new-alpha new-alpha))
 		(message (format "Transparency set to %s" new-alpha))))

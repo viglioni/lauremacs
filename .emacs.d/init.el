@@ -13,6 +13,7 @@
 (defconst laurisp-dir (join-path lauremacs-d-dir "laurisp"))
 (defconst lauremacs-home-page-dir (join-path lauremacs-core-dir "lauremacs-home-page"))
 (setq user-emacs-directory lauremacs-d-dir)
+(setq custom-theme-directory (join-path lauremacs-d-dir "custom-themes"))
 (defconst lauremacs-buffer-name "*lauremacs*")
 (defconst lauremacs-external-libs-dir (join-path lauremacs-d-dir "external-libs"))
 (defconst lauremacs-internal-libs-dir (join-path lauremacs-d-dir "internal-libs"))

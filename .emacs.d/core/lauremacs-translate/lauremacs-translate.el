@@ -21,6 +21,7 @@
 
 
 (require 'transient)
+(require 'general)
 
 ;;; Code:
 
@@ -68,6 +69,10 @@
 					:render (gts-posframe-pin-render))))
     (print gts-translate-list)
 		(gts-translate gts-default-translator)))
+
+(with-eval-after-load "general"
+  (lauremacs-leader
+  	"xt" '(lauremacs-translate-transient :which-key "translate en -> pt")))
 
 (provide 'lauremacs-translate)
 

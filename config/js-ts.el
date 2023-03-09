@@ -38,19 +38,40 @@
 		 :save-buffers t
 		 :use-comint-mode projectile-test-use-comint-mode)))
 
+(defun lauremacs-ide--ts-mode? ()
+  (and (contains? '(typescript-mode tsx-mode js-mode jsx-mode) major-mode)
+       (boundp 'lsp-mode)
+       lsp-mode))
+
+(defun lauremacs-ide-ts-autofix-before-save ()
+  (when (lauremacs-ide--ts-mode?)             
+    (lsp-eslint-apply-all-fixes)))
+
+;(setq lsp-eslint-server-command '("vscode-eslint-language-server" "--stdio"))
+
+(add-hook 'before-save-hook 'lauremacs-ide-ts-auto-fix-before-save)
+(advice-add 'lsp-organize-imports :after
+            (lambda () (when (lauremacs-ide--ts-mode?)
+                    (lsp-eslint-apply-all-fixes))))
+
+(with-eval-after-load "lsp-mode"
+  (setq lsp-typescript-preferences-import-module-specifier "relative"))
+
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :hook ((typescript-mode . lsp-deferred)
 				 (typescript-mode . prettier-js-mode)
-         (typescript-mode . (lambda () (exec-path-when-cmd-not-found "node")))
+         (typescript-mode . (lambda ()
+                              (exec-path-when-cmd-not-found "node")
+                              (exec-path-when-cmd-not-found "prettier")))
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
 				 (tsx-mode        . lauremeacs/ts-load-web-mode)
          (typescript-mode . (lambda () (add-multiple-into-list 'prettify-symbols-alist
-																											'((">="  . "≥")
-																												("<="  . "≤")
-																												("!==" . "≠")
-                                                        ("=>"  . "⇒"))))))
+																											    '((">="  . "≥")
+																												    ("<="  . "≤")
+																												    ("!==" . "≠")
+                                                            ("=>"  . "⇒"))))))
   :custom
   (typescript-indent-level 2)
 	:init
@@ -100,6 +121,7 @@
   "rf"     '(lauremacs-ide-lsp-ts-rename-file :which-key "rename file")
 	"s"      '(nil                              :which-key "ts-repl")
 	"sb"     '(send-buffer-to-repl              :which-key "send buffer to repl")
+  "ra"     '(lsp-eslint-apply-all-fixes               :which-key "eslint fix all errors")
 	"se"     '(send-last-sexp-to-repl           :which-key "send last sexp to repl")
   "tj"     '(lauremacs/jest-test-this-file    :which-key "test this file (jest)")
 	"d"      '(nil                              :which-key "docs")

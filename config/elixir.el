@@ -20,7 +20,12 @@
 																												("<-" . "←")
 																												("->" . "→")
 																												("<-" . "←")
-																												("|>" . "▷"))))))
+																												("|>" . "▷")))))
+         (before-save . (lambda ()
+                          (when (and (eq major-mode 'elixir-mode)
+                                     (boundp 'lsp-mode)
+                                     lsp-mode)
+                            (lsp-format-buffer)))))
 	:init
   (add-to-list 'exec-path "~/.elixir-release")
 	(lauremacs-major-mode-leader
@@ -35,3 +40,4 @@
 
 (use-package inf-elixir
 	:after elixir-mode)
+

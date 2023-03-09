@@ -1,5 +1,21 @@
 (use-dependencies 'go-translate)
 (require 'laurisp-core)
+(require 'general)
+
+;;;###autoload
+(defun lauremacs-words-sort-lines ()
+  "Call `sort-lines' or `org-sort' depending on the context."
+  (interactive)
+  (if (eq major-mode 'org-mode)
+      (org-sort)
+    (sort-lines nil (region-beginning) (region-end))))
+
+(with-eval-after-load "general"
+	(lauremacs-leader
+		"x"	 '(nil                        :which-key "words")
+    "xs" '(lauremacs-words-sort-lines :which-key "sort lines")
+		"xC" '(count-words                :which-key "count words")))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;; align ;;;;;;;;;;;;;;;;;
@@ -48,14 +64,9 @@ Should be called when pointer is inside the function."
 
 (with-eval-after-load "general"
 	(lauremacs-leader
-		"x"		'(nil                             :which-key "words")
 		"xa"	'(nil                             :which-key "align")
 		"xag" '(lauremacs-align-general-sexp    :which-key "align general.el statements")
-		"xat" '(lauremacs-align-region-as-table :which-key "align region as table")
-		"xt"	'(nil                             :which-key "translate")
-		"xtt" '(lauremacs-translate/en->pt      :which-key "translate en -> pt")
-		"xte" '(lauremacs-translate/pt->en      :which-key "translate pt -> en")
-		"xC"	'(count-words                     :which-key "count words")))
+		"xat" '(lauremacs-align-region-as-table :which-key "align region as table")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;; Word cases ;;;;;;;;;;;;;;;;;

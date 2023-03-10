@@ -58,14 +58,21 @@
 
 (setq use-package-always-ensure t)
 
-(dolist (pkg '(bind-key
+(dolist (pkg '(
+               bind-key
 							 helm
 							 general
 							 which-key
 							 expand-region
 							 spacemacs-theme
                uuidgen
-							 window-purpose))
+							 window-purpose
+               all-the-icons
+               dashboard
+               go-translate
+               web-mode
+               exec-path-from-shell
+               ))
 	(add-to-list 'package-selected-packages pkg))
 
 (package-install-selected-packages)

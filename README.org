@@ -11,11 +11,15 @@ My new emacs configuration
 - MacOS 🍎
 - using Emacs ~29.0.50~
 
-** First use issues
-- Install font Source Code Pro:
+** First use 
+
   #+begin_src shell :exports both :results output 
+    # Install font Source Code Pro:
     brew tap homebrew/cask-fonts 
     brew install font-source-code-pro
+    # Install ispell / aspell
+    brew install ispell
+    brew install aspell
   #+end_src
 - there might be unsolved dependencies with packages that I didnt solve yet to plug and play. Only =m-x package-install [package]= that is missing from first install
 

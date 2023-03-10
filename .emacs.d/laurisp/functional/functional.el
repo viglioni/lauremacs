@@ -127,6 +127,7 @@ E.g.:
     (apply 'concat (append init-strings strings))))
 
 
+
  ;;
  ;; V1 depreacted
  ;;

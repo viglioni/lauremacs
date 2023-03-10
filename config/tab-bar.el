@@ -9,7 +9,7 @@
 (defun lauremacs-tab--crop-name (name)
   "Crop NAME and add ..."
   (let ((len (- lauremacs-tab-width 3)))
-    (fp/upipe name
+    (fp/pipe name
       (lambda (str) (substring str 0 len))
       (fp/partial 'format "%s..."))))
 
@@ -43,7 +43,7 @@ Else it will be named `Default'."
   (let ((tab-name (or name
                       (and (projectile-project-p) (projectile-project-name))
 			                "default")))
-    (fp/upipe tab-name
+    (fp/pipe tab-name
       'lauremacs-tab--format-tab-name
 	    'tab-bar-rename-tab)))
 

@@ -41,7 +41,7 @@
 (defun NS--get-scripts (package-json)
   "@param package.json filepath
    @returns a list of all scripts in package.json"
-  (fp/pipe package-json
+  (fp/pipe-deprecated package-json
     ((json-read-file)
      (alist-get 'scripts)
      (fp/alist-sort-by-car)
@@ -60,7 +60,7 @@ TODO: put this use nvm script in a clever way."
 ;;;###autoload
 (defun NS--helm-candidates ()
   "Gets the script from package.json and returns an alist (name . command)"
-  (fp/pipe (json-utils-get-package-json)
+  (fp/pipe-deprecated (json-utils-get-package-json)
     ((NS--get-scripts)
      (NS--build-scripts))))
 

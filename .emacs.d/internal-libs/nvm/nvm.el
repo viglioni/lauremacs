@@ -71,14 +71,14 @@
 
 (defun nvm--remove-node-from-path ()
 	"Remove node from Emacs path."
-	(fp/pipe (getenv "PATH")
+	(fp/pipe-deprecated (getenv "PATH")
 		((replace-regexp-in-string (nvm--path-rx) "")
 		 (setenv "PATH"))))
 
 (defun nvm--add-node-to-path (version)
 	"Add node to Emacs path.
 VERSION should be of the form \"vXX.XX.X\"."
-	(fp/pipe (getenv "PATH")
+	(fp/pipe-deprecated (getenv "PATH")
 		((concat (format "%s/versions/node/%s/bin:" nvm-dir version))
 		 (setenv "PATH")))
 	(nvm--exec-path-from-shell-initialize))
@@ -94,7 +94,7 @@ VERSION should be of the form \"vXX.XX.X\"."
 
 (defun nvm--shell-command-exists-p (cmd)
 	"Check if CMD exists in the machine."
-	(fp/pipe cmd
+	(fp/pipe-deprecated cmd
 		((concat "command -v ")
 		 (shell-command-to-string)
 		 (fp/is-empty?)
@@ -129,7 +129,7 @@ VERSION should be on the form \"v.XX.XX.X\"."
 	(let* ((v (nvm--stringify version))
 				 (cmd (format "source ~/.nvm/nvm.sh && nvm install %s" v)))
 		(message (format "Installing node %s..." v))
-		(fp/pipe cmd
+		(fp/pipe-deprecated cmd
 			((shell-command-to-string)
 			 (regex-matches "node v[0-9.]+")
 			 (car)
@@ -180,7 +180,7 @@ E.g.:
 	(interactive)
 	(let ((path (regex-matches (nvm--path-rx) (getenv "PATH"))))
 		(when path
-			(fp/pipe path
+			(fp/pipe-deprecated path
 				((car) (regex-matches "v[0-9.]+") (car))))))
 
 (defun nvm-use-project-version ()
@@ -188,7 +188,7 @@ E.g.:
 	(interactive)
 	(let ((nvmrc (join-path (projectile-project-root) ".nvmrc")))
 		(throw-unless (file-exists-p nvmrc) ".nvmrc not found!")
-		(let ((version (fp/pipe nvmrc
+		(let ((version (fp/pipe-deprecated nvmrc
 										 ((concat "cat ")
 											(shell-command-to-string)
 											(regex-matches "^v?[0-9.]+$")

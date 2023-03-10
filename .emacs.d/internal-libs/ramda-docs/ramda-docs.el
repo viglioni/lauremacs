@@ -36,7 +36,7 @@
 ;;;###autoload
 (defun function-info (html-line)
   (let* ((filtered-string
-          (fp/pipe html-line
+          (fp/pipe-deprecated html-line
                    ((replace-regexp-in-string
                      (rx (or "data-name" "data-category" "=" "\"" ">"))
                      "")
@@ -52,7 +52,7 @@
 ;;;###autoload
 (defun helm-ramda-candidates ()
   (throw-if (any-nil? ramda-html) "ramda's page wasn't downloaded!")
-  (fp/pipe ramda-html
+  (fp/pipe-deprecated ramda-html
            ((parse-funcs-html)
             (mapcar 'function-info)
             (alist-sort-by-cdr-ci))))

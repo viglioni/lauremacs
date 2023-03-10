@@ -31,14 +31,15 @@
 ;;
 
 (require 'seq)
-(require 'cl)
+(require 'cl) ;; change to cl-lib after removing `compose'.
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;; V2 (wip and not tested yet) ;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;
-;; V2 (wip and not tested yet)
-;;
+;; all functions V2 are meant to be used inside pipe, so all of them receives at most one argument.
 
 ;;;###autoload
 (defun fp/any? (lst)
@@ -48,7 +49,7 @@
 										lst nil)))
 
 (defun fp/odd? (n)
-	"Return if N is odd"
+	"Return if N is odd."
 	(= (% n 2) 1))
 
 (defun fp/even? (n)
@@ -64,7 +65,7 @@
 	(lambda (&rest args)
 		(apply fn (append init-args args))))
 
-(defun fp/upipe (arg &rest fn-list)
+(defun fp/pipe (arg &rest fn-list)
   "Pipe ARG into uncurried functions (as FN-LIST)."
   (declare (indent defun))
 	(seq-reduce (lambda (args fn) (apply fn (list args)))
@@ -83,7 +84,7 @@
 E.g.:
 \(funcall \(fp/map '1+) '\(1 2 3)) ;; '\(2 3 4)
 \(funcall \(fp/map '* 2) '\(1 2 3)) ;; '\(2 4 6)
-\(fp/upipe '\(\"string\" \"asd\")
+\(fp/pipe '\(\"string\" \"asd\")
   \(fp/map 'replace-regexp-in-string \"s\" \"S\")) ;; '\(\"String\" \"aSd\")"
 	(fp/partial 'seq-map (apply 'fp/partial (cons fn args))))
 
@@ -91,7 +92,7 @@ E.g.:
 	"Return a lambda with filter applied to FN and ARGS.
 E.g.:
 \(funcall \(fp/filter 'fp/odd?) '\(1 2 3)) ;; '\(2 3 4)
-\(fp/upipe '\(\"string\" \"asd\")
+\(fp/pipe '\(\"string\" \"asd\")
   \(fp/filter 'string-match-p \"g\")) ;; '\(\"string\")"
 	(fp/partial 'seq-filter (apply 'fp/partial (cons fn args))))
 
@@ -106,15 +107,24 @@ E.g.:
     (interactive)
     (apply fn args)))
 
+
+(defun fp/join (separator)
+  "Join a list of strings using SEPARATOR.
+\(funcall (fp/join \"-\") (list \"some\" \"string\"))
+=> \"some-string\"."
+  (fp/partial 's-join separator))
+
+
 ;;
 ;; V1
 ;;
 
 
-(defmacro fp/curry-expr (expr)
+
+(defmacro fp/curry-deprecated-expr (expr)
   "Curry an expression:
-(fp/curry-expr '(+ 1 2 3)) -> (fp/curry + 1 2 3)."
-  `(eval (seq-concatenate 'list '(fp/curry) ,expr)))
+(fp/curry-deprecated-expr '(+ 1 2 3)) -> (fp/curry-deprecated + 1 2 3)."
+  `(eval (seq-concatenate 'list '(fp/curry-deprecated) ,expr)))
 
 (defmacro compose (&rest fn-list)
   "DEPRECATED. See `fp/compose'.
@@ -123,13 +133,13 @@ Compose functions (and curries them) from right to left.
    ((y -> z) ... (m -> o) ((a ... n) -> m) ) -> ((a ... n)->z)
    e.g.:
    (compose (+ 1) (* 2)) -> (lambda (arg1 ... argN) (+ 1 (* 2 arg1 ... argN)))"
-  `(let ((curried-fn (quote ,(seq-map (lambda (fn) (fp/curry-expr fn)) fn-list))))
+  `(let ((curried-fn (quote ,(seq-map (lambda (fn) (fp/curry-deprecated-expr fn)) fn-list))))
      (reduce
       (lambda (f g)
         (lexical-let ((f f) (g g))
           (lambda (&rest args) (funcall f (apply g args)))))
       curried-fn
-      :initial-value (fp/curry identity))))
+      :initial-value (fp/curry-deprecated identity))))
 
 ;;;###autoload
 (defmacro fp/convert-to-symbol (anything)
@@ -140,22 +150,22 @@ Compose functions (and curries them) from right to left.
 
 
 ;;;###autoload
-(defmacro fp/curry (fn &rest initial-args)
+(defmacro fp/curry-deprecated (fn &rest initial-args)
   "DEPRECATED. See `fp/partial'.
 Return the curried function:
-(fp/curry '+ 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))"
+(fp/curry-deprecated '+ 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))"
   `(lambda (&rest args)
      (apply (fp/convert-to-symbol ,fn)
 						(seq-concatenate 'list (list ,@initial-args) args))))
 
 ;;;###autoload
-(defmacro fp/pipe (arg fn-list)
-  "DEPRECATED. See `fp/upipe'.
+(defmacro fp/pipe-deprecated (arg fn-list)
+  "DEPRECATED. See `fp/pipe'.
 
 Pipe an argument into composed functions from left to right.
    a -> ((a -> b) (b -> c) ... (n -> m)) -> m
    e.g.:
-   (fp/pipe  5 ((+ 1) (* 2))) -> 12"
+   (fp/pipe-deprecated  5 ((+ 1) (* 2))) -> 12"
   (declare (indent defun))
   `(funcall (compose ,@(reverse  fn-list)) ,arg))
 
@@ -165,7 +175,7 @@ Pipe an argument into composed functions from left to right.
 ;; E.g.: \(fp/for-each '(1 2) `add-to-list' 'mylist)."
 ;; 	(declare (indent defun))
 ;; 	`(progn (dolist (el ,list)
-;; 						(funcall (fp/curry ,fn ,@fn-args) el))
+;; 						(funcall (fp/curry-deprecated ,fn ,@fn-args) el))
 ;; 					,list))
 
 ;;;###autoload
@@ -192,7 +202,7 @@ e.g.
 ;;;###autoload
 (defun fp/repeat (value number-of-times)
   "Return a list with VALUE repeated NUMBER-OF-TIMES."
-  (fp/upipe (number-sequence 0 (- number-of-times 1))
+  (fp/pipe (number-sequence 0 (- number-of-times 1))
     (fp/map (fp/const value))))
 
 
@@ -298,7 +308,7 @@ Identity function.
    [[a]] -> [[a]]
    e.g.:
    (zip '(1 1) '(2 2) '(3 3)) -> '((1 2 3) (1 2 3))"
-  (apply (fp/curry  mapcar* 'list) lists))
+  (apply (fp/curry-deprecated  mapcar* 'list) lists))
 
 ;;
 ;; Number

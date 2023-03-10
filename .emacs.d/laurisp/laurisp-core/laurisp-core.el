@@ -39,7 +39,7 @@
   (interactive)
   (let* ((filename "laurisp-core.el")
          (files (directory-files "." t "^l-[a-z\\-].*\\.el$"))
-         (content (fp/pipe files
+         (content (fp/pipe-deprecated files
                     ((mapcar 'get-string-from-file)
                      (string-join)))))
     (with-temp-buffer
@@ -167,7 +167,7 @@ ON-FAILURE is a function expecting one parameter: error-thrown."
 ;;;###autoload
 (defun count-non-empty-lines (file)
   (throw-if (any-nil? file) "file is nil")
-  (fp/pipe file
+  (fp/pipe-deprecated file
      ((get-string-from-file)
       (funcall (lambda (string) (split-string string "\n")))
       (seq-filter (lambda (line) (not (equal 0 (string-match-p "^ *$" line)))))

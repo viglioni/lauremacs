@@ -9,23 +9,23 @@
 ;;;### (autoloads nil "functional" "functional.el" (0 0 0 0))
 ;;; Generated autoloads from functional.el
 
-(autoload 'fp/curry "functional" "\
+(autoload 'fp/curry-deprecated "functional" "\
 Returns the curried function.
    ((* -> x) arg1, ..., argN) -> ((argN+1, ..., argM) -> x)
    e.g.:
-   (fp/curry + 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))
+   (fp/curry-deprecated + 1 2 3) -> (lambda (argN ... argM) (+ 1 2 3 argN ... argM))
 
 \(fn FN &rest INITIAL-ARGS)" nil t)
 
-(autoload 'fp/pipe "functional" "\
+(autoload 'fp/pipe-deprecated "functional" "\
 Pipe an argument into composed functions from left to right.
    a -> ((a -> b) (b -> c) ... (n -> m)) -> m
    e.g.:
-   (fp/pipe  5 ((+ 1) (* 2))) -> 12
+   (fp/pipe-deprecated  5 ((+ 1) (* 2))) -> 12
 
 \(fn ARG FN-LIST)" nil t)
 
-(function-put 'fp/pipe 'lisp-indent-function 'defun)
+(function-put 'fp/pipe-deprecated 'lisp-indent-function 'defun)
 
 (autoload 'compose-and-call "functional" "\
 Since compose returns a function, this helper receives a list of

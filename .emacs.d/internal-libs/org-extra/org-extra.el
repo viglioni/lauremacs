@@ -69,7 +69,7 @@ Or args is just text."
 	 :prompt "Choose/insert text: "
 	 :sources (helm-build-sync-source "sets"
 							:candidates candidates
-							:action (fp/curry 'LauTex-insert-math-cmd latex-cmd))))
+							:action (fp/curry-deprecated 'LauTex-insert-math-cmd latex-cmd))))
 
 
 (defun LauTex-insert-mathbb ()
@@ -159,7 +159,7 @@ Or args is just text."
 
 ;;;###autoload
 (defun org-extra-money-round (val)
-  (fp/upipe val
+  (fp/pipe val
     (fp/partial '* 100)
     'round
     'float
@@ -186,7 +186,7 @@ Or args is just text."
 
 (defun org-extra--calc-chunk-size (len)
   (let* ((divisors '(15 14 13 12 11 10 9 8 7 6 5))
-         (size (fp/upipe divisors
+         (size (fp/pipe divisors
                  (fp/partial 'mapcar (fp/partial 'make-pair len))
                  (fp/partial 'asoc-filter-keys (fp/partial '= 0))
                  (lambda (alist) (asoc-sort-keys alist '>))
@@ -222,7 +222,7 @@ Or args is just text."
      "LEVEL=2")
 
 
-    (fp/upipe headings
+    (fp/pipe headings
       (fp/filter 'regex-matches heading-rx)
       (fp/map 'format-link)
       'org-extra--chunks

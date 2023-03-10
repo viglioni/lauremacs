@@ -33,17 +33,17 @@ Return (extension-name icon-value package-name)"
 	"Define the variable `lauremacs/all-icons'."
 	(setq lauremacs/all-icons
 				(append
-				 (mapcar (fp/curry lauremacs//icons-add-package-name "faicon")
+				 (mapcar (fp/curry-deprecated lauremacs//icons-add-package-name "faicon")
 								 (all-the-icons-faicon-data))
-				 (mapcar (fp/curry lauremacs//icons-add-package-name "alltheicon")
+				 (mapcar (fp/curry-deprecated lauremacs//icons-add-package-name "alltheicon")
 								 (all-the-icons-alltheicon-data))
-				 (mapcar (fp/curry lauremacs//icons-add-package-name "fileicon")
+				 (mapcar (fp/curry-deprecated lauremacs//icons-add-package-name "fileicon")
 								 (all-the-icons-fileicon-data))
-				 (mapcar (fp/curry lauremacs//icons-add-package-name "oction")
+				 (mapcar (fp/curry-deprecated lauremacs//icons-add-package-name "oction")
 								 (all-the-icons-octicon-data))
-				 (mapcar (fp/curry lauremacs//icons-add-package-name "wicon")
+				 (mapcar (fp/curry-deprecated lauremacs//icons-add-package-name "wicon")
 								 (all-the-icons-wicon-data))
-				 (mapcar (fp/curry lauremacs//icons-add-package-name "material")
+				 (mapcar (fp/curry-deprecated lauremacs//icons-add-package-name "material")
 								 (all-the-icons-material-data)))))
 
 ;;;###autoload
@@ -97,13 +97,13 @@ ICON-NAME the name of the icon, e.g. \"test-react\"."
 (defun lauremacs/icons-set-ts-mode-icon (&rest args)
 	"Check `lauremacs/icons-set-icon' doc for ARGS."
 	(apply
-	 (fp/curry lauremacs/icons-set-icon lauremacs/icons-ts-default-config 'all-the-icons-extension-icon-alist)
+	 (fp/curry-deprecated lauremacs/icons-set-icon lauremacs/icons-ts-default-config 'all-the-icons-extension-icon-alist)
 	 args))
 
 (defun lauremacs/icons-set-ts-regex-icon (&rest args)
 	"Check `lauremacs/icons-set-icon' doc for ARGS."
 	(apply
-	 (fp/curry lauremacs/icons-set-icon lauremacs/icons-ts-default-config 'all-the-icons-regexp-icon-alist)
+	 (fp/curry-deprecated lauremacs/icons-set-icon lauremacs/icons-ts-default-config 'all-the-icons-regexp-icon-alist)
 	 args))
 
 (provide 'lauremacs-icons)

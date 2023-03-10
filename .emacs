@@ -77,7 +77,7 @@
                lauremacs-elisp-private-files
                nil
                elisp-file-rx))
-  (fp/upipe file
+  (fp/pipe file
     'file-name-sans-extension
     'intern
     'require-without-throw))

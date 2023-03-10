@@ -15,7 +15,7 @@
   (interactive)
   (let* ((filename "laurisp-core.el")
          (files (directory-files "." t "^l-[a-z\\-].*\\.el$"))
-         (content (fp/pipe files
+         (content (fp/pipe-deprecated files
                     ((mapcar 'get-string-from-file)
                      (string-join)))))
     (with-temp-buffer

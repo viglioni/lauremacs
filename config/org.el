@@ -34,7 +34,7 @@ For now the supported keys are
 :item -> runs when cursor is over an item
 *~*~*
 example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
-  (throw-if (oddp (length plist)) "arg list must have an even number of args")
+  (throw-if (cl-oddp (length plist)) "arg list must have an even number of args")
   `(lambda ()
      (interactive)
      (cond

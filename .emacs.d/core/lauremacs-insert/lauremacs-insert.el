@@ -32,7 +32,7 @@
 (defun lauremacs/copy-buffer-path ()
 	"Copies relative path to project root of the current buffer."
 	(interactive)
-	(fp/upipe (buffer-file-name)
+	(fp/pipe (buffer-file-name)
 		(fp/partial 'replace-regexp-in-string (projectile-project-root) "")
 		'kill-new))
 

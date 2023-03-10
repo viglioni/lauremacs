@@ -43,7 +43,7 @@
 ;;;###autoload
 (defun lauremacs--get-prev-buffers ()
   "Return list with previous buffers."
-  (fp/upipe (lauremacs--get-buffers)
+  (fp/pipe (lauremacs--get-buffers)
     (fp/filter (fp/compose 'not 'get-buffer-window))))
 
 ;;;###autoload

@@ -34,9 +34,9 @@
                ((replace-regexp-in-string "foo" "bar"))
                "foo bar") :to-equal "bar bar"))))
 
-(test-suite "#fp/pipe"
+(test-suite "#fp/pipe-deprecated"
   (it-should "pipe functions in the correct order"
-    (expect (fp/pipe 10
+    (expect (fp/pipe-deprecated 10
                ((+ 1)
                 (* 2)))
             :to-be 22)))
@@ -47,11 +47,11 @@
      (funcall  (compose (+ 1) (* 2)) 10)
      :to-equal 21)))
 
-(test-suite "#fp/curry"
+(test-suite "#fp/curry-deprecated"
   (context "there are several arguments"
     (it-should "curry correctly"
       (expect
-       (funcall (fp/curry + 1 2 3 4 5) 6 7 8 9 10)
+       (funcall (fp/curry-deprecated + 1 2 3 4 5) 6 7 8 9 10)
        :to-be 55))))
 
 ;;

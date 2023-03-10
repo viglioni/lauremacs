@@ -60,7 +60,7 @@
 (defun NS--active-buffers-alist ()
   "returns an alist (buffer-name . buffer)
    () -> alist string buffer"
-  (fp/pipe (buffer-list)
+  (fp/pipe-deprecated (buffer-list)
     ((seq-filter 'lang-scripts--is-npm-buff? )
      (mapcar (lambda (buff) (cons (buffer-name buff) buff))))))
 
@@ -89,7 +89,7 @@
   "Focus on buffer or throws if no buffer is found
    () -> () | error"
   (interactive)
-  (fp/pipe (lang-scripts--get-buffer)
+  (fp/pipe-deprecated (lang-scripts--get-buffer)
     ((get-buffer-window)
      (select-window)))
   (goto-char (point-max)))
@@ -106,7 +106,7 @@
   "@param (string) a npm command e.g. \"npm run dev\"
    @return void
    Runs this script in a dedicated async shell buffer. It will run on project root if dir is not specified."
-  (let* ((cmd-name (fp/pipe script-cmd ((replace-regexp-in-string (rx (and "sh " (* anything) "&& ")) "")
+  (let* ((cmd-name (fp/pipe-deprecated script-cmd ((replace-regexp-in-string (rx (and "sh " (* anything) "&& ")) "")
 																				(replace-regexp-in-string " " "-"))))
          (full-cmd (concat script-cmd "&& echo \"\n\nFinished!\n\" || echo \"\n\nFinished with errors.\n\""))
          (buff-name (concat "*:" (projectile-project-name) "::" cmd-name ":*"))

@@ -19,7 +19,7 @@
 
 (add-hook 'emacs-lisp-mode-hook
 					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
-																				 '(("fp/upipe"		. "▷")
+																				 '(("fp/pipe"		. "▷")
 																					 ("fp/partial"	. "∂")
 																					 ("fp/compose"	. "○")))))
 

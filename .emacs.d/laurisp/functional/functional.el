@@ -133,10 +133,10 @@ E.g.:
 
 
 
- (defmacro fp/curry-deprecated-expr (expr)
+(defmacro fp/curry-deprecated-expr (expr)
    "Curry an expression:
 (fp/curry-deprecated-expr '(+ 1 2 3)) -> (fp/curry-deprecated + 1 2 3)."
-   `(eval (seq-concatenate 'list '(fp/curry-deprecated) ,expr))))
+   `(eval (seq-concatenate 'list '(fp/curry-deprecated) ,expr)))
 
 (defmacro compose (&rest fn-list)
   "DEPRECATED. See `fp/compose'.

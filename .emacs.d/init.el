@@ -64,6 +64,7 @@
 							 which-key
 							 expand-region
 							 spacemacs-theme
+               uuidgen
 							 window-purpose))
 	(add-to-list 'package-selected-packages pkg))
 

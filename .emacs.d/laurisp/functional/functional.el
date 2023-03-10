@@ -114,17 +114,29 @@ E.g.:
 => \"some-string\"."
   (fp/partial 's-join separator))
 
+(defun fp/concat (&rest strings)
+  "Concatenate STRINGS with .
+\(funcall (fp/concat \"hello\" \" \" ) \"world\" \"!\")
+=> \"hello world!\"."
+  (apply 'fp/partial (cons 'concat strings)))
 
-;;
-;; V1
-;;
+(defun fp/append-str (&rest strings)
+  "Append STRINGS in the end of init-strings.
+\(funcall (fp/append-str \"end \" \"strings\") \"init\" \" strings - \")."
+  (lambda (&rest init-strings)
+    (apply 'concat (append init-strings strings))))
+
+
+ ;;
+ ;; V1 depreacted
+ ;;
 
 
 
-(defmacro fp/curry-deprecated-expr (expr)
-  "Curry an expression:
+ (defmacro fp/curry-deprecated-expr (expr)
+   "Curry an expression:
 (fp/curry-deprecated-expr '(+ 1 2 3)) -> (fp/curry-deprecated + 1 2 3)."
-  `(eval (seq-concatenate 'list '(fp/curry-deprecated) ,expr)))
+   `(eval (seq-concatenate 'list '(fp/curry-deprecated) ,expr))))
 
 (defmacro compose (&rest fn-list)
   "DEPRECATED. See `fp/compose'.

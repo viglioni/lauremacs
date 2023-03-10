@@ -7,21 +7,26 @@ My new emacs configuration
    
 🚧 *[WIP]* 🚧
 
- *I'm developing it on*
+*I'm developing it on*
 - MacOS 🍎
 - using Emacs ~29.0.50~
 
-*First use issues*
-- there are unsolved dependencies with packages that I didnt solve yet to plug and play. Only =m-x package-install [package]= that is missing from first install
+** First use issues
+- Install font Source Code Pro:
+  #+begin_src shell :exports both :results output 
+    brew tap homebrew/cask-fonts 
+    brew install font-source-code-pro
+  #+end_src
+- there might be unsolved dependencies with packages that I didnt solve yet to plug and play. Only =m-x package-install [package]= that is missing from first install
 
 ** How to use it
 Clone this repo to your ~home~ dir and run
 
 Make the script executable
 
-  #+begin_src shell :exports both :results output
-    chmod +x ~/lauremacs/scripts/lauremacs
-  #+end_src
+#+begin_src shell :exports both :results output
+  chmod +x ~/lauremacs/scripts/lauremacs
+#+end_src
 
 Add script's dir to path (optional)
 

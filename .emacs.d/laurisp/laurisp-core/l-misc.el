@@ -11,20 +11,6 @@
 ;;(require 'functional)
 
 ;;;###autoload
-(defun compile-laurisp-core ()
-  (interactive)
-  (let* ((filename "laurisp-core.el")
-         (files (directory-files "." t "^l-[a-z\\-].*\\.el$"))
-         (content (fp/pipe-deprecated files
-                    ((mapcar 'get-string-from-file)
-                     (string-join)))))
-    (with-temp-buffer
-      (insert content)
-      (insert "\n\n(provide 'laurisp-core)\n")
-      (write-file filename))
-    (byte-compile-file filename)))
-
-;;;###autoload
 (defmacro load-lib (lib-name)
   "requires a lib in external or personal lib dir. Usage example:
    (load-lib 'emacs-grammarly)"

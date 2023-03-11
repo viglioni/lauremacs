@@ -38,7 +38,7 @@
 
 ;;;###autoload
 (defun get-string-from-file (filepath)
-  "Return filepath's file content in a string"
+  "Return FILEPATH's file content in a string."
   (throw-if (any-nil? filepath) "filepath is nil")
   (throw-if (not (file-exists-p filepath)) "file does not exists")
   (with-temp-buffer

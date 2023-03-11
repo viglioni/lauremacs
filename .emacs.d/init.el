@@ -11,6 +11,7 @@
 (defconst lauremacs-d-dir (join-path lauremacs-dir ".emacs.d"))
 (defconst lauremacs-core-dir (join-path lauremacs-d-dir "core"))
 (defconst laurisp-dir (join-path lauremacs-d-dir "laurisp"))
+(defconst laurisp-core-dir (join-path laurisp-dir "laurisp-core"))
 (defconst lauremacs-home-page-dir (join-path lauremacs-core-dir "lauremacs-home-page"))
 (setq user-emacs-directory lauremacs-d-dir)
 (setq custom-theme-directory (join-path lauremacs-d-dir "custom-themes"))
@@ -107,6 +108,11 @@
 ;;
 ;; Load lauremacs core
 ;;
+
+(dolist (file (directory-files laurisp-core-dir t "^l-[a-zA-Z0-9-]+\\.el$"))
+  (if (load file nil nil t) (message (format "Loaded %s" file))
+    (message (format "shit: %s" file))))
+
 
 (require 'functional)
 (require 'laurisp-core)

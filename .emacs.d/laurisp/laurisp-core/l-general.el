@@ -8,14 +8,15 @@
 ;; general related functions
 ;;
 
-;;;###autoload
-(defmacro throw-if (condition &optional error-description)
-  "if condition is true, thrown an error"
-  `(if ,condition (error (or ,error-description ""))))
+(defun throw-if (condition &optional error-description)
+  "If CONDITION is true, thrown an error.
+If ERROR-DESCRIPTION is true, use it as error message."
+  (when condition (error (or error-description ""))))
 
-(defmacro throw-unless (condition &optional error-description)
-  "if condition is true, thrown an error"
-  `(unless ,condition (error (or ,error-description ""))))
+(defun throw-unless (condition &optional error-description)
+  "If CONDITION is false, thrown an error.
+If ERROR-DESCRIPTION is true, use it as error message."
+  (unless condition (error (or error-description ""))))
 
 
 ;;;###autoload

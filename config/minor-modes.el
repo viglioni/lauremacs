@@ -37,21 +37,41 @@
 ;;
 
 (use-package paredit
-  :hook '((emacs-lisp-mode                  . enable-paredit-mode)
-          (eshell-mode                      . enable-paredit-mode)
-          (eval-expression-minibuffer-setup . enable-paredit-mode)
-          (ielm-mode                        . enable-paredit-mode)
-          (lisp-mode                        . enable-paredit-mode)
-          (minibuffer-setup-hook            . enable-paredit-mode)
-          (lisp-interaction-mode            . enable-paredit-mode))
-  :init
-  (add-hook 'eshell-mode-hook 'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode))
+  :hook
+  (emacs-lisp-mode                  . enable-paredit-mode)
+  (eshell-mode                      . enable-paredit-mode)
+  (eval-expression-minibuffer-setup . enable-paredit-mode)
+  (ielm-mode                        . enable-paredit-mode)
+  (lisp-interaction-mode            . enable-paredit-mode)
+  (lisp-mode                        . enable-paredit-mode)
+  (minibuffer-exit                  . my/restore-paredit-key)
+  (minibuffer-setup                 . my/conditionally-enable-paredit-mode)
+  (minibuffer-setup                 . my/conditionally-enable-paredit-mode)
+  :config
+  (defvar my/paredit-minibuffer-commands '(eval-expression
+                                           pp-eval-expression
+                                           eval-expression-with-eldoc
+                                           ibuffer-do-eval
+                                           ibuffer-do-view-and-eval
+                                           org-ql-sparse-tree
+                                           org-ql-search)
+    "Interactive commands for which paredit should be enabled in the minibuffer.")
 
+  (defun my/conditionally-enable-paredit-mode ()
+    "Enable paredit during lisp-related minibuffer commands."
+    (when (memq this-command my/paredit-minibuffer-commands)
+      (enable-paredit-mode)
+      (print "oi")
+      (unbind-key (kbd "RET") paredit-mode-map)))
 
-;;
-;; Doom modeline
-;;
+  (defun my/restore-paredit-key ()
+    "Restore the RET binding that was disabled by
+  my/conditionally-enable-paredit-mode."
+    (bind-key (kbd "RET") #'paredit-newline paredit-mode-map)))
+
+  ;;
+  ;; Doom modeline
+  ;;
 
 (use-package doom-modeline
   :ensure t
@@ -208,7 +228,7 @@
   (setq flyspell-default-dictionary "en_GB")
   (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'flyspell-mode-hook
-            '(lambda ()
+            #'(lambda ()
                (define-key flyspell-mode-map (kbd "C-;") nil)
                (setq flyspell-mode-map (make-sparse-keymap)))))
 

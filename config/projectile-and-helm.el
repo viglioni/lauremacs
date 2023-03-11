@@ -81,14 +81,13 @@
 	:after helm
 	:init (helm-flx-mode 1))
 
-
-
 (use-package projectile
   :custom
 	(projectile-sort-order 'recentf)
   (projectile-indexing-method 'alien)
   (projectile-globally-ignored-directories
    '(
+     "*node_modules"
      "^\\.cache$"
      "^\\.cask$"
      "^\\.eldev$"
@@ -108,8 +107,8 @@
      "^deps$"
      "^dist$"
      "^dist-.*"
+     "^elpa"
      "^ios$"
-     "*node_modules"
      "^out$"
      "^repl$"
      "^rush$"

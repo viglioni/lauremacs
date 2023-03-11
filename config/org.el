@@ -305,6 +305,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
          (org-extra-create-language-template-item "r" "ruskij" "ru"))))
 
 
+(use-package company-math
+  :after org)
+
 (use-package org-roam
   :hook
   (after-init . org-roam-mode)

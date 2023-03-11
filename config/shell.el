@@ -53,13 +53,14 @@ BUFF-NAME the name of the buffer the where shell will be executed."
   :after eshell)
 
 (use-package eshell
+  :bind (("C-<return>" . eshell-send-input))
   :config
   (with-eval-after-load 'esh-opt
     (setq eshell-destroy-buffer-when-process-dies t)
     (setq eshell-visual-commands '("htop" "zsh" "vim")))
   (eshell-git-prompt-use-theme 'multiline)
 	:init
-	 ;; Save command history when commands are entered
+	;; Save command history when commands are entered
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history))
 
 (add-to-list 'display-buffer-alist

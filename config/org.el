@@ -124,7 +124,6 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   :hook '((org-mode . lauremacs/org-mode-setup)
           (org-mode . hl-line-mode)
           (org-mode . prettify-symbols-mode)
-          (org-mode . (lambda () ))
           (org-mode . '(lambda () (add-multiple-into-list 'prettify-symbols-alist
 																										      '((">=" . "≥")
 																											      ("<=" . "≤")

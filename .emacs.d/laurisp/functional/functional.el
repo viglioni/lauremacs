@@ -41,6 +41,8 @@
 
 ;; all functions V2 are meant to be used inside pipe, so all of them receives at most one argument.
 
+(load "./fp.el")
+
 ;;;###autoload
 (defun fp/any? (lst)
   "Return t if at least one element in LST is truthy:
@@ -56,45 +58,6 @@
 	"Return if N is even."
 	(= (% n 2) 0))
 
-(defun fp/id (arg)
-	"Identity function.  Return ARG."
-	arg)
-
-(defun fp/partial (fn &rest init-args)
-	"Return lambda with FN applied with INIT-ARGS."
-	(lambda (&rest args)
-		(apply fn (append init-args args))))
-
-(defun fp/pipe (arg &rest fn-list)
-  "Pipe ARG into uncurried functions (as FN-LIST)."
-  (declare (indent defun))
-	(seq-reduce (lambda (args fn) (apply fn (list args)))
-							fn-list
-							arg))
-
-(defun fp/compose (&rest fs)
-	"Compose a list of functions FS from right to left."
-	(seq-reduce (lambda (f g) (lambda (&rest args)
-												 (funcall f (apply g args))))
-							fs
-							(fp/partial 'fp/id)))
-
-(defun fp/map (fn &rest args)
-	"Return a lambda with map applied to FN and ARGS.
-E.g.:
-\(funcall \(fp/map '1+) '\(1 2 3)) ;; '\(2 3 4)
-\(funcall \(fp/map '* 2) '\(1 2 3)) ;; '\(2 4 6)
-\(fp/pipe '\(\"string\" \"asd\")
-  \(fp/map 'replace-regexp-in-string \"s\" \"S\")) ;; '\(\"String\" \"aSd\")"
-	(fp/partial 'seq-map (apply 'fp/partial (cons fn args))))
-
-(defun fp/filter (fn &rest args)
-	"Return a lambda with filter applied to FN and ARGS.
-E.g.:
-\(funcall \(fp/filter 'fp/odd?) '\(1 2 3)) ;; '\(2 3 4)
-\(fp/pipe '\(\"string\" \"asd\")
-  \(fp/filter 'string-match-p \"g\")) ;; '\(\"string\")"
-	(fp/partial 'seq-filter (apply 'fp/partial (cons fn args))))
 
 (defun fp/reduce (initial-val fn)
 	"Return a lambda with reduce applied with FN and INITIAL-VAL."

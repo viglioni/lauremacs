@@ -38,17 +38,20 @@
 
 (use-package paredit
   :hook
-  (emacs-lisp-mode                  . enable-paredit-mode)
-  (eshell-mode                      . enable-paredit-mode)
-  (eval-expression-minibuffer-setup . enable-paredit-mode)
-  (ielm-mode                        . enable-paredit-mode)
-  (lisp-interaction-mode            . enable-paredit-mode)
-  (lisp-mode                        . enable-paredit-mode)
-  (minibuffer-exit                  . my/restore-paredit-key)
-  (minibuffer-setup                 . my/conditionally-enable-paredit-mode)
-  (minibuffer-setup                 . my/conditionally-enable-paredit-mode)
+  ((emacs-lisp-mode                  . enable-paredit-mode)
+   (eval-expression-minibuffer-setup . enable-paredit-mode)
+   (lisp-interaction-mode            . enable-paredit-mode)
+   (lisp-mode                        . enable-paredit-mode)
+   (minibuffer-exit                  . my/restore-paredit-key)
+   (minibuffer-setup                 . my/conditionally-enable-paredit-mode)
+   (minibuffer-setup                 . my/conditionally-enable-paredit-mode)
+   (eshell-mode                      . (lambda ()
+                                         (define-key eshell-mode-map
+                                                     (kbd "<return>")
+                                                     'eshell-send-input))))
   :config
   (defvar my/paredit-minibuffer-commands '(eval-expression
+                                           ielm-eval-input
                                            pp-eval-expression
                                            eval-expression-with-eldoc
                                            ibuffer-do-eval
@@ -61,7 +64,6 @@
     "Enable paredit during lisp-related minibuffer commands."
     (when (memq this-command my/paredit-minibuffer-commands)
       (enable-paredit-mode)
-      (print "oi")
       (unbind-key (kbd "RET") paredit-mode-map)))
 
   (defun my/restore-paredit-key ()

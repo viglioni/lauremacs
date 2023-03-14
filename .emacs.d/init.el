@@ -3,7 +3,7 @@
 ;;
 
 (defun join-path (path filename)
-  "Concat path and file. Add '/' to the end of the path if necessary."
+  "Concat PATH and FILENAME.  Add \"/\" to the end of the path if necessary."
   (concat path (if (string-match-p "/$" path) "" "/") filename))
 
 (defconst lauremacs-dir "~/lauremacs")
@@ -23,6 +23,8 @@
 (defconst lauremacs-elisp-private-files (join-path lauremacs-private-files-dir "elisp-files"))
 (defconst lauremacs-org-roam-files "~/org-roam-files")
 
+(with-eval-after-load "warnings" ;; avoid warning flood of compiled functions
+  (setq warning-minimum-level :error)) 
 
 (setq backup-directory-alist
           `(("." . ,(join-path user-emacs-directory "backups"))))

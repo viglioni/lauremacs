@@ -71,26 +71,39 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 ;;
 
 (lauremacs-leader
-	"!" '(shell-command :which-key "shell command")
-	"&" '(async-shell-command :which-key "async shell command")
+	"!"   '(shell-command                                                    :which-key "shell command")
+	"&"   '(async-shell-command                                              :which-key "async shell command")
 	;; pop shell
-  "as" '(nil :which-key "shell")
-  "ass" (list (lauremacs-pop-shell 'shell) :which-key "shell")
-  "ase" (list (lauremacs-pop-shell 'eshell) :which-key "eshell")
-	"ast" (list (lauremacs-pop-shell 'ansi-term (getenv "SHELL")) :which-key "ansi-term")
-	"asi" (list (lauremacs-pop-shell 'ielm) :which-key "ielm")
-	"ash" (list (lauremacs-pop-shell-cmd "ghci" "haskell-ghci") :which-key "haskell ghci")
-	"asH" (list (lauremacs-pop-shell-cmd "stack ghci" "haskell-stack-ghci") :which-key "haskell stack ghci")
-	"asn" (list (lauremacs-pop-shell-cmd "npx ts-node" "ts-node") :which-key "ts node")
-	"asN" (list (lauremacs-pop-shell-cmd "node" "node") :which-key "node")
-	"asc" (list (lauremacs-pop-shell-cmd "lein repl" "clojure-lein-repl") :which-key "clojure lein repl")
-	"asc" (list (lauremacs-pop-shell-cmd "iex" "elixir-repl") :which-key "elixir repl")
+  "as"  '(nil                                                              :which-key "shell")
+	"asH" (list (lauremacs-pop-shell-cmd "stack ghci" "haskell-stack-ghci")  :which-key "haskell stack ghci")
+	"asN" (list (lauremacs-pop-shell-cmd "node" "node")                      :which-key "node")
+	"asc" (list (lauremacs-pop-shell-cmd "iex" "elixir-repl")                :which-key "elixir repl")
+	"asc" (list (lauremacs-pop-shell-cmd "lein repl" "clojure-lein-repl")    :which-key "clojure lein repl")
+  "ase" (list (lauremacs-pop-shell 'eshell)                                :which-key "eshell")
+	"ash" (list (lauremacs-pop-shell-cmd "ghci" "haskell-ghci")              :which-key "haskell ghci")
+	"asi" (list (lauremacs-pop-shell 'ielm)                                  :which-key "ielm")
+	"asn" (list (lauremacs-pop-shell-cmd "npx ts-node" "ts-node")            :which-key "ts node")
+  "asp" (list (lauremacs-pop-shell-cmd "python3" "python")                 :which-key "python")
+	"ast" (list (lauremacs-pop-shell 'ansi-term (getenv "SHELL"))            :which-key "ansi-term")
+  "ass" (list (lauremacs-pop-shell 'shell)                                 :which-key "shell")
+  "asS"  (list (lauremacs-pop-shell-cmd "sage" "sage")                     :which-key "sage")
+  "asx" (list (lauremacs-pop-shell-cmd "iex" "elixir-repl")                :which-key "elixir repl")
 	;; full buffer shell
-	"asf" '(nil :which-key "full buffer shell")
-	"asfs" 'shell
-  "asfe" 'eshell
-	"asft" (list (fp/const-fn-interactive 'ansi-term "/bin/zsh") :which-key "ansi-term")
-	"asfi" 'ielm)
+  "asf" '(nil                                                              :which-key "full buffer shell")
+	"asfH" (list (lauremacs-pop-shell-cmd "stack ghci" "haskell-stack-ghci") :which-key "haskell stack ghci")
+	"asfN" (list (lauremacs-pop-shell-cmd "node" "node")                     :which-key "node")
+	"asfc" (list (lauremacs-pop-shell-cmd "iex" "elixir-repl")               :which-key "elixir repl")
+	"asfc" (list (lauremacs-pop-shell-cmd "lein repl" "clojure-lein-repl")   :which-key "clojure lein repl")
+  "asfe" (list (lauremacs-pop-shell 'eshell)                               :which-key "eshell")
+	"asfh" (list (lauremacs-pop-shell-cmd "ghci" "haskell-ghci")             :which-key "haskell ghci")
+	"asfi" (list (lauremacs-pop-shell 'ielm)                                 :which-key "ielm")
+	"asfn" (list (lauremacs-pop-shell-cmd "npx ts-node" "ts-node")           :which-key "ts node")
+  "asfp" (list (lauremacs-pop-shell-cmd "python3" "python")                :which-key "python")
+	"asft" (list (lauremacs-pop-shell 'ansi-term (getenv "SHELL"))           :which-key "ansi-term")
+  "asfs" (list (lauremacs-pop-shell 'shell)                                :which-key "shell")
+  "asfS"  (list (lauremacs-pop-shell-cmd "sage" "sage")                    :which-key "sage")
+  "asfx" (list (lauremacs-pop-shell-cmd "iex" "elixir-repl")               :which-key "elixir repl"))
+  
 
 
 (with-eval-after-load "term"

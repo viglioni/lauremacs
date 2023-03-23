@@ -28,14 +28,11 @@
 (use-package go-translate
   :init
   (setq gts-translate-list '())
-  (setq gts-default-translator nil)
-
-  (lauremacs-leader
-    "at" '(lauremacs-translate-transient :which-key "translate")))
+  (setq gts-default-translator nil))
 
 
 (transient-define-prefix lauremacs-translate-transient ()
-  [;; brazilian to others
+  [ ;; brazilian to others
    ("be" "brazilian to english"    (lambda () (interactive) (lauremacs-translate "pt" "en")))
    ("bi" "brazilian to italian"    (lambda () (interactive) (lauremacs-translate "pt" "it")))
    ("bn" "brazilian to nederlands" (lambda () (interactive) (lauremacs-translate "pt" "nl")))
@@ -72,7 +69,7 @@
 
 (with-eval-after-load "general"
   (lauremacs-leader
-  	"xt" '(lauremacs-translate-transient :which-key "translate en -> pt")))
+    "at" '(lauremacs-translate-transient :which-key "translate")))
 
 (provide 'lauremacs-translate)
 

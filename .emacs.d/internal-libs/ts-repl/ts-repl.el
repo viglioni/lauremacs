@@ -85,14 +85,14 @@ it is wrapped by a console.log statement and concatenated to the end"
 ;;;###autoload
 (defun ts-repl--run-ts (tmp-file)
   "Run the command that will execute the typescript content on a TMP-FILE."
-  (async-shell-command
-     (concat "echo \"-*-TS-Repl-start-*-\n\n\""
-             " && npx ts-node -T " tmp-file
-             " && echo \"\n\""
-             " || echo \"\n\n-*-An error has occurred-*-\""
-             " && echo \"-*-TS-Repl-end-*-\"")
-     ts-repl--buffer-name
-     ts-repl--error-buffer-name))
+  (projectile-run-async-shell-command-in-root
+   (concat "echo \"-*-TS-Repl-start-*-\n\n\""
+           " && npx ts-node -T " (join-path (lpwd) tmp-file)
+           " && echo \"\n\""
+           " || echo \"\n\n-*-An error has occurred-*-\""
+           " && echo \"-*-TS-Repl-end-*-\"")
+   ts-repl--buffer-name
+   ts-repl--error-buffer-name))
 
 ;;;###autoload
 (defun ts-repl--run-after-ts (tmp-file)

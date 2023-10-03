@@ -2,6 +2,14 @@
 (require 'laurisp-core)
 (require 'general)
 
+;;
+;; Russian keyboard
+;;
+
+(require 'quail-russian-qwerty)
+
+
+
 ;;;###autoload
 (defun lauremacs-words-sort-lines ()
   "Call `sort-lines' or `org-sort' depending on the context."

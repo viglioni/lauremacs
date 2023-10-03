@@ -130,5 +130,10 @@ Should be called when pointer is inside the function."
   (message (lauremacs-words-nl--get-article noun)))
 
 
+(defun lauremacs-words-coniugazione-at-point ()
+  (interactive)
+  (get-buffer-create "*coniugazione*")
+  (eww (format "https://www.coniugazione.it/verbo/%s.php" (word-at-point))
+       ))
 
 (provide 'lauremacs-words)

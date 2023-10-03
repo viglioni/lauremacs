@@ -251,6 +251,143 @@ Or args is just text."
                "#+filetags: :" name ":" "\n"))
      :unnarrowed t))
 
+;;
+;; Org mode functions
+;;
+
+(defun org-extra-get-heading-name ()
+  "Get heading name under cursor."
+  (org-element-property :title (org-element-at-point)))
+
+(defun org-extra-get-heading-paragraph ()
+  "Get heading name under cursor."
+  (org-element-property :paragraph (org-element-at-point)))
+
+
+;;
+;; org roam extra
+;;
+;; inspired on https://github.com/jgru/org-roam-ui/tree/add-export-capability
+
+(require 'org-roam-ui)
+
+(defun org-roam-ui--get-nodes-by-tags (&optional tags)
+  "Return all nodes that contain at least one tag in TAGS."
+  (if tags
+      (eval
+       `(org-roam-db-query [:select [id
+                                     file
+                                     title
+                                     level
+                                     pos
+                                     olp
+                                     properties
+                                     (funcall group-concat tag
+                                              (emacsql-escape-raw \\\, ))]
+                                    :as tags
+                                    :from nodes
+                                    :left-join tags
+                                    :on (= id node_id)
+                                    :where (in tag [,@tags]) 
+                                    :group :by id]))
+    (org-roam-ui--get-nodes)))
+
+
+(defun org-roam-ui--make-graphdata (&optional tags)
+  "Get roam data and make JSON."
+  (let* ((nodes-names
+          [id
+           file
+           title
+           level
+           pos
+           olp
+           properties
+           tags])
+         (old (not (fboundp 'org-roam-db-map-citations)))
+         (links-db-rows (if old
+                            (org-roam-ui--separate-ref-links
+                             (org-roam-ui--get-links old))
+                          (seq-concatenate
+                           'list
+                           (org-roam-ui--separate-ref-links
+                            (org-roam-ui--get-cites))
+                           (org-roam-ui--get-links))))
+         (links-with-empty-refs (org-roam-ui--filter-citations links-db-rows))
+         (empty-refs (delete-dups (seq-map
+                                   (lambda (link)
+                                     (nth 1 link))
+                                   links-with-empty-refs)))
+         (nodes-db-rows (org-roam-ui--get-nodes-by-tags tags))
+         (fake-nodes (seq-map #'org-roam-ui--create-fake-node empty-refs))
+         ;; Try to update real nodes that are reference with a title build
+         ;; from their bibliography entry. Check configuration here for avoid
+         ;; unneeded iteration though nodes.
+         (retitled-nodes-db-rows (if org-roam-ui-retitle-ref-nodes
+                                     (seq-map #'org-roam-ui--retitle-node
+                                              nodes-db-rows)
+                                   nodes-db-rows))
+         (complete-nodes-db-rows (append retitled-nodes-db-rows fake-nodes))
+         (response `((nodes . ,(mapcar
+                                (apply-partially
+                                 #'org-roam-ui-sql-to-alist
+                                 (append nodes-names nil))
+                                complete-nodes-db-rows))
+                     (links . ,(mapcar
+                                (apply-partially
+                                 #'org-roam-ui-sql-to-alist
+                                 '(source target type))
+                                links-db-rows))
+                     (tags . ,(seq-mapcat
+                               #'seq-reverse
+                               (org-roam-db-query
+                                [:select :distinct tag :from tags]))))))
+    (when old
+      (message "[org-roam-ui] You are not using the latest version of org-roam.
+This database model won't be supported in the future, please consider upgrading."))
+    (json-encode
+     `((type . "graphdata")
+       (data . ,response)))))
+
+(defun org-roam-ui--export-graphdata (file &optional tags)
+  "Create a JSON-file containting graphdata."
+  (print tags)
+  (write-region (org-roam-ui--make-graphdata tags) nil file))
+
+(defun org-roam-ui-export (&optional tags)
+  "Export `org-roam-ui's-data for usage as static webserver.
+Get only nodes that has at least one tag of TAGS.
+If none is provided, get all nodes."
+  (interactive "sTags to filter: ")
+  (let* ((dir (read-file-name "Specify output directory:"))
+         (graphdata-file (concat (file-name-as-directory dir) "graphdata.json"))
+         (notes-dir (concat (file-name-as-directory dir) "notes/")))
+    (org-roam-ui--export-graphdata graphdata-file
+                                   (and (not (string= "" tags)) (split-string tags " ")))
+    (make-directory notes-dir :parents)
+    (mapcar (lambda (id)
+              (let* ((cid (car id))
+                     (content (org-roam-ui--get-text cid)))
+                (write-region content nil (concat notes-dir cid) 'append)))
+            (org-roam-db-query "select id from nodes;"))))
+
+
+(cl-defun org-extra-create-id (&optional (size 4))
+  (seq-take (uuidgen-4) size))
+
+;;
+;; sqlite
+;;
+
+(defun org-extra-sqlite-wrap-table (table)
+  "Add hline on the beginning and end of a TABLE."
+  `(hline ,@table hline))
+
+(with-eval-after-load "ob-sqlite"
+  (advice-add
+   'org-babel-sqlite-offset-colnames
+   :filter-return
+   'org-extra-sqlite-wrap-table))
 
 
 

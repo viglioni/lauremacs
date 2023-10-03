@@ -10,6 +10,8 @@
 ;; 
 
 (require 'helm)
+(require 'uuidgen)
+(require 'functional)
 ;;; Code:
 
 (message "loading lauremacs-org-extensions...")
@@ -61,11 +63,43 @@ POST-FUNC: reference for a function to run on :post exectution."
                     "#+end_src"))))
 
 ;;;###autoload
+(defun lauremacs-org--insert-sqlite (&optional tables-names)
+  (interactive "sInsert tables names: ")
+  (let ((formatted-var (fp/pipe tables-names
+                         (fp/split " ")
+                         (fp/map (lambda (name) (format "%s=%s" name name)))
+                         (fp/join " ")
+                         ))
+        (import-tables (fp/pipe tables-names
+                  (fp/split " ")
+                  (fp/map (lambda (name) (format ".import $%s %s" name name)))
+                  (fp/join "\n"))))
+    (insert (format
+             "#+begin_src sqlite :exports results :results table :db \":memory:\" :colnames yes :mode csv :header on :var %s \n%s\n\n #+end_src"
+             formatted-var
+             import-tables))))
+
+
+;;;###autoload
+(defun lauremacs-org--insert-src-with-session (lang-name &optional session-name)
+  "Insert org source block for LANG-NAME with session SESSION-NAME."
+  (insert (format
+           "#+begin_src %s :exports both :results output :session %s \n\n #+end_src"
+           lang-name
+           (or session-name "sage"))))
+
+
+
+;;;###autoload
+
 (defun lauremacs-org--insert-src (lang-name)
 	"Given the LANG-NAME, insert a org code block with proper :post function."
+  (message lang-name)
   (cond
-   ((string= "haskell" lang-name) (lauremacs-org--insert-src-with-post lang-name "org-babel-haskell-formatter"))
-   ((string= "clojure" lang-name) (lauremacs-org--insert-src-with-post lang-name "org-babel-clojure-formatter"))
+   ((string= "haskell" lang-name) (lauremacs-org--insert-src-with-post    lang-name "org-babel-haskell-formatter"))
+   ((string= "clojure" lang-name) (lauremacs-org--insert-src-with-post    lang-name "org-babel-clojure-formatter"))
+   ((string= "sage"    lang-name) (lauremacs-org--insert-src-with-session lang-name))
+   ((string= "sqlite"  lang-name) (call-interactively 'lauremacs-org--insert-sqlite))
    (t (lauremacs-org--insert-src-with-post lang-name))))
 
 (defconst lauremacs-org--helm-lang-sources

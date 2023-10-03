@@ -5,9 +5,12 @@
       '(
         LaTeX-insert-left-brace
         beginning-of-visual-line
+        comment-dwim
         company-complete
         cycle-spacing
         delete-horizontal-space
+        delete-window
+        emojify-delete-emoji-backward
         end-of-buffer
         end-of-visual-line
         evil-window-left
@@ -36,13 +39,17 @@
         org-force-self-insert
         org-kill-line
         org-meta-return
+        org-open-line
         org-return
         org-self-insert-command
+        org-shifttab
+        org-table-copy-down
         org-todo
         org-yank
         paredit-backslash
         paredit-backward
         paredit-close-round
+        paredit-delete-char
         paredit-doublequote
         paredit-forward
         paredit-forward-barf-sexp
@@ -50,6 +57,7 @@
         paredit-forward-kill-word
         paredit-forward-slurp-sexp
         paredit-kill
+        paredit-newline
         paredit-open-round
         paredit-open-square
         paredit-semicolon
@@ -62,6 +70,7 @@
         string-inflection-camelcase
         yaml-electric-backspace
         yaml-electric-dash-and-dot
+        yas-abort-snippet
         yas-expand
         ))
 
@@ -69,13 +78,16 @@
       '(
         evil-window-down
         evil-window-right
+        flycheck-next-error
         handle-switch-frame
         haskell-process-load-file
         iedit-switch-to-mc-mode
+        ignore-preserving-kill-region
         lsp-rename
         lsp-ui-doc--handle-mouse-movement
         mc/mark-all-in-region
         mouse-set-region
         org-ctrl-c-ctrl-c
         set-rectangular-region-anchor
+        web-mode-element-rename
         ))

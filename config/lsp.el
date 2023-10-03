@@ -30,8 +30,8 @@
   :init
   (setq lsp-keymap-prefix "<f17>")
 																				;(setq lsp-enable-on-type-formatting nil)
-	(setq lsp-auto-guess-root t)
-	(setq lsp-use-workspace-root-for-server-default-directory t)
+	(setq lsp-use-workspace-root-for-server-default-directory nil)
+  (setq lsp-auto-guess-root t)
   :config
   (define-key lsp-mode-map (kbd "<f17>") lsp-command-map)) 
 

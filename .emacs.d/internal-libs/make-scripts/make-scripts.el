@@ -55,6 +55,7 @@
   (interactive)
   (throw-unless (MS--has-makefile? local) "No makefile was found")
   (helm
+   :history t
    :prompt "Choose command to exec: "
    :sources (helm-build-sync-source "Avaliable scripts from your makefile"
               :candidates (MS--candidates)

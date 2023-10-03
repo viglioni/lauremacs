@@ -33,6 +33,8 @@
 
 ;;; Code:
 
+(define-derived-mode ts-mode typescript-mode "ts")
+
 (defconst org-babel-ts-project-dir (concat user-emacs-directory "/org-babel/typescript")
   "Path to the ts project all blocks will be runned in.")
 

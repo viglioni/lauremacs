@@ -1,3 +1,5 @@
+(require 'fp)
+
 (defun zap-open-br (number)
 	(interactive "sInsert number: ")
 	(fp/pipe number

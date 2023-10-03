@@ -87,7 +87,10 @@
   (projectile-indexing-method 'alien)
   (projectile-globally-ignored-directories
    '(
+     "*\\.stack-work"
+     "*build"
      "*node_modules"
+     "^node_modules$"
      "^\\.cache$"
      "^\\.cask$"
      "^\\.eldev$"
@@ -133,6 +136,7 @@
      ".DS_Store"
      ".lein-repl-history"
      ".packages"
+     "*.js.map"
      "*~"
      ))
   (projectile-project-search-path

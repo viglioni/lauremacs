@@ -27,7 +27,8 @@
                                      lsp-mode)
                             (lsp-format-buffer)))))
 	:init
-  (add-to-list 'exec-path "~/.elixir-release")
+  ;; download latest release from https://github.com/elixir-lsp/elixir-ls
+  (add-to-list 'exec-path "~/elixir-ls")
 	(lauremacs-major-mode-leader
 		:keymaps 'elixir-mode-map
 		"s"		'(nil											:which-key "repl")

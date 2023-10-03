@@ -174,7 +174,7 @@ custom output filter.  (See `my-sql-comint-preoutput-filter'.)"
   :type 'string)
 
 (defcustom sqlfmt-options
-  '("--use-spaces")
+  '("--use-spaces" "--align" "--tab-width=2" "--print-width=100")
   "Command line options to pass to sqlfmt."
   :type '(repeat string))
 

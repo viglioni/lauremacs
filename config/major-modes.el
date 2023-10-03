@@ -23,6 +23,27 @@
 																					 ("fp/partial"	. "∂")
 																					 ("fp/compose"	. "○")))))
 
+;;
+;; Common lisp mode
+;;
+
+(use-package slime
+  :init
+  (setq inferior-lisp-program "sbcl")
+  (lauremacs-major-mode-leader
+    :keymaps 'slime-mode-map
+    "s"  '(nil                        :which-key "repl")
+    "ss" '(slime                      :which-key "open repl")
+    "se" '(slime-eval-last-expression :which-key "eval last expression")
+    "sb" '(slime-eval-buffer          :which-key "eval buffer")))
+
+(add-hook 'lisp-mode-hook
+					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
+																				 '(("fp/pipe"		. "▷")
+																					 ("fp/partial"	. "∂")
+																					 ("fp/compose"	. "○")))))
+
+
 
 ;;;###autoload
 (lauremacs-major-mode-leader
@@ -65,9 +86,10 @@
 (use-package magit
   :init
   (lauremacs-leader
-    "gs" '(magit-status    :which-key "magit status")
-    "gf" '(magit-find-file :which-key "find file")
-    "gd" '(magit-diff-dwim :which-key "diff")))
+    "gs" '(magit-status         :which-key "magit status")
+    "gf" '(magit-find-file      :which-key "find file")
+    "gd" '(magit-diff-dwim      :which-key "diff")
+    "gp" '(lauremacs-gh-open-pr :which-key "open pr")))
 
 (with-eval-after-load "magit"
   (defun lauremacs-gh--get-repo ()
@@ -141,3 +163,29 @@
 (use-package pdf-tools
   :init
   (pdf-loader-install))
+
+;;
+;; Python / Sage
+;;
+;; brew install --cask sage
+;;
+
+(use-package sage-shell-mode
+  :init
+  (lauremacs-major-mode-leader
+    :keymaps 'sage-shell:sage-mode-map
+    "s" '(nil :which-key "repl")
+    "sr" '(sage-shell-edit:send-region :which-key "send region")
+    "sb" '(sage-shell-edit:send--buffer :which-key "send buffer")))
+
+(use-package helm-sage
+  :after '(sage-shell-mode helm))
+
+(use-package ob-sagemath
+  :after '(org sage-shell-mode))
+
+;;
+;; Mermaid
+;;
+(use-package mermaid-mode
+  :mode "\\.mmd'")

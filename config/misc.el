@@ -47,6 +47,7 @@
 										'make-scripts:run-command
 										'make-scripts)
 
+(require 'project-scripts)
 
 (general-define-key
  :prefix "<f17> <f17>"
@@ -73,6 +74,11 @@
  :prefix "<f17> <f17> m"
  ""		'(nil						:which-key "makefile scripts")
  "r"	'(run-make-cmd	:which-key "run make command"))
+
+(general-define-key
+ :prefix "<f17> <f17> p"
+ ""	 '(nil                            :which-key "project scripts")
+ "t" '(project-scripts-create-ts-proj	:which-key "create ts project"))
 
 ;;
 ;; Toggle
@@ -102,4 +108,14 @@
     "acc" '(calibredb :which-key "calibre")
     "aca" '(calibredb-add :which-key "add book")
     "acf" '(calibredb-find-helm :which-key "find")))
+
+
+;;
+;; Docker
+;;
+
+(use-package docker
+  :init
+  (lauremacs-leader
+    "ad" '(docker :which-key "docker")))
 

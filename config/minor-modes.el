@@ -72,7 +72,7 @@
     (bind-key (kbd "RET") #'paredit-newline paredit-mode-map)))
 
   ;;
-  ;; Doom modeline
+  ;; Modeline
   ;;
 
 (use-package doom-modeline
@@ -82,7 +82,7 @@
 
   (doom-modeline-def-modeline 'lauremacs-modeline
     '(bar window-number buffer-info matches selection-info media-info)
-    '(checker lsp word-count pdf-pages major-mode workspace-name vcs hud buffer-position))
+    '(buffer-position checker lsp word-count pdf-pages major-mode workspace-name vcs hud))
 
   (doom-modeline-set-modeline 'lauremacs-modeline 'default)
   
@@ -92,6 +92,13 @@
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode emacs-lisp-mode)))
 
+(use-package nyan-mode
+  :custom
+  (nyan-wavy-trail t)
+  (nyan-animate-nyancat t)
+  (nyan-bar-length 16)
+  :init
+  (nyan-mode))
 
 ;;
 ;; Highlight indentation
@@ -122,8 +129,8 @@
                       :foreground "black"
                       :underline nil)
   (set-face-attribute 'show-paren-match nil
-                      :background "#c93360"
-                      :foreground "#f4d6df"
+                      :background "#3a81c3"
+                      :foreground "white"
                       :underline nil))
 
 ;;
@@ -135,7 +142,9 @@
          :map company-search-map
          ("s-." . 'company-select-previous)
          ("s-," . 'company-select-next))
-  :config
+  :custom
+  (company-minimum-prefix-length 1)
+  (company--idle-delay 0.3)
   :init
   (setq company-dabbrev-downcase nil)
   (global-company-mode 1))

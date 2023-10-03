@@ -56,21 +56,38 @@
 
 
 ;;;###autoload
-(defun lauremacs-translate (from to)
+(cl-defun lauremacs-translate (from to &key
+                                    (picker (gts-prompt-picker :single t))
+                                    (render (gts-posframe-pin-render)))
   "Translate words FROM language TO language."
-  (let ((gts-translate-list  (list (list from to)))
+  (message (format "translating from %s to %s" from to))
+  (let ((gts-translate-list  `((,from ,to)))
 				(gts-default-translator
 				 (gts-translator
-					:picker (gts-prompt-picker :single t)
+					:picker picker
 					:engines (list (gts-bing-engine) (gts-google-engine))
-					:render (gts-posframe-pin-render))))
-    (print gts-translate-list)
+					:render render)))
 		(gts-translate gts-default-translator)))
 
-(with-eval-after-load "general"
-  (lauremacs-leader
-    "at" '(lauremacs-translate-transient :which-key "translate")))
+
+(defun lauremacs-translate-to-brazilian-at-point ()
+  (interactive)
+  (let ((from (seq-take ispell-local-dictionary 2)))
+    (lauremacs-translate
+     from "pt"
+     :picker (gts-noprompt-picker)
+     :render (gts-posframe-pop-render :width 40))))
+
+(defun lauremacs-translate-from-brazilian-at-point ()
+  (interactive)
+  (let ((to (seq-take ispell-local-dictionary 2)))
+    (lauremacs-translate
+     "pt" to
+     :picker (gts-noprompt-picker)
+     :render (gts-posframe-pop-render :width 40))))
+
 
 (provide 'lauremacs-translate)
 
 ;;; lauremacs-translate.el ends here
+

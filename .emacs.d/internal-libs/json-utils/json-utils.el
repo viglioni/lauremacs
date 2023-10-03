@@ -37,7 +37,7 @@
 (defun json-utils--text-width (text)
   "get the size of the biggest line"
   (fp/pipe-deprecated text
-    ((fp/split "\n")
+    ((fp/split-deprecated "\n")
      (mapcar 'length)
      (apply 'max))))
 

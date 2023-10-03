@@ -87,3 +87,8 @@ ON-FAILURE is a function expecting one parameter: error-thrown."
   (interactive)
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region (point-min) (point-max))))
+
+;;;###autoload
+(defun zip-alist (l1 l2)
+  "Zip two lists L1 L2 in an alist."
+  (mapcar* 'cons l1 l2))

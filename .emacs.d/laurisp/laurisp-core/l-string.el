@@ -81,7 +81,7 @@
 
 
 ;;;###autoload
-(defun fp/split (separator text)
+(defun fp/split-deprecated (separator text)
   "(str str) -> [str]
    Split a string using the given separator"
   (split-string text separator))

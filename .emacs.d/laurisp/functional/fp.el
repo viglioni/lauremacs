@@ -66,15 +66,15 @@
   "Pipe ARG into uncurried functions (as FN-LIST)."
   (declare (indent defun))
 	(cl-reduce (lambda (args fn) (apply fn (list args)))
-							fn-list
-							:initial-value arg))
+						 fn-list
+						 :initial-value arg))
 
 (defun fp/compose (&rest fs)
 	"Compose a list of functions FS from right to left."
 	(cl-reduce (lambda (f g) (lambda (&rest args)
-												 (funcall f (apply g args))))
-							fs
-							:initial-value (fp/partial 'fp/id)))
+												(funcall f (apply g args))))
+						 fs
+						 :initial-value (fp/partial 'fp/id)))
 
 ;;
 ;; Sequence functions
@@ -94,7 +94,7 @@ Map FN using ARGS over SEQ and return the seq TYPE."
 
 (cl-defmethod fp//map (fn (lst list) &rest args)
   "Helper function for `fp/map'.  Apply FN using ARGS over list LST."
-    (apply 'fp//map-helper `(list ,fn ,lst ,@args)))
+  (apply 'fp//map-helper `(list ,fn ,lst ,@args)))
 
 (cl-defmethod fp//map (fn (vec vector) &rest args)
   "Helper function for `fp/map'.  Apply FN using ARGS over VEC vector."
@@ -126,6 +126,29 @@ E.g.:
 \(fp/pipe \\='\(\"string\" \"asd\")
   \(fp/filter \\='string-match-p \"g\")) ;; \(\"string\")"
   (fp/partial 'cl-remove-if-not (apply 'fp/partial (cons fn args))))
+
+(defun fp/filter-unless (fn &rest args)
+  "TODO"
+  (fp/partial 'cl-remove-if (apply 'fp/partial (cons fn args))))
+
+
+(defun fp/member (el)
+  "Check if EL is in LST."
+  (fp/compose 'bool (fp/partial 'member el)))
+
+;;;###autoload
+(defun fp/zip-alist (keys)
+  "Zip KEYS and VALS in an alist."
+  (fp/partial 'zip-alist keys))
+
+;;
+;; String functions
+;;
+
+;;;###autoload
+(defun fp/split (separator)
+  "Split STR using SEPARATOR."
+  (lambda (str) (split-string str separator)))
 
 
 (provide 'fp)

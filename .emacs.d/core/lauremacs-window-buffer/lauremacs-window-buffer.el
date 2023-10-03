@@ -39,6 +39,12 @@
       (projectile-project-buffers)
     (buffer-list)))
 
+;;;###autoload
+(defun lauremacs-get-buffer-mode (buffer-or-string)
+  "Returns the major mode associated with a buffer."
+  (with-current-buffer buffer-or-string
+    major-mode))
+
 
 ;;;###autoload
 (defun lauremacs--get-prev-buffers ()
@@ -151,6 +157,34 @@ TODO: add throwif"
       (helm-projectile-switch-to-buffer)
     (helm-buffers-list)))
 
+;;;###autoload
+(defun lauremacs-buffer//buff-exists? (buff-name)
+  "Check if BUFF-NAME exists."
+  (fp/pipe (buffer-list)
+    (fp/map 'buffer-name)
+    (fp/member buff-name)))
+
+;;;###autoload
+(defun lauremacs-buffer//pop-buf-bottom (buff-name)
+  "Open BUFF-NAME in pop window."
+  (let ((buff (get-buffer-create buff-name)))
+    (display-buffer-in-side-window buff '((side . bottom)))
+    (select-window (get-buffer-window buff))))
+
+
+(defun lauremacs-buffer/pop-bottom ()
+  (interactive)
+  (helm
+	 :promp "Choose a buffer: "
+	 :buffer "*helm buffers*"
+	 :sources (list (helm-build-sync-source "Project buffers"
+							      :action 'lauremacs-buffer//pop-buf-bottom
+							      :candidates (mapcar 'buffer-name (projectile-project-buffers)))
+                  (helm-build-sync-source "Non project buffers"
+							      :action 'lauremacs-buffer//pop-buf-bottom
+							      :candidates (mapcar 'buffer-name (seq-difference (buffer-list) (projectile-project-buffers))))
+                  (helm-build-dummy-source "New buffer"
+                    :action 'lauremacs-buffer//pop-buf-bottom))))
 
 (provide 'lauremacs-window-buffer)
 

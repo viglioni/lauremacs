@@ -21,3 +21,4 @@ helm-adaptive-history
 nov-places
 tramp
 tree-sitter/*
+**/*.DS_store

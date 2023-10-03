@@ -9,7 +9,12 @@ My new emacs configuration
 
 *I'm developing it on*
 - MacOS 🍎
-- using Emacs ~29.0.50~
+- using Emacs ~29.1~ installed with
+  
+  #+begin_src shell :exports both :results output 
+    brew install emacs-plus@29 --with-dbus --with-mailutils --with-xwidgets --with-imagemagick --with-native-comp  --with-modern-orange-icon
+
+#+end_src
 
 ** First use 
 

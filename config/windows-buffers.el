@@ -10,18 +10,19 @@
 ;;
 
 (lauremacs-leader
-  "w" '(nil :which-key "windows")
-  "w0" '(delete-window :which-key "delete other windows")
-  "w1" '(lauremacs/window-split-single-column :which-key "split single column")
-  "w2" '(lauremacs/window-split-double-columns :which-key "split double columns")
-  "w3" '(lauremacs/window-split-triple-columns :which-key "split double columns")
-  "w4" '(lauremacs/window-split-grid :which-key "split windows in grid")
-  "wt" '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
-  "w=" (list (fp/const-fn-interactive 'balance-windows) :which-key "balance windows")
-  "wd" (list (fp/const-fn-interactive 'delete-window) :which-key "delete current window")
-  "we" (list (fp/const-fn-interactive 'lauremacs/window-layout-toggle) :which-key "delete current window")
-	"wk" '(nil :which-key "kill window")
-	"wkb" '(purpose-delete-window-at-bottom :which-key "delete bottom window"))
+  "w"   '(nil                                                           :which-key "windows")
+  "w0"  '(delete-window                                                 :which-key "delete other windows")
+  "w1"  '(lauremacs/window-split-single-column                          :which-key "split single column")
+  "w2"  '(lauremacs/window-split-double-columns                         :which-key "split double columns")
+  "w3"  '(lauremacs/window-split-triple-columns                         :which-key "split double columns")
+  "w4"  '(lauremacs/window-split-grid                                   :which-key "split windows in grid")
+  "wt"  '(lauremacs/toggle-current-window-dedication                    :which-key "toggle window dedication")
+  "w="  (list (fp/const-fn-interactive 'balance-windows)                :which-key "balance windows")
+  "wd"  (list (fp/const-fn-interactive 'delete-window)                  :which-key "delete current window")
+  "we"  (list (fp/const-fn-interactive 'lauremacs/window-layout-toggle) :which-key "delete current window")
+  "wp"  '(lauremacs-buffer/pop-bottom                                   :which-key "pop buffer at bottom position")
+	"wk"  '(nil                                                           :which-key "kill window")
+	"wkb" '(purpose-delete-window-at-bottom                               :which-key "delete bottom window"))
 
 
 ;;
@@ -34,6 +35,8 @@
   "bb" '(lauremacs/switch-buffer :which-key "list buffers")
   "bB" '(helm-buffers-list :which-key "list buffers")
 	"bk" '(persp-kill-buffer :which-key "kill buffer")
+  "bc" '((lambda () (interactive) (switch-to-buffer "*compilation*"))
+         :which-key "switch to Messages buffer")
   "bm" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
          :which-key "switch to Messages buffer")
   "bs" '((lambda () (interactive) (switch-to-buffer "*scratch*"))

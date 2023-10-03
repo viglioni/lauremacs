@@ -15,16 +15,16 @@
 (require 'zap)
 
 (lauremacs-leader
-  "g"   '(nil															:which-key "git")
-  "a"   '(nil															:which-key "applications")
-	"c"   '(nil															:which-key "coding")
-	"s"   '(nil															:which-key "search")
-	"sw"  '(nil															:which-key "web search")
-	"sww" '(web-search											:which-key "web-search")
-	"swg" '(web-search-google								:which-key "google search")
-	"swd" '(web-search-duckduckgo						:which-key "duckduckgo search")
-	"swb" '(web-search-brave								:which-key "brave search")
-	"swy" '(web-search-youtube							:which-key "youtube search"))
+  "g"   '(nil                           :which-key "git")
+  "a"   '(nil                           :which-key "applications")
+	"c"   '(nil														:which-key "coding")
+	"s"   '(nil														:which-key "search")
+	"sw"  '(nil														:which-key "web search")
+	"sww" '(web-search										:which-key "web-search")
+	"swg" '(web-search-google							:which-key "google search")
+	"swd" '(web-search-duckduckgo					:which-key "duckduckgo search")
+	"swb" '(web-search-brave							:which-key "brave search")
+	"swy" '(web-search-youtube						:which-key "youtube search"))
 
 ;;
 ;; NVM

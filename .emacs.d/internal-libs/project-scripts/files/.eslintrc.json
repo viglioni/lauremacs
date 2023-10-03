@@ -1,0 +1,57 @@
+{
+  "root": true,
+  "rules": {
+    "require-await": "warn",
+    "prefer-const": "error",
+    "no-template-curly-in-string": "error",
+    "no-tabs": "error",
+    "no-return-await": "error",
+    "no-plusplus": "error",
+    "no-param-reassign": "error",
+    "no-lone-blocks": "error",
+    "no-iterator": "error",
+    "no-invalid-this": "off",
+    "@typescript-eslint/no-invalid-this": ["error"],
+    "no-eval": "error",
+    "unused-imports/no-unused-imports": "error",
+    "no-empty-function": [
+      "error",
+      {
+        "allow": ["constructors"]
+      }
+    ],
+    "no-else-return": "error",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-await-in-loop": "warn",
+    "immutable/no-mutation": "warn",
+    "immutable/no-let": "warn",
+    "eqeqeq": "error",
+    "no-unexpected-multiline": "off",
+    "dot-notation": "error",
+    "default-param-last": "off",
+    "@typescript-eslint/default-param-last": ["error"],
+    "curly": "error",
+    "camelcase": "warn",
+    "block-scoped-var": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "local",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "no-unused-vars": "off",
+    "array-callback-return": "error"
+  },
+  "plugins": ["@typescript-eslint", "immutable", "unused-imports"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 12
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "env": {
+    "es2021": true,
+    "browser": true
+  }
+}

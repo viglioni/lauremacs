@@ -7,6 +7,7 @@
 (require 'org-faces)
 (require 'org-extra)
 
+
 (bind-lazy-function 'org-compile-to-pdf 'LauTeX-compile-org-to-pdf 'org-extra)
 (bind-lazy-function 'org-preview-latex-on-buffer 'LauTeX-preview-latex-on-buffer 'org-extra)
 (bind-lazy-function 'org-insert-mathbb 'LauTex-insert-mathbb 'org-extra)
@@ -25,8 +26,8 @@
 ;;;###autoload
 (defmacro define-org-cmd (&rest plist)
   "Receive a PLIST (:situation 'command) as args to define which
-command should be called on each situation.
-Obs.: the command will ONLY be called on the specific situation.
+command should be called on each situation . 
+Obs                                        . : the command will ONLY be called on the specific situation.
 *~*~*
 For now the supported keys are
 :heading -> runs when cursor is over a heading
@@ -169,14 +170,20 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	;; keymaps
   (general-define-key
    :keymaps 'org-mode-map
-   "M-s-m" (define-org-cmd :heading 'org-promote-subtree)
+   "M-s-m" (define-org-cmd
+            :heading 'org-promote-subtree
+            :table   'org-table-move-column-left)
 	 "M-s-," (define-org-cmd
 						:heading 'org-move-subtree-down
-						:item    'org-move-item-down)
-   "M-s-." (define-org-cmd
+						:item    'org-move-item-down
+            :table   'org-table-move-row-down)
+   "M-s-. " (define-org-cmd
 						:heading 'org-move-subtree-up
-						:item    'org-move-item-up)
-   "M-s-/" (define-org-cmd :heading 'org-demote-subtree)
+						:item    'org-move-item-up
+            :table   'org-table-move-row-up)
+   "M-s-/" (define-org-cmd
+            :heading 'org-demote-subtree
+            :table   'org-table-move-column-right)
    "s-d" 'org-table-copy-down)
 	
 	(lauremacs-major-mode-leader
@@ -224,7 +231,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	(org-babel-do-load-languages
    'org-babel-load-languages
    '((elixir		 . t)
+     (sqlite     . t)
 		 (haskell		 . t)
+     (mermaid    . t)
      (clojure		 . t)
      (emacs-lisp . t)
 		 (ts         . t)
@@ -233,8 +242,12 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
      (C					 . t)
      (latex			 . t)
      (restclient . t)
-     (shell			 . t)
-     (sql				 . t)))
+     (sagemath   . t)
+     (shell      . t)
+     (sql        . t)))
+
+  (setq org-babel-default-header-args:sage '((:session . t)
+                                             (:results . "output")))
   :bind
   (:map org-mode-map
         (("C-c C-b" . org-mark-ring-goto)))
@@ -250,7 +263,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	:after org
 	:hook '((org-mode				. olivetti-mode)
 					(olivetti-mode	. '(lambda () (set-face-attribute 'olivetti-fringe nil
-																											      :background "#d0cec7"))))
+																											 :background "#d0cec7"))))
 	:custom
 	(olivetti-minimum-body-width 80)
 	(olivetti-style 'fancy))
@@ -288,8 +301,19 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 #+title: ${title}
 #+options: tex:t
 #+startup: latexpreview
-#+filetags: :math:"
-                       )
+#+filetags: :math:")
+    :unnarrowed t))
+
+(defconst org-roam-private-template
+  '("p" "private" plain
+    "\n\n%?"
+    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                       "
+# -*- ispell-local-dictionary: \"pt_BR\"; -*-
+#+title: ${title}
+#+options: tex:t
+#+startup: latexpreview
+#+filetags: :privado:")
     :unnarrowed t))
 
 
@@ -298,6 +322,8 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
         (list
          default-org-roam-template
          org-roam-math-template
+         org-roam-private-template
+         (org-extra-create-language-template-item "b" "brazilian" "pt_BR")
          (org-extra-create-language-template-item "i" "italiano" "it")
          (org-extra-create-language-template-item "n" "nederlands" "dutch")
          (org-extra-create-language-template-item "e" "español" "es")
@@ -348,9 +374,14 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 (use-package ox-gfm
   :after 'org)
 
+(use-package ob-mermaid
+  :after 'org)
+
 (with-eval-after-load "org-num"
   (setq org-num-skip-unnumbered t))
 
+;; (use-package ox-beamer
+;;   :after org)
 
 (use-package org-download
   :after org

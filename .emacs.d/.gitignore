@@ -17,3 +17,7 @@ url/*
 .org-id-locations
 projects
 *.sqlite
+helm-adaptive-history
+nov-places
+tramp
+tree-sitter/*

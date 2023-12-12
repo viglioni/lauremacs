@@ -400,7 +400,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
     "dR" '(org-download-rename-last-file :which-key "rename last file")
     "de" '(org-download-edit             :which-key "edit")
     "du" '(org-download-image            :which-key "image from url")
-    "dy" '(org-download-yank             :which-key "paste image from clipboard"))
+    "dy" '(org-download-clipboard        :which-key "paste image from clipboard"))
   :bind
   (("C-c C-d d" . org-download-delete)
    ("C-c C-d s" . org-download-screenshot)
@@ -441,4 +441,12 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
      (?R  "\\Re"     "\\mathbb{R}")  
      (?Z  ""         "\\mathbb{Z}")
      )))
+
+;;
+;; table
+;;
+
+(use-package valign
+  :after 'org
+  :hook (org-mode . valign-mode))
 

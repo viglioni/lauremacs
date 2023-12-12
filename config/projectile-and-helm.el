@@ -21,7 +21,7 @@
 	(let ((project-dir (projectile-project-root))
 				(file-name (or buff-name (buffer-file-name))))
 		(when (and project-dir (neo-global--window-exists-p))
-			(neotree-dir project-dir)
+      (neotree-projectile-action)
 			(neotree-find file-name))))
 
 ;;;###autoload
@@ -29,8 +29,16 @@
   "Toggle NeoTree using the project root (if any) and find file."
   (interactive)
 	(let ((curr-name (buffer-file-name)))
-		(neotree-toggle)
+		(if (neo-global--window-exists-p)
+        (neotree-toggle)
+      (neotree-projectile-action))
 		(lauremacs/neotree-show-file curr-name)))
+
+;;;###autoload
+(defun neotree-on-project-change ()
+  (interactive)
+  (when (neo-global--window-exists-p)
+    (neotree-toggle-project-dir)))
 
 
 ;;
@@ -83,6 +91,7 @@
 
 (use-package projectile
   :custom
+  (projectile-create-missing-test-files t)
 	(projectile-sort-order 'recentf)
   (projectile-indexing-method 'alien)
   (projectile-globally-ignored-directories
@@ -138,12 +147,17 @@
      ".packages"
      "*.js.map"
      "*~"
+     "*.pack"
+     "*.hex"
+     "*.lock"
      ))
   (projectile-project-search-path
    '("~/Company/" "~/Personal/"))
-
+  
+  
   :init
   (projectile-mode 1)
+  (setq projectile-switch-project-action '(lambda () (magit-status) (projectile-find-file)))
 	
   (lauremacs-leader
     "p" '( :keymap projectile-command-map
@@ -160,7 +174,9 @@
 (use-package helm-ag
   :after (helm-projectile)
   :init
-  (lauremacs-leader "/" '(helm-projectile-grep :which-key "search in project")))
+  (lauremacs-leader
+    "/" '(helm-projectile-grep :which-key "search in project")
+    "\\" '(helm-do-ag :which-key "especific dir search")))
 
 (use-package neotree
   :after (projectile)
@@ -168,6 +184,8 @@
   (lauremacs-leader
     "pt" '(neotree-toggle-project-dir :which-key "neotree toggle"))
   :custom
+  (neo-smart-open t)
+  (neo-autorefresh t)
   (neo-window-width 35)
   (neo-window-position 'right)
   (neo-theme (if (display-graphic-p) 'icons 'arrow))

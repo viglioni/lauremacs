@@ -85,11 +85,6 @@
 
 (use-package magit
   :init
-  (lauremacs-leader
-    "gs" '(magit-status         :which-key "magit status")
-    "gf" '(magit-find-file      :which-key "find file")
-    "gd" '(magit-diff-dwim      :which-key "diff")
-    "gp" '(lauremacs-gh-open-pr :which-key "open pr"))
   (setq magit-display-buffer-function
       (lambda (buffer)
         (display-buffer

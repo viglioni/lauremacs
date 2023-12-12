@@ -7,8 +7,9 @@
   (concat path (if (string-match-p "/$" path) "" "/") filename))
 
 (defconst lauremacs-dir "~/lauremacs")
-(defconst lauremacs-config-dir (join-path lauremacs-dir "config"))
+(defconst lauremacs-config-dir-old (join-path lauremacs-dir "config"))
 (defconst lauremacs-d-dir (join-path lauremacs-dir ".emacs.d"))
+(defconst lauremacs-config-dir (join-path lauremacs-d-dir "config"))
 (defconst lauremacs-core-dir (join-path lauremacs-d-dir "core"))
 (defconst laurisp-dir (join-path lauremacs-d-dir "laurisp"))
 (defconst laurisp-core-dir (join-path laurisp-dir "laurisp-core"))
@@ -138,6 +139,15 @@
 
 (load-file (concat lauremacs-dir "/.emacs"))
 
+
+
+
+;;
+;; Load lazy configs
+;;
+
+(fp/pipe (directory-files lauremacs-config-dir t "^_[a-zA-Z0-9]+\\.el$")
+  (fp/map 'load-file))
 
 
 

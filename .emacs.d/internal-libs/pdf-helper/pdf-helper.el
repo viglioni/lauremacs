@@ -86,12 +86,6 @@
     (pdf-view-next-page-command)
     (select-window cur-window)))
 
-(lauremacs-leader
-  "ap"  '(nil                  :which-key "pdf tools")
-  "app" '(pdf-helper-prev-page :which-key "previous page")
-  "apn" '(pdf-helper-next-page :which-key "next page"))
-
-
 (provide 'pdf-helper)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -105,23 +105,6 @@ Else it will be named `Default'."
 (use-package tab-bar
   :init
   (setq tab-bar-mode t)
-  (lauremacs-leader
-    "l"     '(nil                                         :which-key "workspaces")
-    "lp"    '(lauremacs-tab-new-project-tab               :which-key "new project workspace")
-    "ln"    '(tab-bar-new-tab                             :which-key "new tab")
-    "ll"    '(tab-switch                                  :which-key "switch workspace")
-    "l TAB" '(tab-bar-switch-to-recent-tab                :which-key "switch to last tab")
-    "lx"    '(tab-close                                   :which-key "kill workspace")
-    "l1"    (list (fp/const-fn-interactive 'tab-select 1) :which-key "move to tab 1")
-    "l2"    (list (fp/const-fn-interactive 'tab-select 2) :which-key "move to tab 2")
-    "l3"    (list (fp/const-fn-interactive 'tab-select 3) :which-key "move to tab 3")
-    "l4"    (list (fp/const-fn-interactive 'tab-select 4) :which-key "move to tab 4")
-    "l5"    (list (fp/const-fn-interactive 'tab-select 5) :which-key "move to tab 5")
-    "l6"    (list (fp/const-fn-interactive 'tab-select 6) :which-key "move to tab 6")
-    "l7"    (list (fp/const-fn-interactive 'tab-select 7) :which-key "move to tab 7")
-    "l8"    (list (fp/const-fn-interactive 'tab-select 8) :which-key "move to tab 8")
-    "l9"    (list (fp/const-fn-interactive 'tab-select 9) :which-key "move to tab 9"))
-
   (setq tab-bar-tab-hints t)
   (setq tab-bar-new-tab-choice "*lauremacs*")
   (setq tab-bar-new-tab-to 'rightmost))

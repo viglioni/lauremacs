@@ -1,0 +1,7 @@
+* Backlog [1/6]
+** DONE [#A] Centralise shortcuts definitions (lauremacs-leader)
+** TODO [#B] Centralise =before-save-hook=                                 
+** TODO [#B] Config origami                                              
+** TODO [#C] Webmode for heex files
+** TODO [#C] Remove fh.el dependency
+** TODO [#C] Refactor to put everything inside =.emacs.d/=

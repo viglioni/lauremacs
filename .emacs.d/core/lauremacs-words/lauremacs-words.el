@@ -18,11 +18,6 @@
       (org-sort)
     (sort-lines nil (region-beginning) (region-end))))
 
-(with-eval-after-load "general"
-	(lauremacs-leader
-		"x"	 '(nil                        :which-key "words")
-    "xs" '(lauremacs-words-sort-lines :which-key "sort lines")
-		"xC" '(count-words                :which-key "count words")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -66,30 +61,13 @@ Should be called when pointer is inside the function."
 		(lauremacs-align-region-as-table "&")
 		(lauremacs-align-region-as-table "\\\\\\\\")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;; Align ;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(with-eval-after-load "general"
-	(lauremacs-leader
-		"xa"	'(nil                             :which-key "align")
-		"xag" '(lauremacs-align-general-sexp    :which-key "align general.el statements")
-		"xat" '(lauremacs-align-region-as-table :which-key "align region as table")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;; Word cases ;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package string-inflection
-  :ensure t
-  :init
-  (lauremacs-leader
-    "xc"  '(nil                               :which-key "convert word case")
-    "xcs" '(string-inflection-underscore      :which-key "convert to snake-case")
-    "xcc" '(string-inflection-lower-camelcase :which-key "convert to camelCase")
-    "xcp" '(string-inflection-camelcase       :which-key "convert to PascalCase")
-    "xck" '(string-inflection-kebab-case      :which-key "convert to kebab-case")
-    "xcu" '(string-inflection-upcase          :which-key "convert to UPPER_CASE")))
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;; Dutch functions ;;;;;;;;;;;;;;;;;

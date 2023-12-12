@@ -60,14 +60,7 @@
   :bind (("M-x" . 'helm-M-x))
   :init
 	(helm-mode 1)
-	;; bindings
-  (lauremacs-leader
-		"<f19>" '(helm-M-x							:which-key "M-x")
-		"cb"		'(nil										:which-key "bookmarks")
-		"cbc"		'(helm-bookmarks				:which-key "bookmarks")
-		"cbr"		'(helm-bookmark-rename	:which-key "bookmark rename")
-		"cbd"		'(bookmark-delete				:which-key "bookmark delete")
-		"cbD"		'(bookmark-delete-all		:which-key "delete all bookmarks"))
+
 	(general-define-key
 	 :prefix "C-x"
 	 "C-f" '(helm-find-files :which-key "find files")
@@ -76,10 +69,7 @@
 	 :prefix "C-h"
 	 "a" '(helm-apropos :which-key "apropos")))
 
-(use-package helm-swoop
-  :init
-  (lauremacs-leader
-    "ss" '(helm-swoop :which-key "swoop")))
+(use-package helm-swoop)
 
 (use-package helm-descbinds
 	:after helm
@@ -157,32 +147,17 @@
   
   :init
   (projectile-mode 1)
-  (setq projectile-switch-project-action '(lambda () (magit-status) (projectile-find-file)))
-	
-  (lauremacs-leader
-    "p" '( :keymap projectile-command-map
-		       :package projectile
-		       :which-key "projectile")))
+  (setq projectile-switch-project-action '(lambda () (magit-status) (projectile-find-file))))
 
 (use-package helm-projectile
-  :after (projectile helm)
-  :init
-  (lauremacs-leader
-    "pp" '(helm-projectile-switch-project :which-key "switch project")
-    "pf" '(helm-projectile-find-file      :which-key "find file")))
+  :after (projectile helm))
+
 
 (use-package helm-ag
-  :after (helm-projectile)
-  :init
-  (lauremacs-leader
-    "/" '(helm-projectile-grep :which-key "search in project")
-    "\\" '(helm-do-ag :which-key "especific dir search")))
+  :after (helm-projectile))
 
 (use-package neotree
   :after (projectile)
-  :init
-  (lauremacs-leader
-    "pt" '(neotree-toggle-project-dir :which-key "neotree toggle"))
   :custom
   (neo-smart-open t)
   (neo-autorefresh t)

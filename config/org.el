@@ -55,7 +55,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 (with-eval-after-load "ob-lob"
 	;; org babel
 	(org-babel-lob-ingest (join-path
-												 lauremacs-config-dir
+												 lauremacs-config-dir-old
 												 "org-mode-extra-configs.org")))
 
 
@@ -345,16 +345,6 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (setq org-roam-v2-ack t)
   (setq org-roam-node-display-template "${title:*}${tags:20}")
 
-  (lauremacs-leader
-    "r"   '(nil                               :which-key "org-roam")
-    "rd"  '(nil                               :which-key "DB")
-    "rds" '(org-roam-db-sync                  :which-key "db sync")
-    "ru"  '(org-id-get-create                 :which-key "add UUID to section")
-    "rt"  '(org-roam-buffer-toggle            :which-key "toggle buffer")
-    "rf"  '(lauremacs-tabs-find-org-roam-node :which-key "node find")
-    "rI"  '(org-roam-node-insert              :which-key "node insert")
-    "ri"  '(org-extra-node-insert-immediate   :which-key "node insert")
-    "ra"  '(org-roam-tag-add                  :which-key "add tag"))
   :config
   (org-roam-db-autosync-enable)
   :bind
@@ -366,10 +356,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
    ("C-c n i" . org-extra-node-insert-immediate)))
 
 (use-package org-roam-ui
-  :after 'org-roam
-  :init
-  (lauremacs-leader
-    "ro" '(org-roam-ui-open :which-key "open org-roam-ui")))
+  :after 'org-roam)
 
 (use-package ox-gfm
   :after 'org)

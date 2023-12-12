@@ -4,16 +4,7 @@
 ;; GNU Public License 3.0
 ;;
 
-;;
-;; Insert on buffer or clipboard
-;;
 
-(lauremacs-leader
-	"i"   '(nil																	:which-key "insert")
-	"iu"  '(nil																	:which-key "uuid")
-	"iuu" '(lauremacs/insert-uuid								:which-key "insert uuid")
-	"iuc" '(lauremacs/insert-uuid-to-clipboard	:which-key "copy uuid")
-	"ii"  '(all-the-icons-insert								:which-key "insert icon"))
 
 ;;
 ;; Lang scripts
@@ -80,17 +71,6 @@
  ""	 '(nil                            :which-key "project scripts")
  "t" '(project-scripts-create-ts-proj	:which-key "create ts project"))
 
-;;
-;; Toggle
-;;
-
-
-(lauremacs-leader
-	"T"		'(nil																:which-key "toggle/choose")
-	"Tp"	'(lauremacs/toggle-pair-programming :which-key "pair programming mode")
-	"TT"	'(lauremacs/choose-theme						:which-key "choose theme")
-	"Tt"	'(lauremacs/toggle-transparency			:which-key "transparency")
-	"Tl"	'(linum-mode												:which-key "linum mode"))
 
 ;;
 ;; Calibre
@@ -102,20 +82,12 @@
   (setq calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
   (setq calibredb-program "/Applications/calibre.app/Contents/MacOS/calibredb")
   (setq calibredb-device-dir "/Volumes/Kindle")
-  (setq calibredb-format-all-the-icons t)
-  (lauremacs-leader
-    "ac" '(nil :which-key "calibre")
-    "acc" '(calibredb :which-key "calibre")
-    "aca" '(calibredb-add :which-key "add book")
-    "acf" '(calibredb-find-helm :which-key "find")))
+  (setq calibredb-format-all-the-icons t))
 
 
 ;;
 ;; Docker
 ;;
 
-(use-package docker
-  :init
-  (lauremacs-leader
-    "ad" '(docker :which-key "docker")))
+(use-package docker)
 

@@ -1,0 +1,4 @@
+#+title: Lauremacs Configuration
+
+- In this dir we store general configurations such as major/minor modes, shortcuts etc.
+- Files starting with underscore will be loaded after files without underscore.

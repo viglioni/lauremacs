@@ -177,10 +177,7 @@
   :commands (emojify-mode emojify-insert-emoji emojify-apropos-emoji)
   :hook '((org-mode          . emojify-mode)
           (magit-status-mode . emojify-mode)
-          (text-mode         . emojify-mode))
-  :init
-  (lauremacs-leader
-    "ie" '(emojify-insert-emoji :which-key "insert emoji")))
+          (text-mode         . emojify-mode)))
 
 ;;
 ;; Yasnippet
@@ -202,10 +199,7 @@
 
 (use-package iedit
   :commands iedit-mode
-  :bind (:map iedit-mode-keymap)
-  :init
-  (lauremacs-leader
-    "se" '(iedit-mode :which-key "iedit mode")))
+  :bind (:map iedit-mode-keymap))
 
 ;;
 ;; Flycheck / Flyspell
@@ -218,10 +212,6 @@
 (use-package flycheck
   :init
   (global-flycheck-mode)
-  
-  (lauremacs-leader  
-    "e"  '(:keymap flycheck-command-map :package flycheck :which-key "errors")
-    "ee" '(explain-error-at-point                         :which-key "explain error at point"))
   
   (set-face-attribute 'flycheck-fringe-info nil
                       :background "#3a81c3"
@@ -274,23 +264,8 @@
 ;;
 
 (use-package better-jumper
-  :hook (prog-mode . better-jumper-mode)
-  :init
-  (lauremacs-leader
-    "cj"  '(nil                         :which-key "jumper")
-    "cjj" '(better-jumper-set-jump      :which-key "set jump")
-    "cjb" '(better-jumper-jump-backward :which-key "jump backward")
-    "cjf" '(better-jumper-jump-forward  :which-key "jump forward")))
+  :hook (prog-mode . better-jumper-mode))
 
 
-;;
-;; smerge
-;;
-
-(with-eval-after-load "smerge-mode"
-  (lauremacs-leader
-    "ge" '( :keymap smerge-basic-map
-            :package smerge-mode
-            :which-key "git diff - smerge")))
 
 

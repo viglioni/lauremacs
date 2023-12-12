@@ -17,9 +17,6 @@
      nil
      (concat "-G=*.exs? " initial-search))))
 
-(lauremacs-leader
-  "sx" '(lauremacs-elixir-grep :which-key "elixir grep"))
-
 
 (use-package elixir-ts-mode
   :mode "\\.exs?\\'"
@@ -34,11 +31,8 @@
 																												   ("<-" . "←")
                                                            ("=>" . "⇒")
 																												   ("|>" . "▷")))))
-         (before-save . (lambda ()
-                          (when (and (eq major-mode 'elixir-ts-mode)
-                                     (boundp 'lsp-mode)
-                                     lsp-mode)
-                            (lsp-format-buffer)))))
+         (before-save . (lambda () (when (eq major-mode 'elixir-ts-mode)
+                                (lsp-format-buffer)))))
   :init
   ;; download latest release from https://github.com/elixir-lsp/elixir-ls
                                         ;(add-to-list 'exec-path "~/elixir-ls")

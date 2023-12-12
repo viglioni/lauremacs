@@ -56,7 +56,11 @@
  "C-s-m" 'backward-word
  "C-s-," 'forward-paragraph
  "C-s-." 'backward-paragraph
- "C-s-/" 'forward-word)
+ "C-s-/" 'forward-word
+ "s-M" 'backward-word
+ "s-<" 'forward-paragraph
+ "s->" 'backward-paragraph
+ "s-?" 'forward-word)
 
 (general-define-key ;; walk through windows
  :prefix "C-x"

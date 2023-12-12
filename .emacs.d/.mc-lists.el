@@ -37,6 +37,7 @@
         org-delete-char
         org-end-of-line
         org-force-self-insert
+        org-insert-src
         org-kill-line
         org-meta-return
         org-open-line
@@ -68,6 +69,7 @@
         sp-forward-slurp-sexp
         sp-remove-active-pair-overlay
         string-inflection-camelcase
+        toggle-input-method
         yaml-electric-backspace
         yaml-electric-dash-and-dot
         yas-abort-snippet

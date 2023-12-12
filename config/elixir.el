@@ -9,36 +9,82 @@
 ;; Elixir
 ;;
 
-(use-package elixir-mode
-	:mode "\\.ex\\'"
-	:hook ((elixir-mode . lsp-deferred)
-				 (elixir-mode . (lambda () (add-multiple-into-list 'prettify-symbols-alist
-																											'((">=" . "≥")
-																												("<=" . "≤")
-																												("!=" . "≠")
-																												("=~" . "≅")
-																												("<-" . "←")
-																												("->" . "→")
-																												("<-" . "←")
-																												("|>" . "▷")))))
+(defun lauremacs-elixir-grep ()
+  "Grep in .ex .exs files."
+  (interactive)
+  (let ((initial-search (read-string "initial query: " (word-at-point))))
+    (helm-do-ag (projectile-project-root)
+     nil
+     (concat "-G=*.exs? " initial-search))))
+
+(lauremacs-leader
+  "sx" '(lauremacs-elixir-grep :which-key "elixir grep"))
+
+
+(use-package elixir-ts-mode
+  :mode "\\.exs?\\'"
+  :hook ((elixir-ts-mode . lsp-deferred)
+				 (elixir-ts-mode . (lambda () (add-multiple-into-list 'prettify-symbols-alist
+																											   '((">=" . "≥")
+																												   ("<=" . "≤")
+																												   ("!=" . "≠")
+																												   ("=~" . "≅")
+																												   ("<-" . "←")
+																												   ("->" . "→")
+																												   ("<-" . "←")
+                                                           ("=>" . "⇒")
+																												   ("|>" . "▷")))))
          (before-save . (lambda ()
-                          (when (and (eq major-mode 'elixir-mode)
+                          (when (and (eq major-mode 'elixir-ts-mode)
                                      (boundp 'lsp-mode)
                                      lsp-mode)
                             (lsp-format-buffer)))))
-	:init
+  :init
   ;; download latest release from https://github.com/elixir-lsp/elixir-ls
-  (add-to-list 'exec-path "~/elixir-ls")
-	(lauremacs-major-mode-leader
-		:keymaps 'elixir-mode-map
+                                        ;(add-to-list 'exec-path "~/elixir-ls")
+  (setq lsp-elixir-server-command '("~/lexical/_build/dev/package/lexical/bin/start_lexical.sh"))
+  (lauremacs-major-mode-leader
+		:keymaps 'elixir-ts-mode-map
 		"s"		'(nil											:which-key "repl")
 		"se"	'(inf-elixir-send-line		:which-key "send line")
 		"sb"	'(inf-elixir-send-buffer	:which-key "send buffer")
 		"sr"	'(inf-elixir-send-region	:which-key "send region")
-		"ss"	'(inf-elixir							:which-key "go to repl")
-		"sp"  '(inf-elixir-project			:which-key "go to repl (project)")
+		"sS"	'(inf-elixir							:which-key "go to repl")
+		"ss"  '(inf-elixir-project			:which-key "go to repl (project)")
 		"=="	'(elixir-format						:which-key "format buffer")))
 
+;; (use-package elixir-mode
+;; 	:mode "\\.ex\\'"
+;; 	:hook ((elixir-mode . lsp-deferred)
+;; 				 (elixir-mode . (lambda () (add-multiple-into-list 'prettify-symbols-alist
+;; 																											'((">=" . "≥")
+;; 																												("<=" . "≤")
+;; 																												("!=" . "≠")
+;; 																												("=~" . "≅")
+;; 																												("<-" . "←")
+;; 																												("->" . "→")
+;; 																												("<-" . "←")
+;;                                                         ("=>" . "⇒")
+;; 																												("|>" . "▷")))))
+;;          (before-save . (lambda ()
+;;                           (when (and (eq major-mode 'elixir-mode)
+;;                                      (boundp 'lsp-mode)
+;;                                      lsp-mode)
+;;                             (lsp-format-buffer)))))
+;; 	:init
+;;   ;; download latest release from https://github.com/elixir-lsp/elixir-ls
+;;   ;(add-to-list 'exec-path "~/elixir-ls")
+;;   (setq lsp-elixir-server-command '("~/lexical/_build/dev/package/lexical/bin/start_lexical.sh"))
+;; 	(lauremacs-major-mode-leader
+;; 		:keymaps 'elixir-mode-map
+;; 		"s"		'(nil											:which-key "repl")
+;; 		"se"	'(inf-elixir-send-line		:which-key "send line")
+;; 		"sb"	'(inf-elixir-send-buffer	:which-key "send buffer")
+;; 		"sr"	'(inf-elixir-send-region	:which-key "send region")
+;; 		"ss"	'(inf-elixir							:which-key "go to repl")
+;; 		"sp"  '(inf-elixir-project			:which-key "go to repl (project)")
+;; 		"=="	'(elixir-format						:which-key "format buffer")))
+
 (use-package inf-elixir
-	:after elixir-mode)
+	:after elixir-ts-mode)
 

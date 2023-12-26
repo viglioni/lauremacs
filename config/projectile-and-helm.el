@@ -147,7 +147,8 @@
   
   :init
   (projectile-mode 1)
-  (setq projectile-switch-project-action '(lambda () (magit-status) (projectile-find-file))))
+  (setq projectile-switch-project-action
+        '(lambda () (magit-status) (projectile-find-file))))
 
 (use-package helm-projectile
   :after (projectile helm))
@@ -168,3 +169,4 @@
 
 (use-package helm-make
 	:after helm)
+

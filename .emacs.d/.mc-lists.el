@@ -37,6 +37,7 @@
         org-delete-char
         org-end-of-line
         org-force-self-insert
+        org-insert-link
         org-insert-src
         org-kill-line
         org-meta-return

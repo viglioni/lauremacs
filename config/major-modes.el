@@ -114,11 +114,12 @@
   (defun lauremacs-gh--title ()
     "Get PR title from branch-name."
     (cl-destructuring-bind
-        (prefix code &rest description)
+        (prefix code first-word &rest description)
         (split-string (magit-get-current-branch) "-")
-      (format "[%s-%s] - %s"
-              prefix
+      (format "[%s-%s] - %s %s"
+              (upcase prefix)
               code
+              (capitalize first-word)
               (string-join description " "))))
 
   (defun lauremacs-gh-open-pr ()

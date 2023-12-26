@@ -87,7 +87,7 @@
   (doom-modeline-set-modeline 'lauremacs-modeline 'default)
   
   :custom
-  (doom-modeline-buffer-file-name-style 'file-name)
+  (doom-modeline-buffer-file-name-style 'relative-to-project)
   (doom-modeline-enable-word-count t)
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode emacs-lisp-mode)))

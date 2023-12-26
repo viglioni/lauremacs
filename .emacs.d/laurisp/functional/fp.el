@@ -150,6 +150,9 @@ E.g.:
   "Split STR using SEPARATOR."
   (lambda (str) (split-string str separator)))
 
+(defun fp/replace (regexp replacement)
+  "Replace REGEXP with REPLACEMENT (string) in STR."
+  (lambda (str) (replace-regexp-in-string regexp replacement str)))
 
 (provide 'fp)
 

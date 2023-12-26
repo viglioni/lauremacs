@@ -41,7 +41,7 @@
 
 (defun PS--get-proj-name (dir)
   (fp/pipe dir
-    (fp/partial 'replace-regexp-in-string "/$" "")
+    (fp/replace "/$" "")
     'file-name-nondirectory))
 
 (defun PS--copy-config-files (dir)

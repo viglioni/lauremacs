@@ -33,7 +33,7 @@
 	"Copies relative path to project root of the current buffer."
 	(interactive)
 	(fp/pipe (buffer-file-name)
-		(fp/partial 'replace-regexp-in-string (projectile-project-root) "")
+		(fp/replace (projectile-project-root) "")
 		'kill-new))
 
 

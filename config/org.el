@@ -371,7 +371,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 ;;   :after org)
 
 (use-package org-download
-  :after org
+  :after 'org
   :custom
   (org-download-method 'directory)
   (org-download-image-dir "./pics")

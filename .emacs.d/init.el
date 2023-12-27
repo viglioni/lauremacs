@@ -113,8 +113,8 @@
 ;;
 
 (dolist (file (directory-files laurisp-core-dir t "^l-[a-zA-Z0-9-]+\\.el$"))
-  (if (load file nil nil t) (message (format "Loaded %s" file))
-    (message (format "shit: %s" file))))
+  (if (load file nil nil t) (message (format "loaded %s" file))
+    (message (format "failed load: %s" file))))
 
 
 (require 'functional)

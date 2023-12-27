@@ -50,23 +50,27 @@
   "Return an interactive lambda that will insert STR."
   (lambda () (interactive) (insert str)))
 
-(define-minor-mode reverse-number-keys-mode
-  "Reverse number keys.  For instance:
+(defun rnk--parenthesis ()
+  "Return a lambda that insert parenthesis and move pointer one char back."
+  (lambda () (interactive) (insert "()") (left-char)))
+
+  (define-minor-mode reverse-number-keys-mode
+    "Reverse number keys.  For instance:
 1 turns to ! and ! turns to 1
 2 turns to @ and @ turns to 2
 etc."
-  :init-value nil
-  :lighter " 123"
-  :keymap `(("1" . ,(rnk--insert "!")) ("!" . ,(rnk--insert "1"))
-            ("2" . ,(rnk--insert "@")) ("@" . ,(rnk--insert "2"))
-            ("3" . ,(rnk--insert "#")) ("#" . ,(rnk--insert "3"))
-            ("4" . ,(rnk--insert "$")) ("$" . ,(rnk--insert "4"))
-            ("5" . ,(rnk--insert "%")) ("%" . ,(rnk--insert "5"))
-            ("6" . ,(rnk--insert "^")) ("^" . ,(rnk--insert "6"))
-            ("7" . ,(rnk--insert "&")) ("&" . ,(rnk--insert "7"))
-            ("8" . ,(rnk--insert "*")) ("*" . ,(rnk--insert "8"))
-            ("9" . ,(rnk--insert "(")) ("(" . ,(rnk--insert "9"))
-            ("0" . ,(rnk--insert ")")) (")" . ,(rnk--insert "0"))))
+    :init-value nil
+    :lighter " 123"
+    :keymap `(("1" . ,(rnk--insert "!"))  ("!" . ,(rnk--insert "1"))
+              ("2" . ,(rnk--insert "@"))  ("@" . ,(rnk--insert "2"))
+              ("3" . ,(rnk--insert "#"))  ("#" . ,(rnk--insert "3"))
+              ("4" . ,(rnk--insert "$"))  ("$" . ,(rnk--insert "4"))
+              ("5" . ,(rnk--insert "%"))  ("%" . ,(rnk--insert "5"))
+              ("6" . ,(rnk--insert "^"))  ("^" . ,(rnk--insert "6"))
+              ("7" . ,(rnk--insert "&"))  ("&" . ,(rnk--insert "7"))
+              ("8" . ,(rnk--insert "*"))  ("*" . ,(rnk--insert "8"))
+              ("9" . ,(rnk--parenthesis)) ("(" . ,(rnk--insert "9"))
+              ("0" . ,(rnk--insert ")"))  (")" . ,(rnk--insert "0"))))
 
 (provide 'reverse-number-keys)
 

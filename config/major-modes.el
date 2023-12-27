@@ -9,6 +9,25 @@
 ;;
 
 ;;
+;; prog mode
+;;
+
+(with-eval-after-load "prog-mode"
+  (lauremacs-major-mode-leader
+    :keymaps 'prog-mode-map
+    "t"  '(nil
+           :which-key "test")
+    "tt" '(projectile-toggle-between-implementation-and-test
+           :which-key "toggle between test and implementation")
+    "to" '(projectile-find-implementation-or-test-other-window
+           :which-key "find implementation or test other window")
+    "tp" '(projectile-test-project
+           :which-key "test project"))
+  (require 'reverse-number-keys)
+  (add-hook 'prog-mode-hook 'reverse-number-keys-mode))
+
+
+;;
 ;; Emacs lisp mode
 ;;
 

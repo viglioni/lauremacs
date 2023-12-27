@@ -53,9 +53,6 @@
 ;; Load secret env variables
 (require-without-throw 'env-private)
 
-;; Require company related functions
-(require-without-throw 'fh.el)
-
 ;; auto revert mode
 (global-auto-revert-mode 1)
 

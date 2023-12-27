@@ -1,7 +1,7 @@
 # -*- org-todo-keyword-faces: (("TODO" . "orange") ("DOING" . "purple") ("DONE" . "green") ("CANCELLED" . "gray")); -*-
 #+todo: TODO DOING | DONE CANCELLED
 
-* Backlog [5/18]
+* Backlog [6/20]
 ** TODO [#A] Create snake_case mode                                   :feat:
 ** TODO [#B] Fix jump shortcuts                                       :feat:
 ** TODO [#B] Config origami                                           :feat:
@@ -10,7 +10,6 @@
 ** TODO [#C] Flyspell shortcuts and configs                           :feat:
 ** TODO [#C] Centralize shortcuts (not leader)                    :refactor:
 ** TODO [#C] Webmode for heex files                                   :feat:
-** TODO [#C] Remove fh.el dependency                                   :bug:
 ** TODO [#C] Refactor to put everything inside =.emacs.d/=              :epic:
 ** TODO [#C] Elixir functions                                         :feat:
 ** TODO [#C] <leader asft> fails                                       :bug:
@@ -30,3 +29,4 @@ when switching to project it fails to open magit and then fails to switch projec
 - [X] => snippet
 - [X] #{} snippet 
 
+** DONE [#C] Remove fh.el dependency                                   :bug:

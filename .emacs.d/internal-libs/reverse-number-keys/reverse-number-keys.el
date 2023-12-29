@@ -52,8 +52,6 @@
   "Return an interactive lambda that will insert STR."
   `(lambda () (interactive) (insert ,str)))
 
-
-
 (define-minor-mode reverse-number-keys-mode
   "Reverse number keys.  For instance:
 1 turns to ! and ! turns to 1

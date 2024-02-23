@@ -217,6 +217,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
     "tic" '(org-table-insert-column         :which-key "insert column")
     "tir" '(org-table-insert-row            :which-key "insert row")
     "td"  '(nil                             :which-key "delete")
+    "tdr" '(org-table-kill-row              :which-key "delete row")
     "tdc" '(org-table-delete-column         :which-key "delete column"))
 
 	;; LaTeX
@@ -356,22 +357,33 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
    ("C-c n i" . org-extra-node-insert-immediate)))
 
 (use-package org-roam-ui
-  :after 'org-roam)
+  :after org-roam)
 
 (use-package ox-gfm
-  :after 'org)
+  :after org)
 
 (use-package ob-mermaid
-  :after 'org)
+  :after org)
 
 (with-eval-after-load "org-num"
   (setq org-num-skip-unnumbered t))
+
+(with-eval-after-load "ox-latex"
+  ;; add abnt
+  (add-to-list
+   'org-latex-classes
+   '("abntex2" "\\documentclass[11pt]{abntex2}"
+     ("\\section{%s}"       . "\\section*{%s}")
+     ("\\subsection{%s}"    . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}"     . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}"  . "\\subparagraph*{%s}"))))
 
 ;; (use-package ox-beamer
 ;;   :after org)
 
 (use-package org-download
-  :after 'org
+  :after org
   :custom
   (org-download-method 'directory)
   (org-download-image-dir "./pics")
@@ -434,6 +446,12 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 ;;
 
 (use-package valign
-  :after 'org
+  :after org
   :hook (org-mode . valign-mode))
+
+;;
+;; org cycle
+;;
+(with-eval-after-load "org-cycle"
+  (add-hook 'org-after-sorting-entries-or-items-hook (lambda () (org-cycle-global 2))))
 

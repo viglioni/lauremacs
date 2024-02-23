@@ -38,38 +38,6 @@
 										'make-scripts:run-command
 										'make-scripts)
 
-(require 'project-scripts)
-
-(general-define-key
- :prefix "<f17> <f17>"
- "" '(nil :which-key "language scripts"))
-
-(general-define-key
- :prefix "<f17> <f17> <f17>"
- ""		'(nil									:which-key "common commands")
- "h"	'(hide-script-buffer	:which-key "hide script buffer")
- "o"	'(open-script-buffer	:which-key "open script buffer")
- "g"	'(go-to-script-buffer :which-key "go to script buffer"))
-
-(general-define-key
- :prefix "<f17> <f17> n"
- ""   '(nil									:which-key "npm scripts")
- "r"  '(npm-choose-and-run	:which-key "run package.json script")
- "l"  '(import-default-lib	:which-key "import default lib")
- "i"  '(npm-install-lib			:which-key "install lib")
- "d"  '(npm-install-dev-lib :which-key "install dev lib")
- "o"  '(nil									:which-key "open file")
- "op" '(open-package-json		:which-key "package.json"))
-
-(general-define-key
- :prefix "<f17> <f17> m"
- ""		'(nil						:which-key "makefile scripts")
- "r"	'(run-make-cmd	:which-key "run make command"))
-
-(general-define-key
- :prefix "<f17> <f17> p"
- ""	 '(nil                            :which-key "project scripts")
- "t" '(project-scripts-create-ts-proj	:which-key "create ts project"))
 
 
 ;;

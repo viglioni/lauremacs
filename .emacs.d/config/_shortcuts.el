@@ -38,8 +38,8 @@
 
   ;; calibre
   "ac"  '(nil                                                :which-key "calibre")
-  "acc" '(calibredb                                          :which-key "calibre")
   "aca" '(calibredb-add                                      :which-key "add book")
+  "acc" '(calibredb                                          :which-key "calibre")
   "acf" '(calibredb-find-helm                                :which-key "find")
 
   ;; docker
@@ -47,8 +47,8 @@
 
   ;; pdf tools
   "ap"  '(nil                                                :which-key "pdf tools")
-  "app" '(pdf-helper-prev-page                               :which-key "previous page")
   "apn" '(pdf-helper-next-page                               :which-key "next page")
+  "app" '(pdf-helper-prev-page                               :which-key "previous page")
 
 	;; pop shell
   "as"  '(nil                                                :which-key "shell")
@@ -56,14 +56,14 @@
 	"asN" `(,(pop-shell-cmd "node" "node")                     :which-key "node")
 	"asc" `(,(pop-shell-cmd "iex" "elixir-repl")               :which-key "elixir repl")
 	"asc" `(,(pop-shell-cmd "lein repl" "clojure-lein-repl")   :which-key "clojure lein repl")
-  "ase" `(,(pop-shell 'eshell)                               :which-key "eshell")
 	"ash" `(,(pop-shell-cmd "ghci" "haskell-ghci")             :which-key "haskell ghci")
 	"asi" `(,(pop-shell 'ielm)                                 :which-key "ielm")
 	"asn" `(,(pop-shell-cmd "npx ts-node" "ts-node")           :which-key "ts node")
-  "asp" `(,(pop-shell-cmd "python3" "python")                :which-key "python")
 	"ast" `(,(pop-shell 'ansi-term (getenv "SHELL"))           :which-key "ansi-term")
-  "ass" `(,(pop-shell 'shell)                                :which-key "shell")
   "asS" `(,(pop-shell-cmd "sage" "sage")                     :which-key "sage")
+  "ase" `(,(pop-shell 'eshell)                               :which-key "eshell")
+  "asp" `(,(pop-shell-cmd "python3" "python")                :which-key "python")
+  "ass" `(,(pop-shell 'shell)                                :which-key "shell")
   "asx" `(,(pop-shell-cmd "iex" "elixir-repl")               :which-key "elixir repl")
 
   ;; full buffer shell
@@ -72,35 +72,38 @@
 	"asfN" `(,(shell-cmd "node" "node")                        :which-key "node")
 	"asfc" `(,(shell-cmd "iex" "elixir-repl")                  :which-key "elixir repl")
 	"asfc" `(,(shell-cmd "lein repl" "clojure-lein-repl")      :which-key "clojure lein repl")
-  "asfe" `(eshell                                            :which-key "eshell")
 	"asfh" `(,(shell-cmd "ghci" "haskell-ghci")                :which-key "haskell ghci")
 	"asfi" `(ielm                                              :which-key "ielm")
 	"asfn" `(,(shell-cmd "npx ts-node" "ts-node")              :which-key "ts node")
-  "asfp" `(,(shell-cmd "python3" "python")                   :which-key "python")
 	"asft" `(,(shell-cmd 'ansi-term "/bin/zsh")                :which-key "ansi-term")
-  "asfs" `(shell                                             :which-key "shell")
   "asfS" `(,(shell-cmd "sage" "sage")                        :which-key "sage")
+  "asfe" `(eshell                                            :which-key "eshell")
+  "asfp" `(,(shell-cmd "python3" "python")                   :which-key "python")
+  "asfs" `(shell                                             :which-key "shell")
   "asfx" `(,(shell-cmd "iex" "elixir-repl")                  :which-key "elixir repl")
 
   ;; translate
   "at"  '(nil                                                :which-key "translate")
-  "att" '(lauremacs-translate-transient                      :which-key "translate")
   "atP" '(lauremacs-translate-from-brazilian-at-point        :which-key "translate from br at point")
-  "atp" '(lauremacs-translate-to-brazilian-at-point          :which-key "translate to br at point"))
+  "atp" '(lauremacs-translate-to-brazilian-at-point          :which-key "translate to br at point")
+  "att" '(lauremacs-translate-transient                      :which-key "translate")
+  )
 
 ;;
 ;; b- Buffers
 ;;
 
 (lauremacs-leader
-  "b"  '(nil                                              :which-key "buffers")
-  "bb" '(lauremacs/switch-buffer                          :which-key "list buffers")
-  "bB" '(helm-buffers-list                                :which-key "list buffers")
-	"bk" '(persp-kill-buffer                                :which-key "kill buffer")
-  "bc" `(,(const 'switch-to-buffer "*compilation*")       :which-key "switch to Messages buffer")
-  "bm" `(,(const 'switch-to-buffer "*Messages*")          :which-key "switch to Messages buffer")
-  "bs" `(,(const 'switch-to-buffer "*scratch*")           :which-key "switch to scratch buffer")
-  "bh" `(,(const 'switch-to-buffer lauremacs-buffer-name) :which-key "switch to home buffer"))
+  "b"  '(nil                                        :which-key "buffers")
+	"bk" '(persp-kill-buffer                          :which-key "kill buffer")
+  "bB" '(helm-buffers-list                          :which-key "list buffers")
+  "bb" '(lauremacs/switch-buffer                    :which-key "list buffers")
+  "bc" `(,(const 'switch-to-buffer "*compilation*") :which-key "switch to Messages buffer")
+  "bh" `(,(const 'switch-to-buffer "*lauremacs*")   :which-key "switch to home buffer")
+  "bm" `(,(const 'switch-to-buffer "*Messages*")    :which-key "switch to Messages buffer")
+  "bs" `(,(const 'switch-to-buffer "*scratch*")     :which-key "switch to Messages buffer")
+  "bt" `(,(const 'switch-to-buffer "task.org")      :which-key "switch to scratch buffer")
+  )
 
 ;;
 ;; c- Code
@@ -109,25 +112,26 @@
 (lauremacs-leader
   "c"   '(nil                         :which-key "code")
   ;; jumper
-  "cjj" '(better-jumper-set-jump      :which-key "set jump point")
   "cjb" '(better-jumper-jump-backward :which-key "jump backward")
   "cjf" '(better-jumper-jump-forward  :which-key "jump forward")
+  "cjj" '(better-jumper-set-jump      :which-key "set jump point")
 
   ;; bookmark
   "cb"	'(nil                         :which-key "bookmarks")
-	"cbc"	'(helm-bookmarks              :which-key "bookmarks")
-	"cbr"	'(helm-bookmark-rename        :which-key "bookmark rename")
-	"cbd"	'(bookmark-delete             :which-key "bookmark delete")
 	"cbD"	'(bookmark-delete-all         :which-key "delete all bookmarks")
+	"cbc"	'(helm-bookmarks              :which-key "bookmarks")
+	"cbd"	'(bookmark-delete             :which-key "bookmark delete")
+	"cbr"	'(helm-bookmark-rename        :which-key "bookmark rename")
 
   ;; nvm
   "cn"	'(nil                         :which-key "nvm")
-	"cnp" '(nvm-use-project-version     :which-key "use .nvmrc")
-	"cnn" '(nvm-use                     :which-key "nvm use")
-	"cni" '(nvm-install                 :which-key "nvm install")
-	"cnr" '(nvm-run-command             :which-key "nvm run command")
+	"cnc" '(nvm-get-current             :which-key "show current nvm")
 	"cnd" '(nvm-download                :which-key "download nvm")
-	"cnc" '(nvm-get-current             :which-key "show current nvm"))
+	"cni" '(nvm-install                 :which-key "nvm install")
+	"cnn" '(nvm-use                     :which-key "nvm use")
+	"cnp" '(nvm-use-project-version     :which-key "use .nvmrc")
+	"cnr" '(nvm-run-command             :which-key "nvm run command")
+  )
 
 ;;
 ;; e- Errors
@@ -136,18 +140,20 @@
 (lauremacs-leader
   ;; flycheck
   "e"  '(:keymap flycheck-command-map :package flycheck :which-key "errors")
-  "ee" '(explain-error-at-point                         :which-key "explain error at point"))
+  "ee" '(explain-error-at-point                         :which-key "explain error at point")
+  )
 
 ;;
 ;; g- Git
 ;;
 
 (lauremacs-leader
-  "gs" '(magit-status                                  :which-key "magit status")
-  "gf" '(magit-find-file                               :which-key "find file")
   "gd" '(magit-diff-dwim                               :which-key "diff")
+  "ge" '(:keymap smerge-basic-map :package smerge-mode :which-key "git diff - smerge")
+  "gf" '(magit-find-file                               :which-key "find file")
   "gp" '(lauremacs-gh-open-pr                          :which-key "open pr")
-  "ge" '(:keymap smerge-basic-map :package smerge-mode :which-key "git diff - smerge"))
+  "gs" '(magit-status                                  :which-key "magit status")
+  )
 
 ;;
 ;; i- input/output
@@ -155,11 +161,12 @@
 
 (lauremacs-leader
 	"i"   '(nil																 :which-key "input/output")
-	"iu"  '(nil																 :which-key "uuid")
-	"iuu" '(lauremacs/insert-uuid							 :which-key "insert uuid")
-	"iuc" '(lauremacs/insert-uuid-to-clipboard :which-key "copy uuid")
 	"ii"  '(all-the-icons-insert							 :which-key "insert icon")
-  "ie"  '(emojify-insert-emoji               :which-key "insert emoji"))
+	"iu"  '(nil																 :which-key "uuid")
+	"iuc" '(lauremacs/insert-uuid-to-clipboard :which-key "copy uuid")
+	"iuu" '(lauremacs/insert-uuid							 :which-key "insert uuid")
+  "ie"  '(emojify-insert-emoji               :which-key "insert emoji")
+  )
 
 ;;
 ;; l- workspaces
@@ -167,11 +174,7 @@
 
 (lauremacs-leader
   "l"     '(nil                                         :which-key "workspaces")
-  "lp"    '(lauremacs-tab-new-project-tab               :which-key "new project workspace")
-  "ln"    '(tab-bar-new-tab                             :which-key "new tab")
-  "ll"    '(tab-switch                                  :which-key "switch workspace")
   "l TAB" '(tab-bar-switch-to-recent-tab                :which-key "switch to last tab")
-  "lx"    '(tab-close                                   :which-key "kill workspace")
   "l1"    (list (fp/const-fn-interactive 'tab-select 1) :which-key "move to tab 1")
   "l2"    (list (fp/const-fn-interactive 'tab-select 2) :which-key "move to tab 2")
   "l3"    (list (fp/const-fn-interactive 'tab-select 3) :which-key "move to tab 3")
@@ -180,7 +183,12 @@
   "l6"    (list (fp/const-fn-interactive 'tab-select 6) :which-key "move to tab 6")
   "l7"    (list (fp/const-fn-interactive 'tab-select 7) :which-key "move to tab 7")
   "l8"    (list (fp/const-fn-interactive 'tab-select 8) :which-key "move to tab 8")
-  "l9"    (list (fp/const-fn-interactive 'tab-select 9) :which-key "move to tab 9"))
+  "l9"    (list (fp/const-fn-interactive 'tab-select 9) :which-key "move to tab 9")
+  "ll"    '(tab-switch                                  :which-key "switch workspace")
+  "ln"    '(tab-bar-new-tab                             :which-key "new tab")
+  "lp"    '(lauremacs-tab-new-project-tab               :which-key "new project workspace")
+  "lx"    '(tab-close                                   :which-key "kill workspace")
+  )
 
 ;;
 ;; m- Multicursor
@@ -189,24 +197,25 @@
 (lauremacs-leader
   "m"           '(nil                           :which-key "multi-cursor")
   "m <mouse-1>" '(mc/add-cursor-on-click        :which-key "add cursor on click")
-  "ml"          '(mc/edit-lines                 :which-key "edit lines")
+  "mN"          '(mc/skip-to-next-like-this     :which-key "skip to next like this")
+  "mP"          '(mc/skip-to-previous-like-this :which-key "skip to previous like this")
   "ma"          '(mc/edit-beginnings-of-lines   :which-key "edit beginnings of lines")
   "me"          '(mc/edit-ends-of-lines         :which-key "edit ends of lines")
-  "mw"          '(mc/mark-all-words-like-this   :which-key "mark all words like this")
-  "ms"          '(mc/mark-all-symbols-like-this :which-key "mark all symbols like this")
-  "mt"          '(mc/mark-all-like-this         :which-key "mark all like this")
-  "mr"          '(mc/mark-all-in-region         :which-key "mark all in region")
+  "mi"          '(nil                           :which-key "insert")
+  "mil"         '(mc/insert-letters             :which-key "insert letters")
+  "min"         '(mc/insert-numbers             :which-key "insert numbers")
+  "ml"          '(mc/edit-lines                 :which-key "edit lines")
   "mm"          '(set-rectangular-region-anchor :which-key "set rectangular region")
   "mn"          '(mc/mark-next-like-this        :which-key "mark next like this")
   "mp"          '(mc/mark-previous-like-this    :which-key "mark previous like this")
-  "mN"          '(mc/skip-to-next-like-this     :which-key "skip to next like this")
-  "mP"          '(mc/skip-to-previous-like-this :which-key "skip to previous like this")
+  "mr"          '(mc/mark-all-in-region         :which-key "mark all in region")
+  "ms"          '(mc/mark-all-symbols-like-this :which-key "mark all symbols like this")
+  "mt"          '(mc/mark-all-like-this         :which-key "mark all like this")
   "mu"          '(nil                           :which-key "unmark")
   "mun"         '(mc/unmark-next-like-this      :which-key "unmark last like this")
   "mup"         '(mc/unmark-previous-like-this  :which-key "unmark first like this")
-  "mi"          '(nil                           :which-key "insert")
-  "min"         '(mc/insert-numbers             :which-key "insert numbers")
-  "mil"         '(mc/insert-letters             :which-key "insert letters"))
+  "mw"          '(mc/mark-all-words-like-this   :which-key "mark all words like this")
+  )
 
 ;;
 ;; p- Projectile
@@ -214,9 +223,11 @@
 
 (lauremacs-leader
   "p"  '(:keymap projectile-command-map :package projectile :which-key "projectile")
-  "pp" '(helm-projectile-switch-project                     :which-key "switch project")
   "pf" '(helm-projectile-find-file                          :which-key "find file")
-  "pt" '(neotree-toggle-project-dir                         :which-key "neotree toggle"))
+  "pp" '(helm-projectile-switch-project                     :which-key "switch project")
+  "pr" '(projectile-replace-regexp                          :which-key "replace regexp")
+  "pt" '(neotree-toggle-project-dir                         :which-key "neotree toggle")
+  )
 
 ;;
 ;; r- Org-roam
@@ -224,15 +235,17 @@
 
 (lauremacs-leader
   "r"   '(nil                               :which-key "org-roam")
+  "rI"  '(org-roam-node-insert              :which-key "node insert")
+  "ra"  '(org-roam-tag-add                  :which-key "add tag")
   "rd"  '(nil                               :which-key "DB")
   "rds" '(org-roam-db-sync                  :which-key "db sync")
-  "ru"  '(org-id-get-create                 :which-key "add UUID to section")
-  "rt"  '(org-roam-buffer-toggle            :which-key "toggle buffer")
   "rf"  '(lauremacs-tabs-find-org-roam-node :which-key "node find")
-  "rI"  '(org-roam-node-insert              :which-key "node insert")
   "ri"  '(org-extra-node-insert-immediate   :which-key "node insert")
-  "ra"  '(org-roam-tag-add                  :which-key "add tag")
-  "ro"  '(org-roam-ui-open                  :which-key "open org-roam-ui"))
+  "ro"  '(org-roam-ui-open                  :which-key "open org-roam-ui")
+  "rt"  '(org-roam-buffer-toggle            :which-key "toggle buffer")
+  "ru"  '(org-id-get-create                 :which-key "add UUID to section")
+  )
+
 
 ;;
 ;; s- Search
@@ -240,15 +253,17 @@
 
 (lauremacs-leader
 	"s"   '(nil										:which-key "search")
-  "ss"  '(helm-swoop            :which-key "swoop")
-  "se"  '(iedit-mode            :which-key "iedit mode")
-  "sx"  '(lauremacs-elixir-grep :which-key "elixir grep")
 	"sw"  '(nil										:which-key "web search")
-	"sww" '(web-search						:which-key "web-search")
-	"swg" '(web-search-google			:which-key "google search")
-	"swd" '(web-search-duckduckgo	:which-key "duckduckgo search")
 	"swb" '(web-search-brave			:which-key "brave search")
-	"swy" '(web-search-youtube		:which-key "youtube search"))
+	"swd" '(web-search-duckduckgo	:which-key "duckduckgo search")
+	"swg" '(web-search-google			:which-key "google search")
+	"sww" '(web-search						:which-key "web-search")
+	"swy" '(web-search-youtube		:which-key "youtube search")
+  "sb"  '(helm-do-ag-buffers    :which-key "search buffers")
+  "se"  '(iedit-mode            :which-key "iedit mode")
+  "ss"  '(helm-swoop            :which-key "swoop")
+  "sx"  '(elauxir-grep :which-key "elixir grep")
+  )
 
 ;;
 ;; t- Treemacs
@@ -256,8 +271,9 @@
 
 (lauremacs-leader
   "t"  '(nil                    :which-key "treemacs")
+  "tg" '(treemacs-select-window :which-key "go to treemacs")
   "tt" '(treemacs               :which-key "toggle treemacs")
-  "tg" '(treemacs-select-window :which-key "go to treemacs"))
+  )
 
 ;;
 ;; v- Expand region
@@ -273,18 +289,19 @@
 
 (lauremacs-leader
   "w"   '(nil                                        :which-key "windows")
+	"wk"  '(nil                                        :which-key "kill window")
+	"wkb" '(purpose-delete-window-at-bottom            :which-key "delete bottom window")
   "w0"  '(delete-window                              :which-key "delete other windows")
   "w1"  '(lauremacs/window-split-single-column       :which-key "split single column")
   "w2"  '(lauremacs/window-split-double-columns      :which-key "split double columns")
   "w3"  '(lauremacs/window-split-triple-columns      :which-key "split double columns")
   "w4"  '(lauremacs/window-split-grid                :which-key "split windows in grid")
-  "wt"  '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
   "w="  `(,(const 'balance-windows)                  :which-key "balance windows")
   "wd"  `(,(const 'delete-window)                    :which-key "delete current window")
   "we"  `(,(const 'lauremacs/window-layout-toggle)   :which-key "delete current window")
   "wp"  '(lauremacs-buffer/pop-bottom                :which-key "pop buffer at bottom position")
-	"wk"  '(nil                                        :which-key "kill window")
-	"wkb" '(purpose-delete-window-at-bottom            :which-key "delete bottom window"))
+  "wt"  '(lauremacs/toggle-current-window-dedication :which-key "toggle window dedication")
+  )
 
 ;;
 ;; x- Words
@@ -292,8 +309,8 @@
 
 (lauremacs-leader
 	"x"   '(nil                             :which-key "words")
-  "xs"  '(lauremacs-words-sort-lines      :which-key "sort lines")
 	"xC"  '(count-words                     :which-key "count words")
+  "xs"  '(lauremacs-words-sort-lines      :which-key "sort lines")
   
   ;; align
   "xa"	'(nil                             :which-key "align")
@@ -302,11 +319,12 @@
   
   ;; string inflection
   "xc"  '(nil                               :which-key "convert word case")
-  "xcs" '(string-inflection-underscore      :which-key "convert to snake-case")
   "xcc" '(string-inflection-lower-camelcase :which-key "convert to camelCase")
-  "xcp" '(string-inflection-camelcase       :which-key "convert to PascalCase")
   "xck" '(string-inflection-kebab-case      :which-key "convert to kebab-case")
-  "xcu" '(string-inflection-upcase          :which-key "convert to UPPER_CASE"))
+  "xcp" '(string-inflection-camelcase       :which-key "convert to PascalCase")
+  "xcs" '(string-inflection-underscore      :which-key "convert to snake-case")
+  "xcu" '(string-inflection-upcase          :which-key "convert to UPPER_CASE")
+  )
 
 
 ;;
@@ -315,14 +333,62 @@
 
 (lauremacs-leader
 	"T"		'(nil																:which-key "toggle/choose")
-	"Tp"	'(lauremacs/toggle-pair-programming :which-key "pair programming mode")
 	"TT"	'(lauremacs/choose-theme						:which-key "choose theme")
+	"Tl"	'(linum-mode												:which-key "linum mode")
+	"Tp"	'(lauremacs/toggle-pair-programming :which-key "pair programming mode")
 	"Tt"	'(lauremacs/toggle-transparency			:which-key "transparency")
-	"Tl"	'(linum-mode												:which-key "linum mode"))
+  )
 
-(provide '_shortcuts)
+;;
+;; project scripts
+;;
 
+(require 'project-scripts)
 
+(general-define-key
+ :prefix "<f17> <f17>"
+ "" '(nil :which-key "language scripts")
+ )
+
+(general-define-key
+ :prefix "<f17> <f17> <f19>"
+ ""		'(nil									:which-key "common commands")
+ "g"	'(go-to-script-buffer :which-key "go to script buffer")
+ "h"	'(hide-script-buffer	:which-key "hide script buffer")
+ "o"	'(open-script-buffer	:which-key "open script buffer")
+ )
+
+(general-define-key
+ :prefix "<f17> <f17> n"
+ ""   '(nil									:which-key "npm scripts")
+ "d"  '(npm-install-dev-lib :which-key "install dev lib")
+ "i"  '(npm-install-lib			:which-key "install lib")
+ "l"  '(import-default-lib	:which-key "import default lib")
+ "o"  '(nil									:which-key "open file")
+ "op" '(open-package-json		:which-key "package.json")
+ "r"  '(npm-choose-and-run	:which-key "run package.json script")
+ )
+
+(general-define-key
+ :prefix "<f17> <f19>"
+ ""	'(run-make-cmd	:which-key "run make command"))
+
+(general-define-key
+ :prefix "<f17> <f17> m"
+ ""		'(nil						:which-key "makefile scripts")
+ "r"	'(run-make-cmd	:which-key "run make command")
+ )
+
+(general-define-key
+ :prefix "<f17> <f17> p"
+ ""	 '(nil                            :which-key "project scripts")
+ "t" '(project-scripts-create-ts-proj	:which-key "create ts project")
+ )
+
+(general-define-key
+ :prefix "<f17> <f17>"
+ "x" '(elauxir-mix :which-key "elixir mix")
+ )
 
 
 (provide '_shortcuts)

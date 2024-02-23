@@ -84,6 +84,7 @@
         flycheck-next-error
         handle-switch-frame
         haskell-process-load-file
+        iedit-mode
         iedit-switch-to-mc-mode
         ignore-preserving-kill-region
         lsp-rename

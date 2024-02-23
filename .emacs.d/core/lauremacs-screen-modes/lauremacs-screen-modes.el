@@ -47,6 +47,12 @@
 ;; Themes
 ;;
 
+(defvar lauremacs-default-dark-theme 'transparent
+  "Accepted values: \='(dark transparent).")
+
+(defvar lauremacs-use-system-theme t
+  "Any non-nil value Emacs theme will follow system theme.")
+
 ;;;###autoload
 (defun lauremacs--theme-load-light ()
 	"Load `spacemacs-light'."
@@ -108,15 +114,6 @@
                       :foreground "white"))
 
 
-;;;###autoload
-(defun lauremacs/theme-load (theme)
-	"Load THEME.  THEME should be `light', `dark', `grey-ink' or `transparent'."
-	(cond ((equal theme 'light)       (lauremacs--theme-load-light))
-				((equal theme 'dark)        (lauremacs--theme-load-dark))
-				((equal theme 'transparent) (lauremacs--theme-load-transparent))
-        ((equal theme 'grey-ink)    (lauremacs--theme-load-grey-ink))
-				(t (throw-if t "THEME should be `light', `dark', `grey-ink' or `transparent'.")))
-	(funcall major-mode))
 
 
 ;;;###autoload
@@ -128,10 +125,42 @@
 							:candidates '(("dark"        . dark)
 														("light"       . light)
                             ("grey"        . grey-ink)
-														("transparent" . transparent))
+														("transparent" . transparent)
+                            ("system"      . system))
 							:action 'lauremacs/theme-load)
 	 :prompt "Choose a theme to load:"))
 
+;;;###autoload
+(defun lauremacs-choose-theme-using-appearance (&optional appearance)
+  "Given APPEARANCE (dark or light) choose the Emacs theme."
+  ; bug
+  (setq lauremacs-use-system-theme t)
+  (pcase (or appearance ns-system-appearance)
+    ('light (lauremacs/theme-load 'light))
+    ('dark  (lauremacs/theme-load lauremacs-default-dark-theme))))
+
+;;;###autoload
+(defun lauremacs-apply-system-theme (appearance)
+  "Load theme, taking current system APPEARANCE into consideration."
+  `(when ,lauremacs-use-system-theme
+    (mapc #'disable-theme custom-enabled-themes)
+    (lauremacs-choose-theme-using-appearance ,appearance)))
+
+(add-hook 'ns-system-appearance-change-functions #'lauremacs-apply-system-theme)
+
+
+;;;###autoload
+(defun lauremacs/theme-load (theme)
+	"Load THEME.  THEME should be:
+`system', `light', `dark', `grey-ink' or `transparent'."
+  (unless (equal theme 'system) (setq lauremacs-use-system-theme nil))
+	(cond ((equal theme 'light)       (lauremacs--theme-load-light))
+				((equal theme 'dark)        (lauremacs--theme-load-dark))
+				((equal theme 'transparent) (lauremacs--theme-load-transparent))
+        ((equal theme 'grey-ink)    (lauremacs--theme-load-grey-ink))
+        ((equal theme 'system)      (lauremacs-choose-theme-using-appearance))
+				(t (error "THEME should be `system', `light', `dark', `grey-ink' or `transparent'")))
+	(funcall major-mode))
 
 ;;
 ;; Transparency

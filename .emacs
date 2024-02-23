@@ -3,8 +3,8 @@
 ;; Theme
 ;;
 
-(lauremacs/theme-load 'light)
-
+(setq lauremacs-default-dark-theme 'transparent)
+(lauremacs/theme-load 'system)
 
 ;;
 ;; Loading another packages
@@ -55,11 +55,6 @@
 
 ;; auto revert mode
 (global-auto-revert-mode 1)
-
-;;
-;; exec path from shell
-;;
-(exec-path-from-shell-initialize)
 
 ;;
 ;; Dealing with macos too many open files problem

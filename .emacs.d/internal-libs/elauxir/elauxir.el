@@ -47,15 +47,17 @@
 ;;
 
 ;;;###autoload
-(defun elauxir-grep ()
-  "Grep in .ex .exs files."
-  (interactive)
-  (let ((initial-search (read-string "initial query: " (if (region-active-p)
-                                                           (region-string)
-                                                         (word-at-point)))))
-    (helm-do-ag (projectile-project-root)
-                nil
-                (concat "-G=*.exs? " initial-search))))
+(defun elauxir--grep (file-path-rx)
+  "Return a function that grep in FILE-PATH-RX files.
+FILE-PATH-RX is e.g. *.exs?$"
+  (lambda ()
+    (interactive)
+    (let ((initial-search (read-string "initial query: " (if (region-active-p)
+                                                             (region-string)
+                                                           (word-at-point)))))
+      (helm-do-ag (projectile-project-root)
+                  nil
+                  (concat "-G=" file-path-rx " " initial-search)))))
 
 
 ;;

@@ -83,11 +83,18 @@
              :timestamp (publish-roam--file-timestamp (cadr row))))
    query-result))
 
+(defun publish-roam--sort-info (info-list)
+  "Sort INFO-LIST by title."
+  (sort
+   info-list
+   (lambda (info1 info2) (string< (roam-info-title info1) (roam-info-title info2)))))
+
 (defun publish-roam--files-by-tag (tag-name)
   "Get all roam files which have the tag TAG-NAME.
 Return a list of `roam-info'."
-  (publish-roam--convert-to-roam-info
-   (eval (publish-roam--query tag-name))))
+  (publish-roam--sort-info
+   (publish-roam--convert-to-roam-info
+    (eval (publish-roam--query tag-name)))))
 
 (defun publish-roam--clean (publish-dir)
   "Clear all html from PUBLISH-DIR."

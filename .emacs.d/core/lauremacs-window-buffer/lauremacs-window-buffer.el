@@ -155,7 +155,7 @@ TODO: add throwif"
   (interactive)
   (if (projectile-project-p)
       (helm-projectile-switch-to-buffer)
-    (helm-buffers-list)))
+    (helm-mini)))
 
 ;;;###autoload
 (defun lauremacs-buffer//buff-exists? (buff-name)

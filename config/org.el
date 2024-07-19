@@ -251,8 +251,10 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
                                              (:results . "output")))
   :bind
   (:map org-mode-map
-        (("C-c C-b" . org-mark-ring-goto)))
+        (("C-c C-b" . org-mark-ring-goto)
+         ("C-c c"   . org-table-blank-field)))
   )
+
 
 (use-package org-bullets
 	:after org

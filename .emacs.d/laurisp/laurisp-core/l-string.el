@@ -92,3 +92,9 @@
    (list | str) -> bool"
   (or (equal "" obj) (equal nil obj)))
 
+
+(defun region-string ()
+  "Get string from region or return an empty string."
+  (if (region-active-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    ""))

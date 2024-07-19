@@ -23,6 +23,8 @@
  "s->" 'backward-paragraph
  "s-?" 'forward-word)
 
+(keymap-set global-map "C-s-/" 'forward-word)
+
 (general-define-key ;; walk through windows
  :prefix "C-x"
  "<up>" 'evil-window-up

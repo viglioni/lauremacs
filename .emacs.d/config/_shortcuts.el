@@ -166,6 +166,7 @@
 	"iuc" '(lauremacs/insert-uuid-to-clipboard :which-key "copy uuid")
 	"iuu" '(lauremacs/insert-uuid							 :which-key "insert uuid")
   "ie"  '(emojify-insert-emoji               :which-key "insert emoji")
+  "ik"  '(helm-show-kill-ring                :which-key "show kill ring")
   )
 
 ;;
@@ -252,27 +253,29 @@
 ;;
 
 (lauremacs-leader
-	"s"    '(nil                                :which-key "search")
+	"s"    '(nil                                                               :which-key "search")
   ;; web
-	"sw"   '(nil                                :which-key "web search")
-	"swb"  '(web-search-brave                   :which-key "brave search")
-	"swd"  '(web-search-duckduckgo              :which-key "duckduckgo search")
-	"swg"  '(web-search-google                  :which-key "google search")
-	"sww"  '(web-search                         :which-key "web-search")
-	"swy"  '(web-search-youtube                 :which-key "youtube search")
+	"sw"   '(nil                                                               :which-key "web search")
+	"swb"  '(web-search-brave                                                  :which-key "brave search")
+	"swd"  '(web-search-duckduckgo                                             :which-key "duckduckgo search")
+	"swg"  '(web-search-google                                                 :which-key "google search")
+	"sww"  '(web-search                                                        :which-key "web-search")
+	"swy"  '(web-search-youtube                                                :which-key "youtube search")
   ;; elixir
-  "sx"   '(nil                                :which-key "elixir grep")
-  "sxf"  '(nil                                :which-key "grep elixir functions")
-  "sxff" `(,(elauxir--grep "*.ex$ def\ ")     :which-key "elixir grep function names")
-  "sxfp" `(,(elauxir--grep "*.ex$ defp\ ")    :which-key "elixir grep private function names")
-  "sxh"  `(,(elauxir--grep "*.heex$")         :which-key "elixir grep heex files")
-  "sxm"  `(,(elauxir--grep "*.ex$ defmodule") :which-key "elixir grep module")
-  "sxt"  `(,(elauxir--grep "*_test.exs$")     :which-key "elixir grep test files")
-  "sxx"  `(,(elauxir--grep "*.exs?$")         :which-key "elixir grep")
+  "sx"   '(nil                                                               :which-key "elixir grep")
+  "sxf"  '(nil                                                               :which-key "grep elixir functions")
+  "sxff" `(,(elauxir--grep "*.ex$ def\ ")                                    :which-key "elixir grep function names")
+  "sxfp" `(,(elauxir--grep "*.ex$ defp\ ")                                   :which-key "elixir grep private function names")
+  "sxh"  `(,(elauxir--grep "*.heex$")                                        :which-key "elixir grep heex files")
+  "sxm"  `(,(elauxir--grep "*.ex$ defmodule")                                :which-key "elixir grep module")
+  "sxt"  `(,(elauxir--grep "*_test.exs$")                                    :which-key "elixir grep test files")
+  "sxx"  `(,(elauxir--grep "*.exs?$")                                        :which-key "elixir grep")
+  ;; typescript/react
+  "st"   `(,(elauxir--grep "*.tsx$ --ignore=*native* --ignore=*mobile-app*") :which-key "tsx grep")
   ;; misc
-  "sb"   '(helm-do-ag-buffers                 :which-key "search buffers")
-  "se"   '(iedit-mode                         :which-key "iedit mode")
-  "ss"   '(helm-swoop                         :which-key "swoop")
+  "sb"   '(helm-do-ag-buffers                                                :which-key "search buffers")
+  "se"   '(iedit-mode                                                        :which-key "iedit mode")
+  "ss"   '(helm-swoop                                                        :which-key "swoop")
   )
 
 ;;

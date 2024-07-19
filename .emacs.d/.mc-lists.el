@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
         LaTeX-insert-left-brace
+        all-the-icons-insert
         beginning-of-visual-line
         comment-dwim
         company-complete
@@ -31,6 +32,7 @@
         latex/beginning-of-line
         lsp-format-buffer
         lsp-signature-stop
+        markdown-outdent-or-delete
         ns-copy-including-secondary
         org-beginning-of-line
         org-cycle
@@ -84,9 +86,11 @@
         flycheck-next-error
         handle-switch-frame
         haskell-process-load-file
+        hindent-reformat-buffer
         iedit-mode
         iedit-switch-to-mc-mode
         ignore-preserving-kill-region
+        lauremacs-tabs-find-org-roam-node
         lsp-rename
         lsp-ui-doc--handle-mouse-movement
         mc/mark-all-in-region
@@ -94,4 +98,5 @@
         org-ctrl-c-ctrl-c
         set-rectangular-region-anchor
         web-mode-element-rename
+        winum-select-window-3
         ))

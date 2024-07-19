@@ -1,28 +1,47 @@
 # -*- org-todo-keyword-faces: (("TODO" . "orange") ("DOING" . "purple") ("DONE" . "green") ("CANCELLED" . "gray")); -*-
 #+todo: TODO DOING | DONE CANCELLED
+#+startup: content hideblocks
 
-* Backlog [6/20]
-** TODO [#A] Create snake_case mode                                   :feat:
+#+begin_src emacs-lisp :exports none :results output 
+  (org-map-entries
+   (lambda ()
+     (ignore-errors nil(org-sort-entries nil ?p))
+     (ignore-errors (org-sort-entries nil ?o))
+     (save-buffer)))
+  (org-cycle-global 2)
+  (org-cycle-global 2)
+#+end_src
+
+#+RESULTS:
+
+* Backlog [8/20]
+** TODO [#A] Add vterm shortcuts                                      :feat:
+** TODO [#A] When project is not a git repo                            :bug:
+when switching to project it fails to open magit and then fails to switch project
+** TODO [#A] Add elixir format to heex mode autosave :feat:
+
 ** TODO [#B] Fix jump shortcuts                                       :feat:
+** TODO [#B] Elauxir :feat:
+- create major mode with keybindings to leave
+- maybe create a generic major mode to that?
+** TODO [#B] Good keybindings to resize windows :feat:
 ** TODO [#B] Config origami                                           :feat:
 ** TODO [#B] IEX autocompletion                                       :feat:
+** TODO [#C] <Leader b k> isn't working :bug:
+** TODO [#C] Webmode for heex files                                   :feat:
+** TODO [#C] Centralize shortcuts (not leader)                    :refactor:
 ** TODO [#C] Organize =config/org.el=                                :refactor:
 ** TODO [#C] Flyspell shortcuts and configs                           :feat:
-** TODO [#C] Centralize shortcuts (not leader)                    :refactor:
-** TODO [#C] Webmode for heex files                                   :feat:
 ** TODO [#C] Refactor to put everything inside =.emacs.d/=              :epic:
 ** TODO [#C] Elixir functions                                         :feat:
-** TODO [#C] <leader asft> fails                                       :bug:
-** TODO [#C] When project is not a git repo                            :bug:
-when switching to project it fails to open magit and then fails to switch project
-
-** TODO [#C] <leader> b h not working                                  :bug:
+** TODO [#C] REMOVE ANSI TERM :feat:
 ** TODO [#C] Create helper to add pretty icons                        :feat:
-
-** CANCELLED [#B] Centralise =before-save-hook=                       :feat:
+** TODO [#C] Create <Leader wf> :feat:
+** CANCELLED [#B] Centralise =before-save-hook=                         :feat:
 4th param local solves the problem.
-** DONE [#A] Create inverse-numbers-mode                              :feat:
+** DONE [#A] Create snake_case mode                                   :feat:
 ** DONE [#A] Finish elixir projectile configuration                   :feat:
+** DONE [#A] Create inverse-numbers-mode                              :feat:
 ** DONE [#A] Centralise shortcuts definitions (lauremacs-leader)
 ** DONE [#B] Elixir snippets                                          :feat:
 - [X] sigil snippets
@@ -30,3 +49,9 @@ when switching to project it fails to open magit and then fails to switch projec
 - [X] #{} snippet 
 
 ** DONE [#C] Remove fh.el dependency                                   :bug:
+** DONE [#C] <leader> b h not working                                  :bug:
+
+* COMMENT Local Variables
+# Local Variables:
+# eval: (org-babel-execute-buffer)
+# End:

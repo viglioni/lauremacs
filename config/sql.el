@@ -18,7 +18,7 @@
 	(require-without-throw 'sql-private)
 	(lauremacs-major-mode-leader
 		:keymaps 'sql-mode-map
-		"s"  '(nil :which-key "repl")
+		"s"  '(nil                          :which-key "repl")
 		"sb" '(sql-send-buffer              :which-key "send buffer to repl")
 		"sf" '(sql-send-paragraph           :which-key "send paragraph to repl")
 		"sr" '(sql-send-region              :which-key "send region to repl")
@@ -26,14 +26,16 @@
 		"sF" '(sql-send-paragraph-and-focus :which-key "send paragraph and focus")
 		"sR" '(sql-send-region-and-focus    :which-key "send region and focus")
 		"ss" '(sql-show-sqli-buffer         :which-key "show sqli buffer")
-		"c"  '(nil :which-key "connection")
+		"c"  '(nil                          :which-key "connection")
 	  "cc" '(sql-connect                  :which-key "sql connect")
 		"cb" '(sql-set-sqli-buffer          :which-key "set sqli buffer")
-		"l"  '(nil :which-key "lsp functions")
+		"l"  '(nil                          :which-key "lsp functions")
 		"ls" '(lsp-sql-switch-connection    :which-key "switch connections")
 		"==" '(sqlfmt-buffer                :which-key "format buffer")
+    "=b" '(sqlfmt-buffer                :which-key "format buffer")
 		"=r" '(sqlfmt-region                :which-key "format region")))
 
 (use-package sql-indent
 	:after sql)
 
+ 

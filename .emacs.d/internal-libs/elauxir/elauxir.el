@@ -50,14 +50,14 @@
 (defun elauxir--grep (file-path-rx)
   "Return a function that grep in FILE-PATH-RX files.
 FILE-PATH-RX is e.g. *.exs?$"
-  (lambda ()
+  `(lambda ()
     (interactive)
     (let ((initial-search (read-string "initial query: " (if (region-active-p)
                                                              (region-string)
                                                            (word-at-point)))))
       (helm-do-ag (projectile-project-root)
                   nil
-                  (concat "-G=" file-path-rx " " initial-search)))))
+                  (concat "-G=" ,file-path-rx " " initial-search)))))
 
 
 ;;

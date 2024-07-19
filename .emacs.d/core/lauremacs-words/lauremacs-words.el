@@ -37,7 +37,7 @@ Should be called when pointer is inside the function."
       (er/expand-region 1)
       (align-regexp (region-beginning)
                     (region-end)
-                    (concat preffix (rx (| "'(" "(list (fp/const-fn-interactive"))))
+                    (concat preffix (rx (| "`(" "'(" "(list (fp/const-fn-interactive"))))
 		  (align-regexp (region-beginning)
                     (region-end)
                     (concat preffix ":which-key"))

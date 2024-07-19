@@ -16,3 +16,9 @@
 * haskell
 - haskell-mode
   
+* sage
+#+begin_src shell :exports both :results output 
+  brew install --cask sage
+#+end_src
+
+Melpa: =sage-shell-mode= =helm-sage= =ob-sagemath=

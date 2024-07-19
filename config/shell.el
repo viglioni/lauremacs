@@ -82,12 +82,8 @@ BUFF-NAME the name of the buffer the where shell will be executed."
              '("*Async Shell Command*" (display-buffer-in-side-window) (side . bottom)))
 
 ;;
-;; binds
+;; term
 ;;
-
-
-
-
 
 (with-eval-after-load "term"
   (define-key term-raw-map (kbd "C-c C-y") 'term-paste)
@@ -95,7 +91,7 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 
 
 ;;
-;; Colour configs
+;; Colour configs 
 ;;
 
 (defun lauremacs/colorize-compilation-buffer ()
@@ -105,3 +101,4 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 
 (add-hook 'compilation-filter-hook 'lauremacs/colorize-compilation-buffer)
 
+(add-hook 'compilation-mode-hook 'visual-line-mode)

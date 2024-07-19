@@ -91,7 +91,7 @@
    (let* ((buff-name (lauriex--buff-name))
           (buff      (generate-new-buffer buff-name)))
      (with-current-buffer buff-name (lauriex-mode))
-     (lauriex--send "iex -S mix")
+     (lauriex--send " iex -S mix")
      (pop-to-buffer buff))))
 
 (defun lauriex--kill-buffer ()

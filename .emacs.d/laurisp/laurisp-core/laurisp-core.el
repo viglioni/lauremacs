@@ -21,7 +21,7 @@
 
 (dolist (file (directory-files "." t "^l-[a-zA-Z0-9-]+\\.el$"))
   (if (load file nil nil t) (message (format "Loaded %s" file))
-    (message (format "shit: %s" file))))
+    (message (format "didn't load: %s" file))))
 
 (message "Loaded laurisp-core.")
 

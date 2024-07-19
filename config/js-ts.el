@@ -1,10 +1,11 @@
-;;
-;; @author Laura Viglioni
-;; 2021
-;; GNU Public License 3.0
-;;
+;; ;;
+;; ;; @author Laura Viglioni
+;; ;; 2021
+;; ;; GNU Public License 3.0
+;; ;;
 
 (require 'projectile)
+(require 'nvm)
 
 (defvar previous-major-mode nil)
 (make-variable-buffer-local 'previous-major-mode)
@@ -50,9 +51,7 @@
 ;(setq lsp-eslint-server-command '("vscode-eslint-language-server" "--stdio"))
 
 (add-hook 'before-save-hook 'lauremacs-ide-ts-auto-fix-before-save)
-(advice-add 'lsp-organize-imports :after
-            (lambda () (when (lauremacs-ide--ts-mode?)
-                    (lsp-eslint-apply-all-fixes))))
+
 
 (with-eval-after-load "lsp-mode"
   (setq lsp-typescript-preferences-import-module-specifier "relative"))
@@ -66,7 +65,6 @@
                               (exec-path-when-cmd-not-found "prettier")))
 				 (tsx-mode        . lsp-deferred)
 				 (tsx-mode        . prettier-js-mode)
-				 (tsx-mode        . lauremeacs/ts-load-web-mode)
          (typescript-mode . (lambda () (add-multiple-into-list 'prettify-symbols-alist
 																											    '((">="  . "≥")
 																												    ("<="  . "≤")
@@ -80,7 +78,8 @@
 	(require 'nvm)
 	(define-derived-mode tsx-mode typescript-mode "tsx")
 	(add-hook 'tsx-mode #'subword-mode)
-	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode)))
+	(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
+  )
 
 (use-package tree-sitter
   :ensure t
@@ -133,8 +132,9 @@
   :after (typescript-mode))
 
 (use-package web-mode
-	:mode "\\.html\\'"
-  :hook ((web-mode . prettier-js-mode))
+	:mode ("\\.html\\'" ;; "\\.tsx\\'"
+         )
+  :hook ((web-mode . prettier-js-mode) (web-mode . lsp-deferred))
   :init
   (lauremacs-major-mode-leader
     :keymaps '(web-mode-map tsx-mode-map)
@@ -151,20 +151,16 @@
     "ie" '(web-mode-element-end             :which-key "element end")
 		"if" '(web-mode-fold-or-unfold          :which-key "fold/unfold element"))
 
-	(dolist (fn '(web-mode-element-insert-at-point
-								web-mode-element-vanish
-								web-mode-element-kill
-								web-mode-element-select
-								web-mode-element-wrap
-								web-mode-element-rename
-								web-mode-element-clone
-								web-mode-element-close
-								web-mode-element-beginning
-								web-mode-element-end
-								web-mode-fold-or-unfold))
-		(advice-add fn :around 'lauremacs/tsx-load-web-mode))
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2))
+
+(with-eval-after-load "eglot"
+  (add-to-list 'eglot-server-programs '(web-mode . ("typescript-language-server" "--stdio"))))
+
+(with-eval-after-load 'lsp
+  (setf (alist-get 'web-mode lsp--formatting-indent-alist) 'web-mode-code-indent-offset))
+
+
 

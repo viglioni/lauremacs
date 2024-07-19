@@ -4,21 +4,13 @@
 ;; GNU Public License 3.0
 ;;
 
+;;; Code:
 
 ;;
 ;; Elixir
 ;;
 
-(require 'snake-case-mode)
-
-(defun lauremacs-elixir-grep ()
-  "Grep in .ex .exs files."
-  (interactive)
-  (let ((initial-search (read-string "initial query: " (word-at-point))))
-    (helm-do-ag (projectile-project-root)
-                nil
-                (concat "-G=*.exs? " initial-search))))
-
+(require 'laurisp-core)
 
 (use-package elixir-ts-mode
   :mode "\\.exs?\\'"
@@ -39,44 +31,40 @@
   :init
   ;; download latest release from https://github.com/elixir-lsp/elixir-ls
                                         ;(add-to-list 'exec-path "~/elixir-ls")
-  (setq lsp-elixir-server-command '("~/lexical/_build/dev/package/lexical/bin/start_lexical.sh"))
+                                        ;  (setq lsp-elixir-server-command '("~/lexical/_build/dev/package/lexical/bin/start_lexical.sh"))
+  (setq lsp-elixir-server-command '("~/elixir-ls/language_server.sh"))
+  (require 'elauxir)
+  (require 'snake-case-mode)
+  (require 'lauriex)
+
+  ;; heex
+  (add-hook 'heex-ts-mode-hook 'lsp-deferred)
+  (add-hook 'heex-ts-mode-hook (lambda () (add-hook 'before-save-hook 'lsp-format-buffer nil t)))
+  
   (lauremacs-major-mode-leader
-		:keymaps 'elixir-ts-mode-map
-		"s"		'(nil											:which-key "repl")
-		"se"	'(inf-elixir-send-line		:which-key "send line")
-		"sb"	'(inf-elixir-send-buffer	:which-key "send buffer")
-		"sr"	'(inf-elixir-send-region	:which-key "send region")
-		"sS"	'(inf-elixir							:which-key "go to repl")
-		"ss"  '(inf-elixir-project			:which-key "go to repl (project)")
-		"=="	'(elixir-format						:which-key "format buffer")))
+		:keymaps '(elixir-ts-mode-map heex-ts-mode-map)
+		"s"      '(nil                             :which-key "repl")
+                                        ;"se"    '(inf-elixir-send-line            :which-key "send line")
+		"sb"     '(lauriex-send-buffer             :which-key "send buffer")
+                                        ;		"sr"     '(inf-elixir-send-region          :which-key "send region")
+                                        ;		"sS"     '(inf-elixir                      :which-key "go to repl")
+		"ss"     '(lauriex                         :which-key "go to repl (project)")
+    "sr"     '(lauriex-recompile               :which-key "recompile")
+		"=="     '(elixir-format                   :which-key "format buffer")
+    "TAB"    '(elauxir-switch-ex-heex :which-key "toggle ex <-> heex")
+    "tf"     '(elauxir-test-this-file :which-key "test this file")
+    "tr"     '(elauxir-run-this-test  :which-key "run test at point")))
 
 
 (use-package inf-elixir
-	:after elixir-ts-mode)
+	:after elixir-ts-mode
+  :init
+  (add-hook 'inf-elixir-mode-hook 'snake-case-mode))
 
-
-(defun lauremacs-elixir-create-file (file-path)
-  "Create file if it does not exist.  FILE-PATH is relative to project root."
-  (let ((full-path (join-path (projectile-project-root) file-path)))
-    (unless (file-exists-p full-path)
-      (write-region "" nil full-path)
-      (message (format "Created file: %s" file-path)))
-    file-path))
-
-(defun lauremacs-elixir-impl-test-file (file)
-  "Return the implementation/test file related to FILE."
-  (cond ((string-match-p "^test" file)
-         (fp/pipe file
-           (fp/replace "^test" "lib")
-           (fp/replace "_test\\.exs$" ".ex")
-           'lauremacs-elixir-create-file
-           ))
-        ((string-match-p "^lib" file)
-         (fp/pipe file
-           (fp/replace "^lib" "test")
-           (fp/replace "\\.ex$" "_test.exs")
-           'lauremacs-elixir-create-file))))
-
+(use-package flycheck-credo
+  :after '(elixir-ts-mode flycheck)
+  :init
+  (flycheck-credo-setup))
 
 (with-eval-after-load "projectile"
   (projectile-register-project-type
@@ -89,5 +77,10 @@
    :project-file ""
    :test "mix test"
    :test-suffix "_test"
-   :related-files-fn '(lauremacs-elixir-impl-test-file)
+   :related-files-fn '(elauxir-impl-test-file)
    ))
+
+(with-eval-after-load "smartparens"
+  (sp-local-pair 'heex-ts-mode "<%" " %>")
+  (sp-local-pair 'heex-ts-mode "<." " />")
+)

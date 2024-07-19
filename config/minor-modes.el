@@ -250,6 +250,11 @@
 (use-package better-jumper
   :hook (prog-mode . better-jumper-mode))
 
+;;
+;; horizontal line
+;;
+(with-eval-after-load "hl-line-mode"
+  (global-hl-line-mode t))
 
 
 

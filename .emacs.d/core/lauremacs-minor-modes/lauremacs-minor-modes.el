@@ -50,8 +50,9 @@
   "Reverse : and ; to avoid too much shift pressing."
   :init-value nil
   :lighter ":;"
-  :keymap `((":" . (lambda () (interactive) (insert ";")))
-            (";" . (lambda () (interactive) (insert ":")))))
+  :keymap  `((":" . (lambda () (interactive) (insert ";")))
+             (";" . (lambda () (interactive) (insert ":"))))
+	)
 
 (provide 'lauremacs-minor-modes)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

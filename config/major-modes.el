@@ -24,7 +24,9 @@
     "tp" '(projectile-test-project
            :which-key "test project"))
   (require 'reverse-number-keys)
-  (add-hook 'prog-mode-hook 'reverse-number-keys-mode))
+  (add-hook 'prog-mode-hook 'reverse-number-keys-mode)
+  ;(add-hook 'prog-mode-hook 'switch-semi-colon-mode)
+  )
 
 
 ;;
@@ -35,6 +37,21 @@
 (add-hook 'emacs-lisp-mode-hook 'eval-sexp-fu-flash-mode)
 (require 'laurisp-core)
 
+(defun lauremacs-ielm-eval ()
+  "Run last sexp on IELM."
+  (interactive)
+  (let* ((beginning (save-excursion
+                     (backward-sexp)
+                     (move-beginning-of-line nil)
+                     (point)))
+         (end (point))
+         (cmd (buffer-substring-no-properties beginning end))
+         (current-window (car (window-list))))
+    (funcall (lauremacs-pop-shell 'ielm))
+    (with-current-buffer "*ielm*"
+      (insert cmd)
+      (ielm-send-input))
+    (select-window current-window)))
 
 (add-hook 'emacs-lisp-mode-hook
 					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
@@ -67,23 +84,26 @@
 ;;;###autoload
 (lauremacs-major-mode-leader
 	:keymaps 'emacs-lisp-mode-map
-	"c"		'(nil														:which-key "compile")
-	"cc"	'(emacs-lisp-byte-compile				:which-key "byte compile")
-	"e"		'(nil														:which-key "eval")
-	"eb"	'(eval-buffer										:which-key "eval-buffer")
-	"er"	'(eval-region										:which-key "eval region")
-	"="		'(nil														:which-key "format")
-	"=="	'(lauremacs/buffer-indent				:which-key "indent buffer")
-	"=r"	'(indent-region									:which-key "indent region")
-	"=g"	'(lauremacs-align-general-sexp	:which-key "format codeblocks of general.el functions")
-	"=d"	'(checkdoc											:which-key "checkdoc")
-	"d"		'(nil														:which-key "documentation")
-	"dh"	'(make-header										:which-key "make lib header")
-	"du"	'(update-file-header						:which-key "update lib header")
-	"dr"	'(make-revision									:which-key "make revision")
-	"dd"	'(make-divider									:which-key "make divider")
-	"dc"	'(make-box-comment							:which-key "make box comment")
-	"dC"	'(make-box-comment-region				:which-key "make box comment region"))
+	"="  '(nil													:which-key "format")
+	"==" '(lauremacs/buffer-indent			:which-key "indent buffer")
+	"=d" '(checkdoc											:which-key "checkdoc")
+	"=g" '(lauremacs-align-general-sexp	:which-key "format codeblocks of general.el functions")
+	"=r" '(indent-region								:which-key "indent region")
+  "c"  '(nil													:which-key "compile")
+	"cc" '(emacs-lisp-byte-compile			:which-key "byte compile")
+	"d"  '(nil													:which-key "documentation")
+	"dC" '(make-box-comment-region			:which-key "make box comment region")
+	"dc" '(make-box-comment							:which-key "make box comment")
+	"dd" '(make-divider									:which-key "make divider")
+	"dh" '(make-header									:which-key "make lib header")
+	"dr" '(make-revision								:which-key "make revision")
+	"du" '(update-file-header						:which-key "update lib header")
+	"e"  '(nil													:which-key "eval")
+	"eb" '(eval-buffer									:which-key "eval buffer")
+	"er" '(eval-region									:which-key "eval region")
+  "ei" '(lauremacs-ielm-eval          :which-key "run on ielm")
+  )
+
 
 
 ;;
@@ -135,11 +155,11 @@
     (cl-destructuring-bind
         (prefix code first-word &rest description)
         (split-string (magit-get-current-branch) "-")
-      (format "[%s-%s] - %s %s"
-              (upcase prefix)
-              code
-              (capitalize first-word)
-              (string-join description " "))))
+      (url-hexify-string   (format "[%s-%s] - %s %s"
+                                   (upcase prefix)
+                                   code
+                                   (capitalize first-word)
+                                   (string-join description " ")))))
 
   (defun lauremacs-gh-open-pr ()
     "Visit the current branch's PR on GitHub."
@@ -221,3 +241,11 @@
 ;;
 (use-package mermaid-mode
   :mode "\\.mmd'")
+
+;;
+;; CSS
+;;
+
+(with-eval-after-load "css-mode"
+  (add-hook 'css-mode-hook 'prettier-js-mode))
+

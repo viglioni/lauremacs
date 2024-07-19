@@ -8,6 +8,14 @@
 ;; Projectile extra functions
 ;;
 
+;;
+;; switch project
+;;
+
+(defun lauremacs-switch-project ()
+  (pcase (magit--toplevel-safe)
+    ("Not inside Git repository" (magit-init "."))
+    (_ (progn (magit-status) (projectile-find-file)))))
 
 
 ;;
@@ -58,16 +66,32 @@
 
 (use-package helm
   :bind (("M-x" . 'helm-M-x))
+  :custom
+  ;; fuzzy matching
+  (helm-M-x-fuzzy-match         t)
+  (helm-apropos-fuzzy-match     t)
+  (helm-buffers-fuzzy-matching  t)
+  (helm-imenu-fuzzy-match       t)
+  (helm-lisp-fuzzy-completion   t)
+  (helm-locate-fuzzy-match      t)
+  (helm-recentf-fuzzy-match     t)
+  (helm-semantic-fuzzy-match    t)
+
   :init
 	(helm-mode 1)
 
 	(general-define-key
 	 :prefix "C-x"
-	 "C-f" '(helm-find-files :which-key "find files")
+	 "C-f" '(helm-find-files   :which-key "find files")
 	 "C-b" '(helm-buffers-list :which-key "list buffers"))
+
 	(general-define-key
 	 :prefix "C-h"
-	 "a" '(helm-apropos :which-key "apropos")))
+	 "a" '(helm-apropos :which-key "apropos"))
+  
+  (general-define-key
+   :prefix "<f17>"
+   "gs" '(helm-semantic-or-imenu :which-key "Helm imenu on this buffer")))
 
 (use-package helm-swoop)
 
@@ -88,8 +112,8 @@
    '(
      "*\\.stack-work"
      "*build"
+     "*deps"
      "*node_modules"
-     "^node_modules$"
      "^\\.cache$"
      "^\\.cask$"
      "^\\.eldev$"
@@ -106,11 +130,11 @@
      "^android$"
      "^bundle.*$"
      "^coverage$"
-     "^deps$"
      "^dist$"
      "^dist-.*"
      "^elpa"
      "^ios$"
+     "^node_modules$"
      "^out$"
      "^repl$"
      "^rush$"
@@ -120,26 +144,29 @@
      ))
   (projectile-globally-ignored-files
    '(
-     "*-lock.json"
      "*.chunk.*"
+     "*.cjs"
+     "*.dets"
      "*.gz"
+     "*.hex"
      "*.jar"
+     "*.js.map"
+     "*.lock"
      "*.log"
      "*.min.*"
+     "*.pack"
      "*.png"
      "*.pyc"
      "*.storyshot"
      "*.tar.gz"
      "*.tgz"
      "*.zip"
+     "*project.log*"
+     "*~"
      ".DS_Store"
      ".lein-repl-history"
      ".packages"
-     "*.js.map"
-     "*~"
-     "*.pack"
-     "*.hex"
-     "*.lock"
+   "*-lock.json"
      ))
   (projectile-project-search-path
    '("~/Company/" "~/Personal/"))
@@ -148,7 +175,7 @@
   :init
   (projectile-mode 1)
   (setq projectile-switch-project-action
-        '(lambda () (magit-status) (projectile-find-file))))
+        'lauremacs-switch-project))
 
 (use-package helm-projectile
   :after (projectile helm))

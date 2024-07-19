@@ -1,6 +1,8 @@
 #+title: Publish Roam
 
-This small library publishes org-roam files as HTML pages.
+This small library publishes org-roam files as HTML pages using pandoc and gsed. If you are not in a MacOS, change to sed.
+
+
 
 ** Install
 

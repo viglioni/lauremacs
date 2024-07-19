@@ -100,7 +100,8 @@ INFO is a `roam-info' struct."
   (let ((file-path (roam-info-file-path info)))
     (shell-command-to-string
      (format
-      "pandoc -f org -t html5 --include-in-header=static/header.html --css=static/styles.css --standalone %s -o %s/%s.html"
+      "pandoc -f org -t html5 --resource-path %s -H static/head.html --css=static/styles.css --standalone %s -o %s/%s.html"
+      publish-dir
       file-path
       publish-dir
       (roam-info-timestamp info)))))
@@ -174,11 +175,11 @@ INFO is a `roam-info' struct."
      for file in files do
      (cl-loop
       for info in info-list do
-      (print (shell-command-to-string
-              (format "gsed -i 's/id:%s/%s.html/g' %s"
-                      (roam-info-id info)
-                      (roam-info-timestamp info)
-                      file)))))))
+      (shell-command-to-string
+       (format "gsed -i 's/id:%s/%s.html/g' %s"
+               (roam-info-id info)
+               (roam-info-timestamp info)
+               file))))))
 
 ;;;;;;;;;;;;;;;;
 ;; Public API ;;

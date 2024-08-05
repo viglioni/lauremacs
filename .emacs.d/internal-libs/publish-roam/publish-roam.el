@@ -1,9 +1,9 @@
-;;; publish-roam.el --- 
+;;; publish-roam.el ---
 ;; 
 ;; Filename: publish-roam.el
-;; Description: 
+;; Description:
 ;; Author: Laura Viglioni
-;; Maintainer: 
+;; Maintainer:
 ;; Created: Fri Jul 19 14:44:31 2024 (-0300)
 ;; Version: 
 ;; Package-Requires: ()
@@ -46,8 +46,9 @@
 ;;; Code:
 
 
+(require 'ox)
 
-
+ 
 ;;;;;;;;;;;;;;;;;;;
 ;; Datastructure ;;
 ;;;;;;;;;;;;;;;;;;;
@@ -101,22 +102,50 @@ Return a list of `roam-info'."
   (shell-command-to-string
    (format "rm %s/*.html" publish-dir)))
 
-(defun publish-roam--single-file (info publish-dir)
-  "Convert single file to html in PUBLISH-DIR.
-INFO is a `roam-info' struct."
-  (let ((file-path (roam-info-file-path info)))
-    (shell-command-to-string
-     (format
-      "pandoc -f org -t html5 --resource-path %s -H static/head.html --css=static/styles.css --standalone %s -o %s/%s.html"
-      publish-dir
-      file-path
-      publish-dir
-      (roam-info-timestamp info)))))
+(defun publish-roam--fst-empty-line ()
+  "Go to first empty line."
+  (search-forward "\n\n"))
 
-(defun publish-roam--publish-all (info-list publish-dir)
-  "Publish all roam files from INFO-LIST in PUBLISH-DIR."
+(defun publish-roam--read-file-as-str (filepath)
+  "Read content from FILEPATH as string."
+  (with-temp-buffer
+    (insert-file-contents filepath)
+    (buffer-string)))
+
+(defun publish-roam--insert-css ()
+  "Insert CSS header."
+  (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"static/styles.css\" />\n\n"))
+
+(defun publish-roam--insert-head (publish-dir)
+  "Insert head from PUBLISH-DIR/static/head.html."
+  (let* ((file (format "%s/static/head.html" publish-dir))
+         (raw-content (publish-roam--read-file-as-str file))
+         (content (replace-regexp-in-string "\n" "" raw-content)))
+    (insert (format "#+HTML_HEAD: %s" content))))
+
+(defun publish-roam--export-file-name (info publish-dir)
+  "Return the HTML filepath from INFO and PUBLISH-DIR."
+  (format "%s/%s.html" publish-dir (roam-info-timestamp info)))
+
+
+(defun publish-roam--single-file (info publish-dir &optional not-evalp)
+  "Convert single file to html in PUBLISH-DIR.
+INFO is a `roam-info' struct.
+If NOT-EVALP is non nil, it will not eval babel code in the exported file."
+  (let ((org-export-with-section-numbers nil)
+        (org-export-use-babel (not not-evalp)))
+	  (with-temp-buffer
+		  (insert-file-contents (roam-info-file-path info))
+      (publish-roam--fst-empty-line)
+		  (publish-roam--insert-css)
+		  (publish-roam--insert-head publish-dir)
+		  (org-export-to-file 'html (publish-roam--export-file-name info publish-dir)))))
+
+(defun publish-roam--publish-all (info-list publish-dir &optional not-evalp)
+  "Publish all roam files from INFO-LIST in PUBLISH-DIR.
+If NOT-EVALP is non-nil, it won't execute any babel code."
   (mapcar
-   (lambda (row) (publish-roam--single-file row publish-dir))
+   (lambda (row) (publish-roam--single-file row publish-dir not-evalp))
    info-list))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -124,52 +153,28 @@ INFO is a `roam-info' struct."
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun publish-roam--schema-card (info)
-  "html card schema from INFO."
+  "HTML card schema from INFO."
   (format "<a href=\"%s.html\" class=\"card\">%s</a>"
           (roam-info-timestamp info)
           (roam-info-title info)))
 
-(defun publish-roam--schema-index (title info-list)
-  "Index page with links from INFO-LIST.  TITLE will be shown in header."
-  (format
-   "
-<!doctype html>
-<html lang=\"en\">
-  <head>
-    <meta charset=\"UTF-8\" />
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
-    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />
-    <title>%s</title>
-    <link rel=\"stylesheet\" href=\"static/styles.css\" />
-    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />
-    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />
-    <link
-      href=\"https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&display=swap\"
-      rel=\"stylesheet\"
-    />
-  </head>
+(defun publish-roam--template-exist? (publish-dir)
+  "Check if index template exists in PUBLISH-DIR/static."
+  (file-exists-p (format "%s/static/index.template.html" publish-dir)))
 
-  <body>
-    <script src=\"static/index.js\"></script>
-    <header>
-      <h1>%s</h1>
-    </header>
-    <div class=\"card-wrapper\">
-      %s
-    </div>
-  </body>
-</html>
-"
-   title
-   title
+(defun publish-roam--schema-index (publish-dir info-list)
+  "Index page with links from INFO-LIST.  PUBLISH-DIR is the publish directory."
+  (format
+   (publish-roam--read-file-as-str (format "%s/static/index.template.html" publish-dir))
    (string-join (mapcar 'publish-roam--schema-card info-list) " ")))
 
-(defun publish-roam--index-html (info-list publish-dir header-title)
+(defun publish-roam--index-html (info-list publish-dir)
   "Create a index.html with HEADER-TITLE from INFO-LIST in PUBLISH-DIR."
-  (write-region
-   (publish-roam--schema-index header-title info-list)
-   nil
-   (format "%s/index.html" publish-dir)))
+  (if (publish-roam--template-exist? publish-dir)
+      (write-region
+       (publish-roam--schema-index publish-dir info-list)
+       nil
+       (format "%s/index.html" publish-dir))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fix roam links in HTML files ;;
@@ -192,14 +197,15 @@ INFO is a `roam-info' struct."
 ;; Public API ;;
 ;;;;;;;;;;;;;;;;
 
-(defun publish-roam-by-tag (tag publish-dir header-title)
+(defun publish-roam-by-tag (tag publish-dir &optional not-evalp)
   "Publish all org-roam files with tag TAG and tag \"publish\".
 The files will be converted to html inside PUBLISH-DIR.
-An index page will be generated with links to each page using also HEADER-TITLE."
+An index page will be generated with links to each page.
+If NOT-EVALP is non-nil, it won't execute any babel code."
   (let ((info-list (publish-roam--files-by-tag tag)))
     (publish-roam--clean publish-dir)
-    (publish-roam--publish-all info-list publish-dir)
-    (publish-roam--index-html info-list publish-dir header-title)
+    (publish-roam--publish-all info-list publish-dir not-evalp)
+    (publish-roam--index-html info-list publish-dir)
     (publish-roam--fix-links info-list publish-dir)))
 
 

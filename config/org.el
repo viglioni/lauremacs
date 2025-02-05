@@ -141,6 +141,9 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	(org-highlight-latex-and-related '(latex script entities))
 	(org-image-actual-width nil)
   (org-startup-with-inline-images t)
+  (org-export-use-babel nil)
+  (org-html-preamble nil)
+  (org-html-postamble nil)
   :init
   
 	;; org-agenda
@@ -170,6 +173,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	;; keymaps
   (general-define-key
    :keymaps 'org-mode-map
+   "C-M-<return>" '(org-insert-todo-heading :general "insert todo heading")
    "M-s-m" (define-org-cmd
             :heading 'org-promote-subtree
             :table   'org-table-move-column-left)
@@ -188,37 +192,38 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	
 	(lauremacs-major-mode-leader
 		:keymaps 'org-mode-map
-		"i"   '(nil															:which-key "insert")
-		"ic"  '(org-insert-src									:which-key "insert code block source")
-		"im"  '(nil															:which-key "insert math")
-		"imb" '(org-insert-mathbb      					:which-key "insert mathbb")
-		"imc" '(org-insert-mathcal							:which-key "insert mathcal")
-		"l"   '(nil															:which-key "LaTeX")
-		"le"  '(nil															:which-key "export")
-		"lep" '(org-compile-to-pdf							:which-key "export to pdf")
-		"x"   '(nil															:which-key "word")
-		"xb"  '(org-add-bold-to-region			  	:which-key "bold")
-		"xi"  '(org-add-italic-to-region				:which-key "italic")
-		"xc"  '(org-add-code-to-region					:which-key "code")
-		"xs"  '(org-add-strikethrough-to-region :which-key "strikethrough")
-		"xv"  '(org-add-verbatin-to-region      :which-key "verbatin")
-		"xu"	'(org-add-underline-to-region     :which-key "underline")
-		"p"		'(nil															:which-key "preview")
-		"pl"  '(nil															:which-key "preview LaTeX")
-		"plb" '(org-preview-latex-on-buffer			:which-key "preview LaTeX on buffer")
-		"plc" '(org-clear-latex-preview					:which-key "clear LaTeX preview")
-		"plt" '(org-latex-preview		       			:which-key "toggle LaTeX preview at point")
-		"T"		'(nil															:which-key "toggle")
-		"Tf"	'(org-fragtog-mode								:which-key "toggle fragtog mode")
-    "t"   '(nil                             :which-key "table")
-    "ti"  '(nil                             :which-key "insert")
-    "tih" '(org-table-insert-hline          :which-key "insert horizontal line")
-    "tim" '(org-table-hline-and-move)       :which-key "insert hline and move"
-    "tic" '(org-table-insert-column         :which-key "insert column")
-    "tir" '(org-table-insert-row            :which-key "insert row")
-    "td"  '(nil                             :which-key "delete")
-    "tdr" '(org-table-kill-row              :which-key "delete row")
-    "tdc" '(org-table-delete-column         :which-key "delete column"))
+		"T"		'(nil                              :which-key "toggle")
+		"Tf"	'(org-fragtog-mode                 :which-key "toggle fragtog mode")
+		"i"   '(nil                              :which-key "insert")
+		"ic"  '(org-insert-src                   :which-key "insert code block source")
+		"im"  '(nil                              :which-key "insert math")
+		"imb" '(org-insert-mathbb                :which-key "insert mathbb")
+		"imc" '(org-insert-mathcal               :which-key "insert mathcal")
+		"l"   '(nil                              :which-key "LaTeX")
+		"le"  '(nil                              :which-key "export")
+		"lep" '(org-compile-to-pdf               :which-key "export to pdf")
+		"p"		'(nil                              :which-key "preview")
+		"pl"  '(nil                              :which-key "preview LaTeX")
+		"plb" '(org-preview-latex-on-buffer      :which-key "preview LaTeX on buffer")
+		"plc" '(org-clear-latex-preview          :which-key "clear LaTeX preview")
+		"plt" '(org-latex-preview                :which-key "toggle LaTeX preview at point")
+		"x"   '(nil                              :which-key "word")
+		"xb"  '(org-add-bold-to-region           :which-key "bold")
+		"xc"  '(org-add-code-to-region           :which-key "code")
+		"xi"  '(org-add-italic-to-region         :which-key "italic")
+		"xs"  '(org-add-strikethrough-to-region  :which-key "strikethrough")
+		"xu"	'(org-add-underline-to-region      :which-key "underline")
+		"xv"  '(org-add-verbatin-to-region       :which-key "verbatin")
+    "r"   '(org-extra-recalc-buffer-and-save :which-key "recalc buff and save")
+    "t"   '(nil                              :which-key "table")
+    "ti"  '(nil                              :which-key "insert")
+    "tic" '(org-table-insert-column          :which-key "insert column")
+    "tih" '(org-table-insert-hline           :which-key "insert horizontal line")
+    "tim" '(org-table-hline-and-move)        :which-key "insert hline and move"
+    "tir" '(org-table-insert-row             :which-key "insert row")
+    "td"  '(nil                              :which-key "delete")
+    "tdr" '(org-table-kill-row               :which-key "delete row")
+    "tdc" '(org-table-delete-column          :which-key "delete column"))
 
 	;; LaTeX
 	(sp-local-pair 'org-mode "$" "$" )
@@ -229,6 +234,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 	
 	;; Org babel
   (require 'ob-ts)
+  (require 'ob-elixir)
 	(org-babel-do-load-languages
    'org-babel-load-languages
    '((elixir		 . t)
@@ -319,6 +325,15 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 #+filetags: :privado:")
     :unnarrowed t))
 
+(defconst org-roam-recipees
+  '("r" "recipees" plain
+    "\n\n%?"
+    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                       "
+# -*- ispell-local-dictionary: \"pt_BR\"; -*-
+#+title: ${title}
+#+filetags: :receitas:")
+    :unnarrowed t))
 
 (defun set-org-roam-templates ()
   (setq org-roam-capture-templates
@@ -326,11 +341,14 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
          default-org-roam-template
          org-roam-math-template
          org-roam-private-template
+         org-roam-recipees
          (org-extra-create-language-template-item "b" "brazilian" "pt_BR")
          (org-extra-create-language-template-item "i" "italiano" "it")
          (org-extra-create-language-template-item "n" "nederlands" "dutch")
          (org-extra-create-language-template-item "e" "español" "es")
-         (org-extra-create-language-template-item "r" "ruskij" "ru"))))
+         (org-extra-create-language-template-item "R" "ruskij" "ru"))))
+
+
 
 
 (use-package company-math
@@ -448,8 +466,7 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 ;;
 
 (use-package valign
-  :after org
-  :hook (org-mode . valign-mode))
+  :after org)
 
 ;;
 ;; org cycle
@@ -457,3 +474,8 @@ example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
 (with-eval-after-load "org-cycle"
   (add-hook 'org-after-sorting-entries-or-items-hook (lambda () (org-cycle-global 2))))
 
+(with-eval-after-load "ox"
+  (setq org-export-with-toc nil))
+
+(with-eval-after-load "ox-html"
+  (setq org-html-self-link-headlines t))

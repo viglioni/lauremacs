@@ -22,6 +22,8 @@
 ;; Neotree funcs, probably will moved do /core
 ;;
 
+(defvar neo-default-system-application "open")
+
 ;;;###autoload
 (defun lauremacs/neotree-show-file (&optional buff-name)
 	"Show current file in neotree if it is open and there is a project open."

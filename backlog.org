@@ -1,4 +1,4 @@
-# -*- org-todo-keyword-faces: (("TODO" . "orange") ("DOING" . "purple") ("DONE" . "green") ("CANCELLED" . "gray")); -*-
+!# -*- org-todo-keyword-faces: (("TODO" . "orange") ("DOING" . "purple") ("DONE" . "green") ("CANCELLED" . "gray")); -*-
 #+todo: TODO DOING | DONE CANCELLED
 #+startup: content hideblocks
 
@@ -14,8 +14,31 @@
 
 #+RESULTS:
 
-* Backlog [8/20]
+* Backlog [9/29]
 ** TODO [#A] Add vterm shortcuts                                      :feat:
+** TODO [#A] Open compilation only when it is not displayed :feat:
+#+begin_src emacs-lisp :exports both :results output 
+    (defadvice compilation-start
+    (around inhibit-display
+        (command &optional mode name-function highlight-regexp))
+    (if (not (string-match "^\\(find\\|grep\\)" command))
+        (cl-letf ((display-buffer   #'ignore)
+                  (set-window-point #'ignoreco)
+                  (goto-char        #'ignore))
+          (save-window-excursion
+            ad-do-it))
+      ad-do-it))
+
+  (ad-activate 'compilation-start)
+
+   (get-buffer-window-list "*compilation*" nil t)
+
+#+end_src
+
+#+RESULTS:
+
+** TODO [#A] Add cases to heex mode
+** TODO [#A] Add new commands to elixir: ex router
 ** TODO [#A] When project is not a git repo                            :bug:
 when switching to project it fails to open magit and then fails to switch project
 ** TODO [#A] Add elixir format to heex mode autosave :feat:
@@ -25,7 +48,6 @@ when switching to project it fails to open magit and then fails to switch projec
 - create major mode with keybindings to leave
 - maybe create a generic major mode to that?
 ** TODO [#B] Good keybindings to resize windows :feat:
-** TODO [#B] Config origami                                           :feat:
 ** TODO [#B] IEX autocompletion                                       :feat:
 ** TODO [#C] <Leader b k> isn't working :bug:
 ** TODO [#C] Webmode for heex files                                   :feat:
@@ -43,6 +65,7 @@ when switching to project it fails to open magit and then fails to switch projec
 ** DONE [#A] Finish elixir projectile configuration                   :feat:
 ** DONE [#A] Create inverse-numbers-mode                              :feat:
 ** DONE [#A] Centralise shortcuts definitions (lauremacs-leader)
+** DONE [#B] Config origami                                           :feat:
 ** DONE [#B] Elixir snippets                                          :feat:
 - [X] sigil snippets
 - [X] => snippet

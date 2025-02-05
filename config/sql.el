@@ -10,8 +10,10 @@
 
 (use-package sql
 	:mode ("\\.sql\\'" . sql-mode)
-	:hook ((sql-mode . lsp-deferred)
-				 (sql-mode . sqlind-minor-mode)
+	:hook ((sql-mode             . lsp-deferred)
+				 (sql-mode             . sqlind-minor-mode)
+         (sql-mode             . snake-case-mode)
+         (sql-interactive-mode . snake-case-mode)
 				 (sql-interactive-mode . (lambda () (toggle-truncate-lines 1))))
 	:init
 	(require 'sqlau)

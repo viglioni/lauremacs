@@ -85,18 +85,31 @@
       (comint-send-string buff (format "%s%s" code (if no-new-line "" "\n"))))
     (pop-to-buffer buff)))
 
-(defun lauriex--create-iex ()
-  "Create iex buffer."
+(defun lauriex--create-iex (&optional serverp)
+  "Create iex buffer.
+If SERVERP is non-nil, start phoenix server alongside iex."
   (lauriex-with-mix-dir
    (let* ((buff-name (lauriex--buff-name))
           (buff      (generate-new-buffer buff-name)))
      (with-current-buffer buff-name (lauriex-mode))
-     (lauriex--send " iex -S mix")
+     (lauriex--send (concat " iex -S mix " (if serverp "phx.server" "")))
      (pop-to-buffer buff))))
 
 (defun lauriex--kill-buffer ()
   "Kill iex buffer."
   (kill-buffer (lauriex--buff-name)))
+
+(defun lauriex--start (&optional serverp)
+  "Open iex on current project.
+If SERVERP is non-nil, start phoenix server alongside iex."
+  (let* ((buff-name   (lauriex--buff-name))
+         (has-proc    (not (not (lauriex--buff-has-proc))))
+         (buff-exists (not (not (get-buffer buff-name)))))
+    (pcase (list has-proc buff-exists)
+      ('(nil nil) (lauriex--create-iex serverp))
+      ('(nil t)   (progn (kill-buffer buff-name) (lauriex--create-iex serverp)))
+      (_          (pop-to-buffer buff-name)))))
+
 
 ;;
 ;; API
@@ -112,16 +125,9 @@
   (interactive)
   (lauriex--send "recompile()"))
 
-(defun lauriex ()
-  "Open iex on current project."
-  (interactive)
-  (let* ((buff-name   (lauriex--buff-name))
-         (has-proc    (not (not (lauriex--buff-has-proc))))
-         (buff-exists (not (not (get-buffer buff-name)))))
-    (pcase (list has-proc buff-exists)
-      ('(nil nil) (lauriex--create-iex))
-      ('(nil t)   (progn (kill-buffer buff-name) (lauriex--create-iex)))
-      (_          (pop-to-buffer buff-name)))))
+(defun lauriex () "Start iex in the project."  (interactive) (lauriex--start))
+
+(defun lauriex-server () "Start iex in the project." (interactive) (lauriex--start t))
 
 
 ;;

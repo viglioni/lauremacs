@@ -55,16 +55,34 @@
 
 (cl-defstruct roam-info
   "Datastructure used to publish org roam data."
-  title file-path id timestamp)
+  title file-path id timestamp tags)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Converting ORG into HTML and publishing ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun publish-roam--template-exist? (publish-dir)
+  "Check if index template exists in PUBLISH-DIR/static."
+  (file-exists-p (format "%s/static/index.template.html" publish-dir)))
+
+
+(defun publish-roam--create-structure (publish-dir)
+  "Create basic files to the project in PUBLISH-DIR."
+  (let ((static-dir (format "%s/static" publish-dir)))
+    (unless (file-directory-p static-dir) (make-directory static-dir))
+    (shell-command-to-string
+     (format
+      "touch %s/styles.css && touch %s/index.js && touch %s/head.html"
+      static-dir static-dir static-dir))
+    (unless (publish-roam--template-exist? publish-dir)
+      (shell-command-to-string
+       (format "echo \"<html><body>%%s</body></body>\" > %s/index.template.html"
+               static-dir)))))
+
 (defun publish-roam--query (tag-name)
   "Define the org roam query filtering files by TAG-NAME."
   `(org-roam-db-query
-    [:select [nodes:title nodes:file nodes:id]
+    [:select [nodes:title nodes:file nodes:id nodes:properties]
              :from nodes 
              :inner :join tags :as t1 :on (= nodes:id t1:node_id)
              :inner :join tags :as t2 :on (= nodes:id t2:node_id)
@@ -74,6 +92,12 @@
   "Get timestamp from FILE-NAME."
  (replace-regexp-in-string "[^0-9]" "" file-name))
 
+(defun publish-roam--get-tags (row)
+  "Given a result ROW from DB query, return a list of all tags."
+  (let* ((properties (cadddr row))
+         (tags-string (alist-get "ALLTAGS" properties nil nil 'string-equal)))
+    (split-string tags-string ":")))
+
 (defun publish-roam--convert-to-roam-info (query-result)
   "Convert org roam QUERY-RESULT into `roam-info'."
   (mapcar
@@ -81,7 +105,9 @@
              :title (car row)
              :file-path (cadr row)
              :id (caddr row)
-             :timestamp (publish-roam--file-timestamp (cadr row))))
+             :timestamp (publish-roam--file-timestamp (cadr row))
+             :tags (publish-roam--get-tags row)
+             ))
    query-result))
 
 (defun publish-roam--sort-info (info-list)
@@ -104,7 +130,8 @@ Return a list of `roam-info'."
 
 (defun publish-roam--fst-empty-line ()
   "Go to first empty line."
-  (search-forward "\n\n"))
+  (search-forward "\n\n")
+  (forward-line -1))
 
 (defun publish-roam--read-file-as-str (filepath)
   "Read content from FILEPATH as string."
@@ -115,6 +142,10 @@ Return a list of `roam-info'."
 (defun publish-roam--insert-css ()
   "Insert CSS header."
   (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"static/styles.css\" />\n\n"))
+
+(defun publish-roam--insert-js ()
+  "Insert CSS header."
+  (insert "#+HTML_HEAD: <script type=\"module\" src=\"static/index.js\" ></script>\n\n"))
 
 (defun publish-roam--insert-head (publish-dir)
   "Insert head from PUBLISH-DIR/static/head.html."
@@ -133,11 +164,13 @@ Return a list of `roam-info'."
 INFO is a `roam-info' struct.
 If NOT-EVALP is non nil, it will not eval babel code in the exported file."
   (let ((org-export-with-section-numbers nil)
-        (org-export-use-babel (not not-evalp)))
+        (org-export-use-babel nil))
+    (print org-export-use-babel)
 	  (with-temp-buffer
 		  (insert-file-contents (roam-info-file-path info))
       (publish-roam--fst-empty-line)
 		  (publish-roam--insert-css)
+      (publish-roam--insert-js)
 		  (publish-roam--insert-head publish-dir)
 		  (org-export-to-file 'html (publish-roam--export-file-name info publish-dir)))))
 
@@ -158,15 +191,13 @@ If NOT-EVALP is non-nil, it won't execute any babel code."
           (roam-info-timestamp info)
           (roam-info-title info)))
 
-(defun publish-roam--template-exist? (publish-dir)
-  "Check if index template exists in PUBLISH-DIR/static."
-  (file-exists-p (format "%s/static/index.template.html" publish-dir)))
 
 (defun publish-roam--schema-index (publish-dir info-list)
   "Index page with links from INFO-LIST.  PUBLISH-DIR is the publish directory."
   (format
    (publish-roam--read-file-as-str (format "%s/static/index.template.html" publish-dir))
-   (string-join (mapcar 'publish-roam--schema-card info-list) " ")))
+   (string-join (mapcar 'publish-roam--schema-card info-list) " ")
+   (json-encode (mapcar (lambda (info) (cons (roam-info-title info) (roam-info-tags info))) info-list))))
 
 (defun publish-roam--index-html (info-list publish-dir)
   "Create a index.html with HEADER-TITLE from INFO-LIST in PUBLISH-DIR."
@@ -188,7 +219,7 @@ If NOT-EVALP is non-nil, it won't execute any babel code."
      (cl-loop
       for info in info-list do
       (shell-command-to-string
-       (format "gsed -i 's/id:%s/%s.html/g' %s"
+       (format "gsed -i 's/href.*%s/href=\"%s.html/g' %s"
                (roam-info-id info)
                (roam-info-timestamp info)
                file))))))
@@ -203,10 +234,12 @@ The files will be converted to html inside PUBLISH-DIR.
 An index page will be generated with links to each page.
 If NOT-EVALP is non-nil, it won't execute any babel code."
   (let ((info-list (publish-roam--files-by-tag tag)))
+    (publish-roam--create-structure publish-dir)
     (publish-roam--clean publish-dir)
     (publish-roam--publish-all info-list publish-dir not-evalp)
     (publish-roam--index-html info-list publish-dir)
-    (publish-roam--fix-links info-list publish-dir)))
+    (publish-roam--fix-links info-list publish-dir)
+    ))
 
 
 (provide 'publish-roam)

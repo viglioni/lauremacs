@@ -247,5 +247,12 @@
 ;;
 
 (with-eval-after-load "css-mode"
-  (add-hook 'css-mode-hook 'prettier-js-mode))
+  (add-hook 'css-mode-hook 'prettier-js-mode)
+  (add-hook 'css-mode-hook 'lsp-deferred))
 
+;;
+;; markdown
+;;
+
+(with-eval-after-load "markdown-mode"
+  (add-hook 'markdown-mode-hook 'prettier-js-mode))

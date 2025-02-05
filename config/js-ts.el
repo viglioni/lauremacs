@@ -57,7 +57,7 @@
   (setq lsp-typescript-preferences-import-module-specifier "relative"))
 
 (use-package typescript-mode
-  :mode "\\.ts\\'"
+  :mode ( "\\.ts\\'" "\\.js\\'")
   :hook ((typescript-mode . lsp-deferred)
 				 (typescript-mode . prettier-js-mode)
          (typescript-mode . (lambda ()

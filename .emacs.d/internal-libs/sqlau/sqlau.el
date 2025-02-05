@@ -169,12 +169,12 @@ custom output filter.  (See `my-sql-comint-preoutput-filter'.)"
 
 
 (defcustom sqlfmt-executable
-  "sqlfmt"
+  "pg_format"
   "Location of sqlfmt executable."
   :type 'string)
 
 (defcustom sqlfmt-options
-  '("--use-spaces" "--align" "--tab-width=2" "--print-width=100")
+  '("-W1")
   "Command line options to pass to sqlfmt."
   :type '(repeat string))
 

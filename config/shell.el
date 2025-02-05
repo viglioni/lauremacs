@@ -58,6 +58,16 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 ;; eshell config
 ;;
 
+(setq lauremacs-eshell-aliases
+      '((g  . magit)
+	      (gl . magit-log)
+	      (d  . dired)
+	      (ff  . find-file)	
+	      (fo . find-file-other-window)))
+
+(mapc (lambda (alias)
+	      (defalias (car alias) (cdr alias)))
+      lauremacs-eshell-aliases)
 
 (setq eshell-history-size              10000
       eshell-buffer-maximum-lines      10000
@@ -90,15 +100,3 @@ BUFF-NAME the name of the buffer the where shell will be executed."
 	(define-key term-raw-map (kbd "s-v") 'term-paste))
 
 
-;;
-;; Colour configs 
-;;
-
-(defun lauremacs/colorize-compilation-buffer ()
-  (read-only-mode nil)
-  (ansi-color-apply-on-region 1 (point))
-  (read-only-mode 1))
-
-(add-hook 'compilation-filter-hook 'lauremacs/colorize-compilation-buffer)
-
-(add-hook 'compilation-mode-hook 'visual-line-mode)

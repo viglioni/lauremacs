@@ -21,6 +21,7 @@
         helm-M-x
         helm-confirm-and-exit-minibuffer
         hindent-reformat-decl-or-fill
+        iedit-next-occurrence
         ignore
         indent-for-tab-command
         indent-region
@@ -30,8 +31,11 @@
         kmacro-end-macro
         kmacro-start-macro
         latex/beginning-of-line
+        lauremacs-words-sort-lines
         lsp-format-buffer
         lsp-signature-stop
+        markdown-cycle
+        markdown-enter-key
         markdown-outdent-or-delete
         ns-copy-including-secondary
         org-beginning-of-line
@@ -47,7 +51,9 @@
         org-return
         org-self-insert-command
         org-shifttab
+        org-table-blank-field
         org-table-copy-down
+        org-table-delete-column
         org-todo
         org-yank
         paredit-backslash
@@ -66,6 +72,7 @@
         paredit-open-square
         paredit-semicolon
         restclient-toggle-body-visibility-or-indent
+        sgml-slash
         sp-backward-sexp
         sp-forward-barf-sexp
         sp-forward-sexp
@@ -81,21 +88,30 @@
 
 (setq mc/cmds-to-run-once
       '(
+        beginning-of-buffer
+        elauxir-test-this-file
         evil-window-down
         evil-window-right
         flycheck-next-error
         handle-switch-frame
         haskell-process-load-file
+        highlight-indentation-mode
         hindent-reformat-buffer
         iedit-mode
         iedit-switch-to-mc-mode
         ignore-preserving-kill-region
         lauremacs-tabs-find-org-roam-node
+        lauremacs/switch-buffer
+        lauremacs/switch-to-last-buffer
+        lauremacs/window-split-double-columns
+        lauremacs/window-split-single-column
         lsp-rename
         lsp-ui-doc--handle-mouse-movement
+        markdown-insert-list-item
         mc/mark-all-in-region
         mouse-set-region
         org-ctrl-c-ctrl-c
+        org-ctrl-c-minus
         set-rectangular-region-anchor
         web-mode-element-rename
         winum-select-window-3

@@ -79,6 +79,12 @@ POST-FUNC: reference for a function to run on :post exectution."
              formatted-var
              import-tables))))
 
+;;;###autoload
+(defun lauremacs-org--insert-laura-db ()
+  (interactive)  
+  (insert 
+          "#+begin_src sql :exports results :results table :engine postgres :database laura_db \n\n#+end_src"))
+
 
 ;;;###autoload
 (defun lauremacs-org--insert-src-with-session (lang-name &optional session-name)
@@ -96,6 +102,7 @@ POST-FUNC: reference for a function to run on :post exectution."
 	"Given the LANG-NAME, insert a org code block with proper :post function."
   (message lang-name)
   (cond
+   ((string= "laura-db" lang-name) (lauremacs-org--insert-laura-db))
    ((string= "haskell" lang-name) (lauremacs-org--insert-src-with-post    lang-name "org-babel-haskell-formatter"))
    ((string= "clojure" lang-name) (lauremacs-org--insert-src-with-post    lang-name "org-babel-clojure-formatter"))
    ((string= "sage"    lang-name) (lauremacs-org--insert-src-with-session lang-name))
@@ -104,7 +111,10 @@ POST-FUNC: reference for a function to run on :post exectution."
 
 (defconst lauremacs-org--helm-lang-sources
   (helm-build-sync-source "Language name"
-    :candidates '(lambda () (mapcar 'car org-babel-load-languages))
+    :candidates '(lambda ()
+                   (fp/pipe org-babel-load-languages
+                     (fp/map 'car)
+                     (fp/partial 'seq-concatenate 'list '(laura-db))))
     :action 'lauremacs-org--insert-src))
 
 (defconst lauremacs-org--helm-lang-sources-fallback
@@ -124,18 +134,6 @@ POST-FUNC: reference for a function to run on :post exectution."
         (forward-line -1)
 				(indent-for-tab-command))))
 
-;;
-;; org jira
-;;
-
-;;;###autoload
-;; (defun laurg-jira-copy-current-issue-url ()
-;;   (interactive)
-;;   (let* ((issue-key (org-jira-get-from-org 'issue 'key))
-;;          (issue-url (concat jiralib-url "/browse/" issue-key)))
-;;     (kill-new issue-url)
-;;     (message (concat "copied " issue-url))
-;;     issue-url))
 
 
 

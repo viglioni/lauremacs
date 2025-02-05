@@ -134,6 +134,15 @@
   )
 
 ;;
+;; d- Database
+;;
+
+(lauremacs-leader
+  "d"  '(nil         :which-key "Databases")
+  "dc" '(sql-connect :which-key "SQL Connect"))
+
+
+;;
 ;; e- Errors
 ;;
 
@@ -142,6 +151,18 @@
   "e"  '(:keymap flycheck-command-map :package flycheck :which-key "errors")
   "ee" '(explain-error-at-point                         :which-key "explain error at point")
   )
+
+;;
+;; f- fold/unfold codeblocks
+;;
+
+(lauremacs-leader
+    "f"  '(nil                           :which-key "fold/unfold codeblocks")
+    "fa" '(origami-open-all-nodes        :which-key "open all nodes")
+    "ff" '(origami-toggle-node           :which-key "toggle node")
+    "fo" '(origami-open-node-recursively :which-key "open node recursively")
+    "fs" '(origami-show-only-node        :which-key "show only node")
+    )
 
 ;;
 ;; g- Git
@@ -218,6 +239,17 @@
   "mw"          '(mc/mark-all-words-like-this   :which-key "mark all words like this")
   )
 
+
+;;
+;; n- Neotree
+;;
+
+(lauremacs-leader
+  "n"  '(nil            :which-key "neotree")
+  "nn" '(neotree-find   :which-key "neotree find")
+  "nt" '(neotree-toggle :which-key "toggle"))
+
+
 ;;
 ;; p- Projectile
 ;;
@@ -243,6 +275,7 @@
   "rf"  '(lauremacs-tabs-find-org-roam-node :which-key "node find")
   "ri"  '(org-extra-node-insert-immediate   :which-key "node insert")
   "ro"  '(org-roam-ui-open                  :which-key "open org-roam-ui")
+  "rp"  '(org-extra-add-publish-roam-tag    :which-key "add publish tag")
   "rt"  '(org-roam-buffer-toggle            :which-key "toggle buffer")
   "ru"  '(org-id-get-create                 :which-key "add UUID to section")
   )
@@ -264,10 +297,10 @@
   ;; elixir
   "sx"   '(nil                                                               :which-key "elixir grep")
   "sxf"  '(nil                                                               :which-key "grep elixir functions")
-  "sxff" `(,(elauxir--grep "*.ex$ def\ ")                                    :which-key "elixir grep function names")
+  "sxff" `(,(elauxir--grep "*.ex$ def")                                    :which-key "elixir grep function names")
   "sxfp" `(,(elauxir--grep "*.ex$ defp\ ")                                   :which-key "elixir grep private function names")
   "sxh"  `(,(elauxir--grep "*.heex$")                                        :which-key "elixir grep heex files")
-  "sxm"  `(,(elauxir--grep "*.ex$ defmodule")                                :which-key "elixir grep module")
+  "sxm"  `(,(elauxir--grep "*.ex$ defmodule")                                :which-key "elixir grep module names")
   "sxt"  `(,(elauxir--grep "*_test.exs$")                                    :which-key "elixir grep test files")
   "sxx"  `(,(elauxir--grep "*.exs?$")                                        :which-key "elixir grep")
   ;; typescript/react
@@ -345,11 +378,12 @@
 ;;
 
 (lauremacs-leader
-	"T"		'(nil																:which-key "toggle/choose")
-	"TT"	'(lauremacs/choose-theme						:which-key "choose theme")
-	"Tl"	'(linum-mode												:which-key "linum mode")
-	"Tp"	'(lauremacs/toggle-pair-programming :which-key "pair programming mode")
-	"Tt"	'(lauremacs/toggle-transparency			:which-key "transparency")
+	"T"	 '(nil															 :which-key "toggle/choose")
+	"TT" '(lauremacs/choose-theme            :which-key "choose theme")
+	"Tl" '(global-display-line-numbers-mode	 :which-key "linum mode")
+	"Tp" '(lauremacs/toggle-pair-programming :which-key "pair programming mode")
+	"Tt" '(lauremacs/toggle-transparency		 :which-key "transparency")
+  "Ti" '(highlight-indentation-mode        :which-key "highlight indentation")
   )
 
 ;;

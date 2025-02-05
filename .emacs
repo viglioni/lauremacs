@@ -6,6 +6,38 @@
 (setq lauremacs-default-dark-theme 'transparent)
 (lauremacs/theme-load 'system)
 
+
+;;
+;; Coins
+;;
+
+(require 'publish-roam)
+
+(defun lauremacs/local-publish-coins (&optional evalp)
+  (interactive)
+  (save-some-buffers)
+  (publish-roam-by-tag "numismatica" "~/Personal/coins" (not evalp)))
+
+(defun lauremacs/publish-coins ()
+  (interactive)
+  (lauremacs/local-publish-coins t)
+  (let ((default-directory "~/Personal/coins"))
+    (async-shell-command
+     (format "git add -A * && git commit --allow-empty -m \"%s\" && git push"
+             (format-time-string "%D %Hh%M")))))
+
+(defun lauremacs/local-publish-ricetti (&optional evalp)
+  (interactive)
+  (save-some-buffers)
+  (publish-roam-by-tag "receitas" "~/Personal/ricetti" (not evalp)))
+
+(defun lauremacs/publish-ricetti ()
+  (interactive)
+  (lauremacs/local-publish-coins t)
+  (let ((default-directory "~/Personal/ricetti"))
+    (async-shell-command
+     (format "git add -A * && git commit --allow-empty -m \"%s\" && git push"
+             (format-time-string "%D %Hh%M")))))
 ;;
 ;; Loading another packages
 ;;

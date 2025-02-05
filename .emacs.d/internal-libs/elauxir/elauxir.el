@@ -51,13 +51,13 @@
   "Return a function that grep in FILE-PATH-RX files.
 FILE-PATH-RX is e.g. *.exs?$"
   `(lambda ()
-    (interactive)
-    (let ((initial-search (read-string "initial query: " (if (region-active-p)
-                                                             (region-string)
-                                                           (word-at-point)))))
-      (helm-do-ag (projectile-project-root)
-                  nil
-                  (concat "-G=" ,file-path-rx " " initial-search)))))
+     (interactive)
+     (let ((initial-search (read-string "initial query: " (if (region-active-p)
+                                                              (region-string)
+                                                            (word-at-point)))))
+       (helm-do-ag (projectile-project-root)
+                   nil
+                   (concat "-G=" ,file-path-rx " " initial-search)))))
 
 
 ;;
@@ -145,15 +145,16 @@ FILE-PATH-RX is e.g. *.exs?$"
   "Buffer name from CMD.")
 
 (defconst elauxir--mix-buff-err-name
-    "*error:mix-command*"
-    "Generate error buffer name from CMD.")
+  "*error:mix-command*"
+  "Generate error buffer name from CMD.")
 
 (defvar elauxir-helm-hist nil)
 
 (defconst elauxir-mix-candidates
   `(;; mix default commands
-    ("install"                 . "mix install")
     ("get deps"                . "mix deps.get")
+    ("install"                 . "mix install")
+    ("clean deps"              . "mix deps.clean --unlock --unused")
     ;; ecto
     ("ecto generate migration" "mix ecto.gen.migration" "Migration name: ")
     ("ecto drop"               . "mix ecto.drop")
@@ -166,12 +167,14 @@ FILE-PATH-RX is e.g. *.exs?$"
     ("ecto rollback all"       . "mix ecto.rollback && MIX_ENV=test mix ecto.rollback")
     ("ecto rollback local env" . "mix ecto.rollback")
     ("ecto rollback test env"  . "MIX_ENV=test mix ecto.rollback")
+    ;; phoenix
+    ("phoenix routes"          . "mix phx.routes")
     ))
 
 (defun elauxir--run-cmd (cmd)
   "Execute CMD."
   (projectile-run-async-shell-command-in-root
-   (format "echo %s && %s" cmd cmd)
+   (format "echo %s && %s && echo \"\n\nfinished\n\n\"" cmd cmd)
    elauxir--mix-buff-name
    elauxir--mix-buff-err-name))
 
@@ -191,12 +194,14 @@ FILE-PATH-RX is e.g. *.exs?$"
   "Prompt helm to execute mix commands."
   (interactive)
   (helm :prompt "Choose mix command: "
-        :sources (helm-build-sync-source "Mix commands: "
-                   :volatile t
-                   :multiline nil
-                   :candidates 'elauxir-mix-candidates
-                   :fuzzy-match t
-                   :action 'elauxir--mix-exec)
+        :sources `(,(helm-build-sync-source "Mix commands: "
+                      :volatile t
+                      :multiline nil
+                      :candidates 'elauxir-mix-candidates
+                      :fuzzy-match t
+                      :action 'elauxir--mix-exec)
+                   ,(helm-build-dummy-source "Run: mix "
+                      :action (lambda (cmd) (fp/pipe cmd (fp/concat "mix ") 'elauxir--mix-exec))))
         :buffer "*helm mix commands*"))
 
 (provide 'elauxir)

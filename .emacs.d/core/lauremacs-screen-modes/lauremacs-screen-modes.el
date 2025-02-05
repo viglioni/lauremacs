@@ -15,13 +15,17 @@
 
 (defvar lauremacs-state//pair-programming? nil)
 
+(defun lauremacs/set-global-font (size)
+  (interactive "sInsert size: ")
+  (set-face-attribute 'default nil :height (string-to-number size)))
+
 ;;;###autoload
 (defun lauremacs/enable-pair-programming ()
   "Change some display configs to enhance sharing screen experience."
   (interactive)
 	(setq lauremacs-state//pair-programming? t)
   (set-face-attribute 'default nil :height 175)
-  (global-linum-mode 1)
+  (global-display-line-numbers-mode 1)
   (with-current-buffer " *NeoTree*"
     (setq-local linum-mode nil))
   (neotree-toggle)
@@ -33,7 +37,7 @@
   (interactive)
 	(setq lauremacs-state//pair-programming? nil)
   (set-face-attribute 'default nil :height 150)
-  (global-linum-mode 0))
+  (global-display-line-numbers-mode 0))
 
 ;;;###autoload
 (defun lauremacs/toggle-pair-programming ()

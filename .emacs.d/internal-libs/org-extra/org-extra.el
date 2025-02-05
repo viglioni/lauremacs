@@ -172,6 +172,11 @@ Or args is just text."
   (org-table-recalculate-buffer-tables)
   (org-babel-execute-buffer))
 
+(defun org-extra-recalc-buffer-and-save ()
+  (interactive)
+  (org-extra-recalc-buffer)
+  (save-buffer))
+
 ;;;###autoload
 (defun org-extra-kill-line ()
   (interactive)
@@ -251,23 +256,60 @@ Or args is just text."
                "#+filetags: :" name ":" "\n"))
      :unnarrowed t))
 
-;;
-;; Org mode functions
-;;
 
-(defun org-extra-get-heading-name ()
-  "Get heading name under cursor."
-  (org-element-property :title (org-element-at-point)))
+(defun lauremacs//numis-sql (type)
+  (pcase type
+    ('coins "
+\#+begin_src sqlite :exports results :results table :db \":memory:\" :colnames yes :mode csv :header on :var moedas=moedas \n
+.import $moedas moedas\n
+select valor, anverso, reverso, período from moedas where origem='' and pais='%s' order by cast(valor as real);\n
+\#+end_src\n
+")
+    ('banknotes "
+\#+begin_src sqlite :exports results :results table :db \":memory:\" :colnames yes :mode csv :header on :var cedulas=cedulas \n
+.import $cedulas cedulas\n
+select valor, frente, verso, periodo from cedulas  where origem='' and pais='%s' order by cast(valor as real);\n
+\#+end_src\n
+")))
 
-(defun org-extra-get-heading-paragraph ()
-  "Get heading name under cursor."
-  (org-element-property :paragraph (org-element-at-point)))
+(defun lauremacs//numis-insert-subheading (name type)
+  (let ((id (fp/pipe name
+              (fp/replace " " "-")
+              'downcase)))
+    (insert (format "
+** %s
+:PROPERTIES:
+:CUSTOM_ID: %s
+:END:
 
+" name id))
+    (insert (format (lauremacs//numis-sql type)  name))))
+
+(require 'parse-org)
+
+(defun lauremacs/numis-wish-list (type)
+  "TYPE should be 'coins or 'banknotes"
+  (parse-org-delete-subtree-by-name "Wish List")
+  (let ((countries (parse-org-get-subheadings-titles "Tabelas Fonte")))
+    (save-excursion
+      (search-forward "* ")
+      (move-beginning-of-line 1)
+      (open-line 1)
+      (org-insert-heading '(4) nil t)
+      (insert "Wish List")
+      (cl-loop for country in countries do
+               (lauremacs//numis-insert-subheading country type))
+      )))
 
 ;;
 ;; org roam extra
 ;;
 ;; inspired on https://github.com/jgru/org-roam-ui/tree/add-export-capability
+
+(defun org-extra-add-publish-roam-tag ()
+  "Add \"publish\" tag to current org roam file."
+  (interactive)
+  (org-roam-tag-add '("publish")))
 
 (require 'org-roam-ui)
 
@@ -388,6 +430,53 @@ If none is provided, get all nodes."
    'org-babel-sqlite-offset-colnames
    :filter-return
    'org-extra-sqlite-wrap-table))
+
+
+;;
+;; Org as DB interface
+;;
+
+(require 's)
+
+(defun org-db-ui-insert-batch (table-name db-name data-table)
+  "Insert in database DB-NAME in TABLE-NAME from org table DATA-TABLE.
+Works with postgres."
+  (let* ((table-cols (string-join (car data-table) ", "))
+         (table-rows (cdr data-table))
+         (tmp-file   (format "/tmp/%s.csv" table-name)))
+    ;; Converts org table to CSV
+    (write-region
+     (orgtbl-to-csv (cdr orgtable) nil) nil tmp-file)
+    ;; Insert data in postgres from CSV file
+    (print ;; prints result in org-babel call
+     (shell-command-to-string
+      (s-lex-format
+       "psql -d ${db-name} -c \"COPY ${table-name}(${table-cols}) FROM STDIN WITH delimiter as ',' NULL AS '' csv\" < ${tmp-file}")))))
+
+
+(defun org-db-ui--conditional (title row)
+  (fp/pipe (list title row)
+    (fp/partial 'apply 'mapcar* 'cons)
+    (fp/filter (lambda (pair) (not (string= (cdr pair) ""))))
+    (fp/map (lambda (pair) (format "and %s='%s'" (car pair) (cdr pair))))
+    (fp/partial 's-join " ")
+    (fp/concat "where 1=1 "))
+  )
+
+(defun org-db-ui-delete-batch (table-name db-name data-table)
+  (let ((title (car data-table))
+        (rows  (cdr data-table)))
+    (mapcar
+     (lambda (row)
+       (let ((conditional (org-db-ui--conditional title row)))
+         (print
+          (shell-command-to-string
+           (s-lex-format
+            "psql -d ${db-name} -c \"delete from ${table-name} ${conditional}\"")))))
+     rows)))
+
+
+
 
 
 

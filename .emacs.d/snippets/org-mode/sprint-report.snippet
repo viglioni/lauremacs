@@ -1,0 +1,43 @@
+# -*- mode: org-mode -*-
+# name: Status report sprint
+# key: sprint
+# --
+    
+** Sprint $1 <> $2
+
+*Sprint days*
+
+#+name: sprint-days-$1
+|----------+-------------+----------+-----------+------------+--------------|
+| Velocity | Sprint days | Days off | Sick days | Total days | Total points |
+|----------+-------------+----------+-----------+------------+--------------|
+| $3       | ${4:10}     | $5       | $6        |            |              |
+|----------+-------------+----------+-----------+------------+--------------|
+#+TBLFM: \$5=(\$2-\$3-\$4)::\$6=\$1*\$5
+
+
+#+begin_src emacs-lisp :exports results :results value :var tasks=tasks-$1 days=sprint-days-$1
+  (let* ((len (length tasks))
+         (y (- len 1))
+         (x 2)
+         (p (nth x (nth y tasks)))
+         (n (nth 5 (cadr days))))
+
+    (format "Completed %s/%s of sprint points" p n ))
+#+end_src
+
+*** Tasks completed
+#+name: tasks-$1
+|-------+-----------+--------|
+| tasks | status    | points |
+|-------+-----------+--------|
+|  $0   |           |        |
+|-------+-----------+--------|
+| total | completed |        |
+|-------+-----------+--------|
+#+TBLFM: @3\$3='(apply '+ (org-lookup-all 'completed '(@II\$2..@III\$2) '(@II\$3..@III\$3) 'string=));L
+
+*** Best contribution
+*** Worst situation
+*** Peer notes
+*** Sprint comments

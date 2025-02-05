@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: postgres function
+# key: fn
+# --
+DROP FUNCTION IF EXISTS $1;
+
+CREATE FUNCTION ${1:}($2)
+    RETURNS $3
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    ${4:};
+BEGIN
+    $0
+    RETURN $4;
+END;
+$$;

@@ -1,82 +1,45 @@
+# -*- olivetti-minimum-body-width: 120; -*-
+#+title: Lauremacs
 
-#+title: LAUREMACS
-#+author: Laura Viglioni
+* About
 
-** About
-My new emacs configuration
-   
-🚧 *[WIP]* 🚧
+- Developed in MacOS and Emacs 29.
+- Done for my personal use, issues are welcome
+- PRs only after issue discussions
+- Focused in emacs-lisp, org-mode, elixir, typescript and haskell using LSP whenever it is possible¹
+- Package managing using [[https://github.com/radian-software/straight.el][straight.el]]
+- Files and project managing using [[https://github.com/emacs-helm/helm][helm]] and [[https://github.com/bbatsov/projectile][projectile]].
 
-*I'm developing it on*
-- MacOS 🍎
-- using Emacs ~29.1~ installed with
-  
-  #+begin_src shell :exports both :results output 
-    brew install emacs-plus@29 --with-dbus --with-mailutils --with-xwidgets --with-imagemagick --with-native-comp  --with-modern-orange-icon
 
+¹ This is a new version better organized from the `old-lauremacs` branch of this project. Check [[./CHANGELOG.org][Changelog]] to see which features are already implemented.
+* Install
+Clone this repo as your `.emacs.d` and that's it.
+
+* Development organization
+
+#+begin_src shell :exports both :results output 
+  tree -L 2 --prune -I 'elpa|.git'
 #+end_src
 
-** First use 
+#+RESULTS:
+: .
+: ├── #readme.org#
+: ├── early-init.el
+: ├── init.el
+: └── readme.org
+: 
+: 1 directory, 4 files
 
-  #+begin_src shell :exports both :results output 
-    # Install font Source Code Pro:
-    brew tap homebrew/cask-fonts 
-    brew install font-source-code-pro
-    # Install ispell / aspell
-    brew install ispell
-    brew install aspell
-  #+end_src
+|---------------------+----------------------------------------------------------|
+| load order          | description                                              |
+|---------------------+----------------------------------------------------------|
+| early-init.el       | sets interface and initial configs                       |
+| init.el             | sets package managing and define the following loads     |
+| laurisp-core/       | some lisp used in all project                            |
+| internal-libs/      | small libraries written by me will be added to laod path |
+| config/             | main configurations, mostly major and minor modes        |
+| config/shortcuts.el | All commands used with the leader key                    |
+| =~/.emacs=            | your personal configurations                             |
+|---------------------+----------------------------------------------------------|
 
-- there might be unsolved dependencies with packages that I didnt solve yet to plug and play. Only =m-x package-install [package]= that is missing from first install
-
-- Install icons: =M-x all-the-icons-install-fonts RET=.
-
-** How to use it
-Clone this repo to your ~home~ dir and run
-
-Make the script executable
-
-#+begin_src shell :exports both :results output
-  chmod +x ~/lauremacs/scripts/lauremacs
-#+end_src
-
-Add script's dir to path (optional)
-
-#+begin_src shell :exports both :results output
-  echo 'PATH=~/lauremacs/scripts:$PATH' >> ~/.zshrc
-#+end_src
-
-Run with
-
-#+begin_src shell :exports both :results output
-  lauremacs
-  lauremacs -nw # open emacs on shell
-#+end_src
-   
-Note that if you clone this in another place, you will need to change ~lauremacs-dir~ inside [[./init.el][init.el]].
-
-** Load files and dirs
-- After ~.emacs.d/init.el~ is loaded, it will load ~.emacs~, you can put adicional config there.
-- The dir ~~/private-files/emacs-files~ will be added recursivelly to emacs load path.
-- The file ~~/private-files/emacs-files/env-private.el~ is current be loaded in ~.emacs~, but won't throw any errors if this file does not exist.
-
-** Licence
-This project is free and it will always be.
-  
-[[https://www.gnu.org/licenses/gpl-3.0.en.html][GPL-3]]
-
-   
-** Screenshots
-
-*** GUI mode
-#+ATTR_ORG: :width 500
-#+ATTR_HTML: :width 400px
-[[./screenshots/Screen Shot 2021-10-17 at 19.52.05.png]]
-
-*** Running inside terminal
-
-#+ATTR_ORG: :width 500
-#+ATTR_HTML: :width 400px
-[[./screenshots/Screen Shot 2021-10-17 at 19.52.14.png]]
-
-
+=~/.emacs= will be loaded if and only if =.emacs.d/lauremacs= does not exist.

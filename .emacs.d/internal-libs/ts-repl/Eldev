@@ -1,2 +1,0 @@
-(eldev-use-package-archive 'melpa)
-;(eldev-use-local-dependency "")

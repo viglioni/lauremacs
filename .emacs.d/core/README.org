@@ -1,3 +1,0 @@
-* Lauremacs core
-** About
-   This directory contains all the internal libs to run *Lauremacs*.

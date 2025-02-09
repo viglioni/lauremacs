@@ -1,2 +1,0 @@
-* About
-  In this dir we have the basic lisp functions and macros used across ~lauremacs~ personal libs, including [[./functional/README.org][functional]] lib.

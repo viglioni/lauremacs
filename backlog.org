@@ -15,42 +15,6 @@
 #+RESULTS:
 
 * Backlog [8/20]
-** TODO [#A] Add vterm shortcuts                                      :feat:
-** TODO [#A] When project is not a git repo                            :bug:
-when switching to project it fails to open magit and then fails to switch project
-** TODO [#A] Add elixir format to heex mode autosave :feat:
-
-** TODO [#B] Fix jump shortcuts                                       :feat:
-** TODO [#B] Elauxir :feat:
-- create major mode with keybindings to leave
-- maybe create a generic major mode to that?
-** TODO [#B] Good keybindings to resize windows :feat:
-** TODO [#B] Config origami                                           :feat:
-** TODO [#B] IEX autocompletion                                       :feat:
-** TODO [#C] <Leader b k> isn't working :bug:
-** TODO [#C] Webmode for heex files                                   :feat:
-** TODO [#C] Centralize shortcuts (not leader)                    :refactor:
-** TODO [#C] Organize =config/org.el=                                :refactor:
-** TODO [#C] Flyspell shortcuts and configs                           :feat:
-** TODO [#C] Refactor to put everything inside =.emacs.d/=              :epic:
-** TODO [#C] Elixir functions                                         :feat:
-** TODO [#C] REMOVE ANSI TERM :feat:
-** TODO [#C] Create helper to add pretty icons                        :feat:
-** TODO [#C] Create <Leader wf> :feat:
-** CANCELLED [#B] Centralise =before-save-hook=                         :feat:
-4th param local solves the problem.
-** DONE [#A] Create snake_case mode                                   :feat:
-** DONE [#A] Finish elixir projectile configuration                   :feat:
-** DONE [#A] Create inverse-numbers-mode                              :feat:
-** DONE [#A] Centralise shortcuts definitions (lauremacs-leader)
-** DONE [#B] Elixir snippets                                          :feat:
-- [X] sigil snippets
-- [X] => snippet
-- [X] #{} snippet 
-
-** DONE [#C] Remove fh.el dependency                                   :bug:
-** DONE [#C] <leader> b h not working                                  :bug:
-
 * COMMENT Local Variables
 # Local Variables:
 # eval: (org-babel-execute-buffer)

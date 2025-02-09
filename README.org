@@ -18,17 +18,18 @@ Clone this repo as your `.emacs.d` and that's it.
 * Development organization
 
 #+begin_src shell :exports both :results output 
-  tree -L 2 --prune -I 'elpa|.git'
+  tree -L 2 --prune -I 'elpa|.git|#'
 #+end_src
 
 #+RESULTS:
 : .
-: ├── #readme.org#
+: ├── CHANGELOG.org
+: ├── backlog.org
 : ├── early-init.el
 : ├── init.el
 : └── readme.org
 : 
-: 1 directory, 4 files
+: 1 directory, 5 files
 
 |---------------------+----------------------------------------------------------|
 | load order          | description                                              |

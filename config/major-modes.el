@@ -55,36 +55,15 @@
 
 (add-hook 'emacs-lisp-mode-hook
 					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
-																				 '(("fp/pipe"		. "▷")
-																					 ("fp/partial"	. "∂")
-																					 ("fp/compose"	. "○")))))
-
-;;
-;; Common lisp mode
-;;
-
-(use-package slime
-  :init
-  (setq inferior-lisp-program "sbcl")
-  (lauremacs-major-mode-leader
-    :keymaps 'slime-mode-map
-    "s"  '(nil                        :which-key "repl")
-    "ss" '(slime                      :which-key "open repl")
-    "se" '(slime-eval-last-expression :which-key "eval last expression")
-    "sb" '(slime-eval-buffer          :which-key "eval buffer")))
-
-(add-hook 'lisp-mode-hook
-					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
-																				 '(("fp/pipe"		. "▷")
-																					 ("fp/partial"	. "∂")
-																					 ("fp/compose"	. "○")))))
-
-
+																				 '(("fp/pipe"    . "▷")
+																					 ("fp/partial" . "∂")
+																					 ("fp/compose" . "○")))))
 
 ;;;###autoload
 (lauremacs-major-mode-leader
 	:keymaps 'emacs-lisp-mode-map
-	"="  '(nil													:which-key "format")
+	"="  '(nil                          :which-key "format")
+  "=." '(lauremacs-align-assoc-list   :which-key "align assoc list")
 	"==" '(lauremacs/buffer-indent			:which-key "indent buffer")
 	"=d" '(checkdoc											:which-key "checkdoc")
 	"=g" '(lauremacs-align-general-sexp	:which-key "format codeblocks of general.el functions")
@@ -103,6 +82,30 @@
 	"er" '(eval-region									:which-key "eval region")
   "ei" '(lauremacs-ielm-eval          :which-key "run on ielm")
   )
+
+;;
+;; Common lisp mode
+;;
+
+(use-package slime
+  :init
+  (setq inferior-lisp-program "sbcl")
+  (lauremacs-major-mode-leader
+    :keymaps 'slime-mode-map
+    "s"  '(nil                        :which-key "repl")
+    "ss" '(slime                      :which-key "open repl")
+    "se" '(slime-eval-last-expression :which-key "eval last expression")
+    "sb" '(slime-eval-buffer          :which-key "eval buffer")))
+
+(add-hook 'lisp-mode-hook
+					'(lambda () (add-multiple-into-list 'prettify-symbols-alist
+																				 '(("fp/pipe"    . "▷")
+																					 ("fp/partial" . "∂")
+																					 ("fp/compose" . "○")))))
+
+
+
+
 
 
 

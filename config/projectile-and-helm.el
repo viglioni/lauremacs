@@ -97,9 +97,6 @@
 
 (use-package helm-swoop)
 
-(use-package helm-descbinds
-	:after helm
-	:init (helm-descbinds-mode))
 
 (use-package helm-flx
 	:after helm

@@ -190,6 +190,33 @@
   "ik"  '(helm-show-kill-ring                :which-key "show kill ring")
   )
 
+
+;;
+;; k- AI assistants
+;;
+(lauremacs-leader
+  "k"   '(nil                                 :which-key "AI assistants")
+  "kF"  '(copilot-chat-custom-prompt-function :which-key "apply a custom prompt to the function body")
+  "kR"  '(copilot-chat-review-whole-buffer    :which-key "review whole buffer")
+  "kb"  '(nil                                 :which-key "buffers")
+  "kbb" '(copilot-chat-add-current-buffer     :which-key "add current buffer")
+  "kbf" '(copilot-chat-add-files-under-dir    :which-key "add files under dir")
+  "kc"  '(copilot-chat-custom-prompt-function :which-key "copilot prompt in minibuffer")
+  "kd"  '(nil                                 :which-key "documentation")
+  "kdd" '(copilot-chat-doc                    :which-key "document selected code")
+  "kdi" '(copilot-chat-insert-commit-message  :which-key "insert commit msg")
+  "ke"  '(nil                                 :which-key "explain")
+  "kee" '(copilot-chat-explain                :which-key "explain selected code")
+  "kef" '(copilot-chat-explain-defun          :which-key "explain defun")
+  "kes" '(copilot-chat-explain-symbol-at-line :which-key "explain symbol at point")
+  "kf"  '(copilot-chat-fix                    :which-key "fix code at point")
+  "kk"  '(copilot-complete                    :which-key "copilot complete")
+  "kr"  '(copilot-chat-review                 :which-key "review code at point")
+  "kt"  '(copilot-chat-transient              :which-key "copilot chat transient")
+  "ky"  '(copilot-chat-yank                   :which-key "yank copilot code")
+  )
+
+
 ;;
 ;; l- workspaces
 ;;

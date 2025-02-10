@@ -64,9 +64,10 @@
   :init
   (doom-modeline-mode 1)
 
+  ;; removed checker TODO: see later whats the issue
   (doom-modeline-def-modeline 'lauremacs-modeline
     '(bar window-number buffer-info matches selection-info media-info)
-    '(buffer-position checker lsp word-count pdf-pages major-mode workspace-name vcs hud))
+    '(buffer-position  lsp word-count pdf-pages major-mode workspace-name vcs hud))
 
   (doom-modeline-set-modeline 'lauremacs-modeline 'default)
   

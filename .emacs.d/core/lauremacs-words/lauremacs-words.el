@@ -44,6 +44,17 @@ Should be called when pointer is inside the function."
       (deactivate-mark))))
 
 ;;;###autoload
+;;;###autoload
+(defun lauremacs-align-assoc-list ()
+  "Align assoc list."
+  (interactive)
+  (save-excursion
+    (search-backward-regexp (rx (| "\ \\. \ " "((")))
+    (er/expand-region 5)
+    (align-regexp (region-beginning) (region-end) "\\(\\s-*\\)\\." 1 1 t)))
+
+
+;;;###autoload
 (defun lauremacs-align-region-as-table (&optional regexp)
 	"Align region at every REGEXP character."
 	(interactive "sEnter regexp: ")

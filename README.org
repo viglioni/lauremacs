@@ -41,6 +41,7 @@ Clone this repo as your `.emacs.d` and that's it.
 | config/             | main configurations, mostly major and minor modes        |
 | config/shortcuts.el | All commands used with the leader key                    |
 | =~/.emacs=            | your personal configurations                             |
+| post-init.el        | last file to be loaded                                   |
 |---------------------+----------------------------------------------------------|
 
 =~/.emacs= will be loaded if and only if =.emacs.d/lauremacs= does not exist.

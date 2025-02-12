@@ -14,7 +14,29 @@
 
 #+RESULTS:
 
-* Backlog [8/20]
+Priorities:
+A - means next release
+B - means release 1.0.0
+C - future releases / nice to have
+
+* Backlog [0/17]
+** TODO [#A] set up package manager
+** TODO [#A] add tests for load order
+** TODO [#A] set up personal files (.emacs)
+** TODO [#B] setup layout
+** TODO [#B] setup initial lisp 
+** TODO [#B] setup window manager
+** TODO [#B] setup projectile
+** TODO [#B] setup helm
+** TODO [#B] setup which key
+** TODO [#B] setup workspaces
+** TODO [#B] setup lisp coding features
+** TODO [#B] setup elixir IDE
+** TODO [#B] setup SQL IDE
+** TODO [#B] setup org mode
+** TODO [#B] setup org roam 
+** TODO [#B] setup private files
+** TODO [#C] make readmes reload before push
 * COMMENT Local Variables
 # Local Variables:
 # eval: (org-babel-execute-buffer)

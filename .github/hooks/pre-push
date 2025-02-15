@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Get the current directory
+#* Get the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_ROOT="$DIR/../.."
 
-# Change to repo root
+#* Change to repo root
 cd "$REPO_ROOT"
 
-# Run tests
-if git diff --name-only HEAD | grep -q "\.el$"; then
+#* Run tests if any .el files changed
+if  git diff --name-only HEAD@{upstream} | grep -q "\.el$"; then
     echo "Running tests..."
     make test
     if [ $? -ne 0 ]; then
@@ -16,7 +16,8 @@ if git diff --name-only HEAD | grep -q "\.el$"; then
         exit 1
     fi
 fi
-# Run docs
+
+#* Run docs
 echo "Updating docs..."
 make docs
 if [ $? -ne 0 ]; then

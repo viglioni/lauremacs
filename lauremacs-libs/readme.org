@@ -1,5 +1,5 @@
-#+begin_src shell :exports both :results output 
-  tree .
+#+begin_src shell :exports result :results output 
+tree ./lauremacs-libs
 #+end_src
 
 #+RESULTS:

@@ -17,7 +17,7 @@ Clone this repo as your `.emacs.d` and that's it.
 
 * Development organization
 
-#+begin_src shell :exports both :results output 
+#+begin_src shell :exports result :results output 
   tree -L 2 --prune -I 'elpa|.git|#|backups|straight|*~'
 #+end_src
 

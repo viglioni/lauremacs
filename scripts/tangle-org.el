@@ -1,4 +1,17 @@
 ;;; -*- lexical-binding: t; -*-
+;;
+;; @author Laura Viglioni
+;; 2025
+;;
+;; GNU Public License 3.0
+;;
+;; since: 0.1.0
+;;
+;; tangle-org.el:
+;; exec all readme babel codes
+;;
+
+;;; code:
 
 (require 'org)
 (require 'ob)
@@ -25,3 +38,5 @@
       (org-mode)
       (org-babel-execute-buffer)
       (write-file file))))
+
+;;; tangle-org.el ends here

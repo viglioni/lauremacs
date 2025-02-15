@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Get the current directory
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPO_ROOT="$DIR/../.."
+
+# Change to repo root
+cd "$REPO_ROOT"
+
+# Run tests
+if git diff --name-only HEAD | grep -q "\.el$"; then
+    echo "Running tests..."
+    make test
+    if [ $? -ne 0 ]; then
+        echo "Error: Tests failed. Push aborted."
+        exit 1
+    fi
+fi
+# Run docs
+echo "Updating docs..."
+make docs
+if [ $? -ne 0 ]; then
+    echo "Error: make docs failed. Push aborted."
+    exit 1
+fi
+
+exit 0

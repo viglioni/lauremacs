@@ -18,30 +18,35 @@ Clone this repo as your `.emacs.d` and that's it.
 * Development organization
 
 #+begin_src shell :exports both :results output 
-  tree -L 2 --prune -I 'elpa|.git|#'
+  tree -L 2 --prune -I 'elpa|.git|#|backups|straight|*~'
 #+end_src
 
 #+RESULTS:
 #+begin_example
 .
 ├── CHANGELOG.org
+├── Makefile
 ├── backlog.org
 ├── config
 │   └── shortcuts.el
 ├── core
 │   ├── consts.el
+│   ├── core-packages.el
 │   └── package-manager.el
 ├── early-init.el
+├── eshell
+│   └── history
 ├── init.el
 ├── lauremacs-libs
 │   └── readme.org
 ├── readme.org
-├── straight
-│   └── build-cache.el
+├── scripts
+│   └── tangle-org.el
 └── test
+    ├── run-tests.el
     └── test-helpers.el
 
-6 directories, 11 files
+7 directories, 15 files
 #+end_example
 
 |---------------------+----------------------------------------------------------|
@@ -57,3 +62,7 @@ Clone this repo as your `.emacs.d` and that's it.
 |---------------------+----------------------------------------------------------|
 
 =~/.emacs= will be loaded if and only if =.emacs.d/lauremacs= does not exist.
+
+* Test
+=make test=
+

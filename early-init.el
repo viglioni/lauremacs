@@ -23,6 +23,7 @@
 
 (setq user-emacs-directory (file-truename "~/.emacs.d"))
 
+
 ;; Prevent loading other config files
 (setq inhibit-default-init t)  ; Prevent loading of default.el
 (setq site-run-file nil) 
@@ -40,8 +41,16 @@ If NOERROR is given, don't throw error if file does not exist."
 (setq backup-directory-alist
           `(("." . ,(concat user-emacs-directory "/backups"))))
 
-
-
-
-
-(lauremacs/load "./init.el")
+;; load init.el before .emacs
+(funcall
+ (lambda ()
+   "Ensure the init.el loads is at the start of .emacs file."
+   (let ((emacs-file "~/.emacs")
+         (load-cmd "(lauremacs/load \"./init.el\")"))
+     (when (file-exists-p emacs-file)
+       (with-temp-buffer
+         (insert-file-contents emacs-file)
+         (unless (looking-at load-cmd)
+           (goto-char (point-min))
+           (insert load-cmd)
+           (write-region (point-min) (point-max) emacs-file)))))))

@@ -11,13 +11,14 @@
 ;;
 
 ;;; code:
-
+(message "init")
 (lauremacs/load "core/consts.el")
 (lauremacs/load "./core/package-manager.el")
 (lauremacs/load "./core/core-packages.el")
 
-(lauremacs/load ".lauremacs" :dont-throw-if-does-not-exist)
+;(lauremacs/load ".lauremacs" )
 
+(lauremacs/load "./test/test-helpers.el")
 ;;; init.el ends here.
 
 

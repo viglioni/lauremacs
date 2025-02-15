@@ -1,2 +1,9 @@
 elpa/*
-auto-save-list/*	
+auto-save-list/*
+straight/*
+!straight/versions/
+!straight/versions/default.el
+*.elc
+.cask
+.gitignore
+eshell/*

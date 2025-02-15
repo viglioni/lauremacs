@@ -13,7 +13,6 @@
 
 ;;; code:
 
-
 (require 'org)
 (require 'ob)
 (require 'ob-shell)

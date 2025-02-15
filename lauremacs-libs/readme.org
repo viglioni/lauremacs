@@ -5587,14 +5587,31 @@
 │   └── tangle-org.el
 ├── straight
 │   ├── build
-│   │   └── straight
-│   │       ├── straight-autoloads.el
-│   │       ├── straight-ert-print-hack.el -> /Users/lauraviglioni/.emacs.d/straight/repos/straight.el/straight-ert-print-hack.el
-│   │       ├── straight-ert-print-hack.elc
-│   │       ├── straight-x.el -> /Users/lauraviglioni/.emacs.d/straight/repos/straight.el/straight-x.el
-│   │       ├── straight-x.elc
-│   │       ├── straight.el -> /Users/lauraviglioni/.emacs.d/straight/repos/straight.el/straight.el
-│   │       └── straight.elc
+│   │   ├── buttercup
+│   │   │   ├── bin
+│   │   │   │   ├── buttercup -> /Users/lauraviglioni/.emacs.d/straight/repos/emacs-buttercup/bin/buttercup
+│   │   │   │   └── buttercup.bat -> /Users/lauraviglioni/.emacs.d/straight/repos/emacs-buttercup/bin/buttercup.bat
+│   │   │   ├── buttercup-autoloads.el
+│   │   │   ├── buttercup-compat.el -> /Users/lauraviglioni/.emacs.d/straight/repos/emacs-buttercup/buttercup-compat.el
+│   │   │   ├── buttercup-compat.elc
+│   │   │   ├── buttercup.el -> /Users/lauraviglioni/.emacs.d/straight/repos/emacs-buttercup/buttercup.el
+│   │   │   └── buttercup.elc
+│   │   ├── general
+│   │   │   ├── general-autoloads.el
+│   │   │   ├── general.el -> /Users/lauraviglioni/.emacs.d/straight/repos/general.el/general.el
+│   │   │   └── general.elc
+│   │   ├── straight
+│   │   │   ├── straight-autoloads.el
+│   │   │   ├── straight-ert-print-hack.el -> /Users/lauraviglioni/.emacs.d/straight/repos/straight.el/straight-ert-print-hack.el
+│   │   │   ├── straight-ert-print-hack.elc
+│   │   │   ├── straight-x.el -> /Users/lauraviglioni/.emacs.d/straight/repos/straight.el/straight-x.el
+│   │   │   ├── straight-x.elc
+│   │   │   ├── straight.el -> /Users/lauraviglioni/.emacs.d/straight/repos/straight.el/straight.el
+│   │   │   └── straight.elc
+│   │   └── which-key
+│   │       ├── which-key-autoloads.el
+│   │       ├── which-key.el -> /Users/lauraviglioni/.emacs.d/straight/repos/emacs-which-key/which-key.el
+│   │       └── which-key.elc
 │   ├── build-cache.el
 │   ├── repos
 │   │   ├── el-get
@@ -7627,9 +7644,69 @@
 │   │   │       ├── test-recipe.sh
 │   │   │       ├── test-setup.el
 │   │   │       └── test-utils.sh
+│   │   ├── emacs-buttercup
+│   │   │   ├── LICENSE
+│   │   │   ├── Makefile
+│   │   │   ├── README.md
+│   │   │   ├── bin
+│   │   │   │   ├── buttercup
+│   │   │   │   └── buttercup.bat
+│   │   │   ├── buttercup-compat.el
+│   │   │   ├── buttercup.el
+│   │   │   ├── docs
+│   │   │   │   ├── images
+│   │   │   │   │   └── buttercup.jpg
+│   │   │   │   ├── running-tests.md
+│   │   │   │   └── writing-tests.md
+│   │   │   ├── scripts
+│   │   │   │   └── release
+│   │   │   └── tests
+│   │   │       └── test-buttercup.el
+│   │   ├── emacs-which-key
+│   │   │   ├── Cask
+│   │   │   ├── LICENSE.md
+│   │   │   ├── Makefile
+│   │   │   ├── README.org
+│   │   │   ├── img
+│   │   │   │   ├── which-key-bottom-split.png
+│   │   │   │   ├── which-key-bottom.png
+│   │   │   │   ├── which-key-minibuffer.png
+│   │   │   │   ├── which-key-right-split.png
+│   │   │   │   └── which-key-right.png
+│   │   │   ├── which-key-tests.el
+│   │   │   └── which-key.el
 │   │   ├── emacsmirror-mirror
 │   │   │   ├── attic
 │   │   │   └── mirror
+│   │   ├── general.el
+│   │   │   ├── Cask
+│   │   │   ├── LICENSE
+│   │   │   ├── Makefile
+│   │   │   ├── README.org
+│   │   │   ├── general.el
+│   │   │   ├── makem
+│   │   │   │   ├── LICENSE
+│   │   │   │   ├── Makefile
+│   │   │   │   ├── README.org
+│   │   │   │   ├── images
+│   │   │   │   │   ├── github-action.png
+│   │   │   │   │   ├── make-all-v.png
+│   │   │   │   │   ├── make-all.png
+│   │   │   │   │   ├── make-lint-compile.png
+│   │   │   │   │   ├── make-test-v.png
+│   │   │   │   │   └── make-test-vv.png
+│   │   │   │   ├── makem.sh
+│   │   │   │   └── test.yml
+│   │   │   ├── tests
+│   │   │   │   ├── general-delay.el
+│   │   │   │   ├── general-delay2.el
+│   │   │   │   ├── general-keymap-autoload.el
+│   │   │   │   ├── general-non-existent-state.el
+│   │   │   │   └── test-general.el
+│   │   │   └── with-gnu-utils
+│   │   │       ├── LICENSE
+│   │   │       ├── README.org
+│   │   │       └── with-gnu-utils
 │   │   ├── gnu-elpa-mirror
 │   │   │   ├── a68-mode
 │   │   │   ├── ace-window
@@ -14091,5 +14168,5 @@
     ├── run-tests.el
     └── test-helpers.el
 
-524 directories, 13562 files
+541 directories, 13622 files
 #+end_example

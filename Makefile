@@ -27,8 +27,12 @@ docs:
 	$(EMACS) $(EMACS_FLAGS) \
 		--directory $(EMACS_DIR) \
 		--load scripts/tangle-org.el
-	git add "*/readme.org"
-	git commit -m "docs: update readme files [automated]"
+	@if git diff --quiet */readme.org; then \
+		echo "No changes to readme files"; \
+	else \
+		git add $(EMACS_DIR)/*/readme.org && \
+		git commit -m "docs: update readme files [automated]"; \
+	fi
 
 deps:
 	$(EMACS) $(EMACS_FLAGS) \

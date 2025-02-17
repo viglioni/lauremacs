@@ -7,14 +7,13 @@ REPO_ROOT="$DIR/../.."
 #* Change to repo root
 cd "$REPO_ROOT"
 
-#* Run tests if any .el files changed
-if  git diff --name-only HEAD@{upstream} | grep -q "\.el$"; then
-    echo "Running tests..."
-    make test
-    if [ $? -ne 0 ]; then
-        echo "Error: Tests failed. Push aborted."
-        exit 1
-    fi
+# Run tests
+
+echo "Running tests..."
+make test
+if [ $? -ne 0 ]; then
+    echo "Error: Tests failed. Push aborted."
+    exit 1
 fi
 
 #* Run docs

@@ -19,6 +19,15 @@
 ;(lauremacs/load ".lauremacs" )
 
 (lauremacs/load "./test/test-helpers.el")
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs loaded in %s with %d garbage collections."
+                    (format "%.2f seconds"
+                            (float-time
+                             (time-subtract after-init-time lauremacs-start-time)))
+                    gcs-done)))
+
 ;;; init.el ends here.
 
 

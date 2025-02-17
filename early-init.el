@@ -10,6 +10,8 @@
 ;; 
 ;;
 
+;; Lauremacs start time
+(defvar lauremacs-start-time (current-time))
 
 ;;
 ;; Garbage colector threshold

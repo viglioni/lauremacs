@@ -29,6 +29,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(require 'straight)
 
 ;;
 ;; Update lock file after installing a package via elisp
@@ -38,10 +39,13 @@
   (unless (eq real-this-command 'straight-use-package)
     (straight-freeze-versions)))
 
-(advice-add 'straight-use-package :after #'lauremacs/update-versions-if-from-elisp)
+(add-hook 'after-init-hook #'lauremacs/update-versions-if-from-elisp)
 
 (setq straight-use-package-by-default t)
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
+
+(with-eval-after-load 'core-packages
+  (straight-freeze-versions))
 
 ;;
 ;; Update packages
@@ -58,6 +62,12 @@
   "Update all packages and update lockfile."
   (interactive)
   (straight-pull-all))
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (advice-add
+             'use-package :after
+             #'lauremacs/update-versions-if-from-elisp)))
 
 ;;
 ;; sync packages with lock file
@@ -108,7 +118,8 @@ straight-use-package calls."
                (mapconcat #'identity error-packages ", ")))))
 
 ;; Add to after-init-hook
-(add-hook 'after-init-hook #'lauremacs/sync-straight-packages)
+;(add-hook 'after-init-hook #'lauremacs/sync-straight-packages)
+
 
 
 ;;; package-manager.el ends here

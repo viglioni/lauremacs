@@ -16,6 +16,7 @@
 
 (use-package general
   :straight t
+  :defer t
   :init
  (general-create-definer lauremacs-major-mode-leader
    :prefix "<f17>")
@@ -24,12 +25,14 @@
 
 (use-package which-key
   :straight t
+  :defer t
   :init (which-key-mode)
   :config
   (setq which-key-idle-delay 0.3))
 
 (use-package buttercup
-  :straight t)
+  :straight t
+  :defer t)
 
 
 ;;; core-packages.el ends here.

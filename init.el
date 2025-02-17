@@ -33,15 +33,7 @@
             (format "%.2f seconds"
                     (float-time
                      (time-subtract after-init-time lauremacs-start-time)))
-            gcs-done)
-   ;; use .lauremacs as user init file if it exists
-   ;; (let ((lauremacs-user-file (expand-file-name ".lauremacs" user-emacs-directory)))
-   ;;   (when (file-exists-p lauremacs-user-file)
-   ;;     (setq user-init-file lauremacs-user-file)
-   ;;     (message "---")
-   ;;     (message user-init-file)
-   ;;     (message "---")))
-   ))
+            gcs-done)))
 
 
 ;;; init.el ends here.

@@ -25,7 +25,6 @@
 
 (setq user-emacs-directory (file-truename "~/.emacs.d"))
 
-
 ;; Prevent loading other config files
 (setq inhibit-default-init t)  ; Prevent loading of default.el
 (setq site-run-file nil) 
@@ -43,16 +42,27 @@ If NOERROR is given, don't throw error if file does not exist."
 (setq backup-directory-alist
           `(("." . ,(concat user-emacs-directory "/backups"))))
 
-;; load init.el before .emacs
-(funcall
- (lambda ()
-   "Ensure the init.el loads is at the start of .emacs file."
-   (let ((emacs-file "~/.emacs")
-         (load-cmd "(lauremacs/load \"./init.el\")"))
-     (when (file-exists-p emacs-file)
-       (with-temp-buffer
-         (insert-file-contents emacs-file)
-         (unless (looking-at load-cmd)
-           (goto-char (point-min))
-           (insert load-cmd)
-           (write-region (point-min) (point-max) emacs-file)))))))
+
+;;
+;; avoid loading .emacs when .lauremacs exists
+;;
+
+(let* ((lauremacs-user-init-file (expand-file-name ".lauremacs" user-emacs-directory))
+      (user-emacs-temp-file      (make-temp-file "emacs-init-file"))
+      (dot-lauremacs-exist-p     (file-exists-p lauremacs-user-init-file)))
+  (when (and dot-lauremacs-exist-p (file-exists-p "~/.emacs"))
+    ;; move .emacs to a temp file
+    (shell-command-to-string
+     (format "cat ~/.emacs > %s && rm ~/.emacs"
+             user-emacs-temp-file))
+    (add-hook 'emacs-startup-hook
+              (lambda ()
+                ;; move .emacs back
+                (shell-command-to-string
+                 (format "cat %s > ~/.emacs"
+                         user-emacs-temp-file))
+                ;; set .lauremacs as user-init-file
+                (when dot-lauremacs-exist-p
+                  (setq user-init-file lauremacs-user-init-file))))))
+
+

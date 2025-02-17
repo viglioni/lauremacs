@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#* Get the current directory
+# Get the current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_ROOT="$DIR/../.."
 
-#* Change to repo root
+# Change to repo root
 cd "$REPO_ROOT"
 
 # Run tests
@@ -16,7 +16,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-#* Run docs
+# Run docs
 echo "Updating docs..."
 make docs
 if [ $? -ne 0 ]; then

@@ -103,6 +103,7 @@
   "bm" `(,(const 'switch-to-buffer "*Messages*")    :which-key "switch to Messages buffer")
   "bs" `(,(const 'switch-to-buffer "*scratch*")     :which-key "switch to Messages buffer")
   "bt" `(,(const 'switch-to-buffer "task.org")      :which-key "switch to scratch buffer")
+  "bg" `(,(const 'switch-to-buffer "*Cláudio*")     :which-key "switch to claude buffer")
   )
 
 ;;
@@ -122,6 +123,8 @@
 	"cbc"	'(helm-bookmarks              :which-key "bookmarks")
 	"cbd"	'(bookmark-delete             :which-key "bookmark delete")
 	"cbr"	'(helm-bookmark-rename        :which-key "bookmark rename")
+  "cbb" '(bookmark-jump               :which-key "bookmark jump")
+  "cbo" '(bookmark-jump-other-window  :which-key "bookmark jump other window")
 
   ;; nvm
   "cn"	'(nil                         :which-key "nvm")
@@ -194,27 +197,44 @@
 ;;
 ;; k- AI assistants
 ;;
+
 (lauremacs-leader
-  "k"   '(nil                                 :which-key "AI assistants")
-  "kF"  '(copilot-chat-custom-prompt-function :which-key "apply a custom prompt to the function body")
-  "kR"  '(copilot-chat-review-whole-buffer    :which-key "review whole buffer")
-  "kb"  '(nil                                 :which-key "buffers")
-  "kbb" '(copilot-chat-add-current-buffer     :which-key "add current buffer")
-  "kbf" '(copilot-chat-add-files-under-dir    :which-key "add files under dir")
-  "kc"  '(copilot-chat-custom-prompt-function :which-key "copilot prompt in minibuffer")
-  "kd"  '(nil                                 :which-key "documentation")
-  "kdd" '(copilot-chat-doc                    :which-key "document selected code")
-  "kdi" '(copilot-chat-insert-commit-message  :which-key "insert commit msg")
-  "ke"  '(nil                                 :which-key "explain")
-  "kee" '(copilot-chat-explain                :which-key "explain selected code")
-  "kef" '(copilot-chat-explain-defun          :which-key "explain defun")
-  "kes" '(copilot-chat-explain-symbol-at-line :which-key "explain symbol at point")
-  "kf"  '(copilot-chat-fix                    :which-key "fix code at point")
-  "kk"  '(copilot-complete                    :which-key "copilot complete")
-  "kr"  '(copilot-chat-review                 :which-key "review code at point")
-  "kt"  '(copilot-chat-transient              :which-key "copilot chat transient")
-  "ky"  '(copilot-chat-yank                   :which-key "yank copilot code")
-  )
+ "k"   '(nil                                           :which-key "AI assistants")
+
+ ;; Chat and interaction
+ "kc"  '(nil                                           :which-key "chat/completion")
+ "kcc" '(copilot-chat-custom-prompt-function           :which-key "copilot prompt in minibuffer")
+ "kcg" '(gptel                                         :which-key "open gptel buffer")
+ "kct" '(copilot-chat-transient                        :which-key "copilot chat transient")
+ "kcy" '(copilot-chat-yank                             :which-key "yank copilot code")
+ "kk"  '(copilot-complete                              :which-key "copilot complete")
+ 
+ ;; Documentation and explanation
+ "kd"  '(nil                                           :which-key "documentation")
+ "kdd" '(lauremacs/gptel-add-documentation-to-function :which-key "document selected code")
+ "kdi" '(copilot-chat-insert-commit-message            :which-key "insert commit msg")
+ "kdc" '(lauremacs/gptel-generate-changelog-entry      :which-key "generate changelog entry")
+
+ ;; Explanation
+ "ke"  '(nil                                           :which-key "explain")
+ "kee" '(copilot-chat-explain                          :which-key "explain selected code")
+ "kef" '(copilot-chat-explain-defun                    :which-key "explain defun")
+ "kes" '(copilot-chat-explain-symbol-at-line           :which-key "explain symbol at point")
+
+ ;; Code review and modification
+ "kr"  '(nil                                           :which-key "review/rewrite")
+ "krf" '(copilot-chat-fix                              :which-key "fix code at point")
+ "krr" '(copilot-chat-review                           :which-key "review code at point")
+ "krb" '(copilot-chat-review-whole-buffer              :which-key "review whole buffer")
+ "krr" '(lauremacs/gptel-rewrite-region-or-buffer      :which-key "gptel rewrite")
+ "krf" '(lauremacs/gptel-rewrite-function-at-point     :which-key "rewrite function at point")
+
+ ;; Buffer and file operations
+ "kb"  '(nil                                           :which-key "buffers")
+ "kbb" '(gptel-add                                     :which-key "add current buffer")
+ "kbf" '(copilot-chat-add-files-under-dir              :which-key "add files under dir")
+ "kbp" '(lauremacs/add-files-under-dir-to-gptel        :which-key "project files to gptel"))
+
 
 
 ;;

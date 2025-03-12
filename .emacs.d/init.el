@@ -41,8 +41,9 @@
 
 
 
+
 ;;
-;; straight.el
+;; Packages
 ;;
 
 (defvar bootstrap-version)
@@ -61,13 +62,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; (setq package-enable-at-startup nil)
-
-;;
-;; Packages
-;;
-
-
 ;; Initialize package sources
 (require 'package)
 
@@ -84,6 +78,12 @@
   (package-install 'use-package))
 
 (setq use-package-always-ensure t)
+
+(use-package page-break-lines)
+(use-package vterm)
+(use-package paredit)
+(use-package org-roam-ui)
+(use-package ob-mermaid)
 
 (dolist (pkg '(
                bind-key

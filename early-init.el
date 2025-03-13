@@ -44,25 +44,38 @@ If NOERROR is given, don't throw error if file does not exist."
 
 
 ;;
-;; avoid loading .emacs when .lauremacs exists
+;; avoid loading .emacs before init.el
 ;;
 
-(let* ((lauremacs-user-init-file (expand-file-name ".lauremacs" user-emacs-directory))
-      (user-emacs-temp-file      (make-temp-file "emacs-init-file"))
-      (dot-lauremacs-exist-p     (file-exists-p lauremacs-user-init-file)))
-  (when (and dot-lauremacs-exist-p (file-exists-p "~/.emacs"))
+(let* ((user-emacs-temp-file (make-temp-file "emacs-init-file")))
+  (when (file-exists-p "~/.emacs")
     ;; move .emacs to a temp file
     (shell-command-to-string
-     (format "cat ~/.emacs > %s && rm ~/.emacs"
+     (format "mv ~/.emacs %s"
              user-emacs-temp-file))
-    (add-hook 'emacs-startup-hook
-              (lambda ()
-                ;; move .emacs back
-                (shell-command-to-string
-                 (format "cat %s > ~/.emacs"
-                         user-emacs-temp-file))
-                ;; set .lauremacs as user-init-file
-                (when dot-lauremacs-exist-p
-                  (setq user-init-file lauremacs-user-init-file))))))
+    (eval
+     `(add-hook 'emacs-startup-hook
+                (lambda ()
+                  ;; move .emacs back
+                  (shell-command-to-string
+                   (format "mv %s ~/.emacs"
+                           ,user-emacs-temp-file)))))))
+
+
+;;
+;; set user init file if it exists
+;;
+
+(add-hook
+ 'emacs-startup-hook
+ (lambda ()
+   (let ((lauremacs-user-init-file (expand-file-name ".lauremacs" user-emacs-directory)))
+     (cond
+      ((file-exists-p lauremacs-user-init-file)
+        (setq user-init-file lauremacs-user-init-file))
+      ((file-exists-p "~/.emacs")
+       (setq user-init-file "~/.emacs")))
+     (print (file-exists-p "~/.emacs"))
+     (print user-init-file))))
 
 

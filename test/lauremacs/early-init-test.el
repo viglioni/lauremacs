@@ -5,7 +5,7 @@
 ;;
 ;; GNU Public License 3.0
 ;;
-;; since: 0.1.0
+;; since: NEXT
 ;;
 ;; early-init-test.el:
 ;; tests for early-init.el

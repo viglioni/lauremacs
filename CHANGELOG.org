@@ -1,3 +1,14 @@
-** [0.1.0]
+#+title: CHANGELOG
 
-- Add initial boilerplate
+All notable changes to this project will be documented in this file.
+
+
+* Unreleased
+
+*** Added
+- Improved handling of .emacs and .lauremacs files during initialization
+- Enhanced configuration file loading process
+- Comprehensive test suite for core functionality
+- Initial boilerplate
+
+

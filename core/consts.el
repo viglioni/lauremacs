@@ -4,7 +4,7 @@
 ;;
 ;; GNU Public License 3.0
 ;;
-;; since: 0.1.0
+;; since: NEXT
 ;;
 ;; consts.el:
 ;; Defines important constants to the project.

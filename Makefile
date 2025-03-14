@@ -3,7 +3,7 @@ EMACS_FLAGS = -Q --batch
 EMACS_DIR = ~/.emacs.d
 EMACS_TEST_DIR = $(EMACS_DIR)/test
 
-.PHONY: test clean docs deps clean-deps prune-deps
+.PHONY: test clean docs deps clean-deps prune-deps release-major release-minor release-patch
 
 test:
 	$(EMACS) $(EMACS_FLAGS) \
@@ -42,6 +42,24 @@ deps:
 		--eval "(straight-thaw-versions)" \
 		--eval "(straight-check-all)"
 
+release-major:
+	$(EMACS) $(EMACS_FLAGS) \
+		--directory $(EMACS_DIR) \
+		--load scripts/release.el \
+		--eval "(lauremacs/release-version 'major)"
+
+release-minor:
+	$(EMACS) $(EMACS_FLAGS) \
+		--directory $(EMACS_DIR) \
+		--load scripts/release.el \
+		--eval "(lauremacs/release-version 'minor)"
+
+release-patch:
+	$(EMACS) $(EMACS_FLAGS) \
+		--directory $(EMACS_DIR) \
+		--load scripts/release.el \
+		--eval "(lauremacs/release-version 'patch)"
+
 help:
 	@echo "Available targets:"
 	@echo "  test        - Run all tests"
@@ -50,4 +68,7 @@ help:
 	@echo "  prune-deps  - Remove unused packages"
 	@echo "  docs        - Process all readme.org files and commit changes"
 	@echo "  deps        - Install/update dependencies from lockfile"
+	@echo "  release-major - Release a major version update"
+	@echo "  release-minor - Release a minor version update"
+	@echo "  release-patch - Release a patch version update"
 	@echo "  help        - Show this help message"

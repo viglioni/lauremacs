@@ -103,7 +103,7 @@
   "bm" `(,(const 'switch-to-buffer "*Messages*")    :which-key "switch to Messages buffer")
   "bs" `(,(const 'switch-to-buffer "*scratch*")     :which-key "switch to Messages buffer")
   "bt" `(,(const 'switch-to-buffer "task.org")      :which-key "switch to scratch buffer")
-  "bg" `(,(const 'switch-to-buffer "*Cláudio*")     :which-key "switch to claude buffer")
+  "bg" `(,(const 'switch-to-buffer "*Claudio*")     :which-key "switch to claude buffer")
   )
 
 ;;
@@ -201,13 +201,19 @@
 (lauremacs-leader
  "k"   '(nil                                           :which-key "AI assistants")
 
+ ;; direct commands
+ "kk"  '(copilot-complete                              :which-key "copilot complete")
+ "kl"  '(copilot-accept-completion                     :which-key "copilot accept completion")
+ "ko"  '((lambda () (interactive)
+         (copilot-accept-completion-by-word)
+         (copilot-complete))                           :which-key "copilot accept completion by word")
+"kg"   '(gptel                                         :which-key "open gptel buffer")
+ 
  ;; Chat and interaction
  "kc"  '(nil                                           :which-key "chat/completion")
  "kcc" '(copilot-chat-custom-prompt-function           :which-key "copilot prompt in minibuffer")
- "kcg" '(gptel                                         :which-key "open gptel buffer")
  "kct" '(copilot-chat-transient                        :which-key "copilot chat transient")
  "kcy" '(copilot-chat-yank                             :which-key "yank copilot code")
- "kk"  '(copilot-complete                              :which-key "copilot complete")
  
  ;; Documentation and explanation
  "kd"  '(nil                                           :which-key "documentation")
@@ -223,11 +229,12 @@
 
  ;; Code review and modification
  "kr"  '(nil                                           :which-key "review/rewrite")
- "krf" '(copilot-chat-fix                              :which-key "fix code at point")
- "krr" '(copilot-chat-review                           :which-key "review code at point")
  "krb" '(copilot-chat-review-whole-buffer              :which-key "review whole buffer")
- "krr" '(lauremacs/gptel-rewrite-region-or-buffer      :which-key "gptel rewrite")
+ "krf" '(copilot-chat-fix                              :which-key "fix code at point")
  "krf" '(lauremacs/gptel-rewrite-function-at-point     :which-key "rewrite function at point")
+ "kri" '(lauremacs/gptel-insert-at-point               :which-key "gptel insert at point")
+ "krr" '(copilot-chat-review                           :which-key "review code at point")
+ "krr" '(lauremacs/gptel-rewrite-region-or-buffer      :which-key "gptel rewrite")
 
  ;; Buffer and file operations
  "kb"  '(nil                                           :which-key "buffers")
@@ -332,30 +339,33 @@
 ;; s- Search
 ;;
 
+(defconst lauremacs-tsx-search-params
+  "*.tsx$ --ignore=*native* --ignore=*mobile-app* --ignore=*stories*")
+
 (lauremacs-leader
-	"s"    '(nil                                                               :which-key "search")
+	"s"    '(nil                                          :which-key "search")
   ;; web
-	"sw"   '(nil                                                               :which-key "web search")
-	"swb"  '(web-search-brave                                                  :which-key "brave search")
-	"swd"  '(web-search-duckduckgo                                             :which-key "duckduckgo search")
-	"swg"  '(web-search-google                                                 :which-key "google search")
-	"sww"  '(web-search                                                        :which-key "web-search")
-	"swy"  '(web-search-youtube                                                :which-key "youtube search")
+	"sw"   '(nil                                          :which-key "web search")
+	"swb"  '(web-search-brave                             :which-key "brave search")
+	"swd"  '(web-search-duckduckgo                        :which-key "duckduckgo search")
+	"swg"  '(web-search-google                            :which-key "google search")
+	"sww"  '(web-search                                   :which-key "web-search")
+	"swy"  '(web-search-youtube                           :which-key "youtube search")
   ;; elixir
-  "sx"   '(nil                                                               :which-key "elixir grep")
-  "sxf"  '(nil                                                               :which-key "grep elixir functions")
-  "sxff" `(,(elauxir--grep "*.ex$ def")                                    :which-key "elixir grep function names")
-  "sxfp" `(,(elauxir--grep "*.ex$ defp\ ")                                   :which-key "elixir grep private function names")
-  "sxh"  `(,(elauxir--grep "*.heex$")                                        :which-key "elixir grep heex files")
-  "sxm"  `(,(elauxir--grep "*.ex$ defmodule")                                :which-key "elixir grep module names")
-  "sxt"  `(,(elauxir--grep "*_test.exs$")                                    :which-key "elixir grep test files")
-  "sxx"  `(,(elauxir--grep "*.exs?$")                                        :which-key "elixir grep")
+  "sx"   '(nil                                          :which-key "elixir grep")
+  "sxf"  '(nil                                          :which-key "grep elixir functions")
+  "sxff" `(,(elauxir--grep "*.ex$ def")                 :which-key "elixir grep function names")
+  "sxfp" `(,(elauxir--grep "*.ex$ defp\ ")              :which-key "elixir grep private function names")
+  "sxh"  `(,(elauxir--grep "*.heex$")                   :which-key "elixir grep heex files")
+  "sxm"  `(,(elauxir--grep "*.ex$ defmodule")           :which-key "elixir grep module names")
+  "sxt"  `(,(elauxir--grep "*_test.exs$")               :which-key "elixir grep test files")
+  "sxx"  `(,(elauxir--grep "*lib/.*.ex$")               :which-key "elixir grep")
   ;; typescript/react
-  "st"   `(,(elauxir--grep "*.tsx$ --ignore=*native* --ignore=*mobile-app*") :which-key "tsx grep")
+  "st"   `(,(elauxir--grep lauremacs-tsx-search-params) :which-key "tsx grep")
   ;; misc
-  "sb"   '(helm-do-ag-buffers                                                :which-key "search buffers")
-  "se"   '(iedit-mode                                                        :which-key "iedit mode")
-  "ss"   '(helm-swoop                                                        :which-key "swoop")
+  "sb"   '(helm-do-ag-buffers                           :which-key "search buffers")
+  "se"   '(iedit-mode                                   :which-key "iedit mode")
+  "ss"   '(helm-swoop                                   :which-key "swoop")
   )
 
 ;;

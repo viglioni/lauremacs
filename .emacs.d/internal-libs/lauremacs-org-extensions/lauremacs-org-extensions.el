@@ -80,10 +80,14 @@ POST-FUNC: reference for a function to run on :post exectution."
              import-tables))))
 
 ;;;###autoload
-(defun lauremacs-org--insert-laura-db ()
-  (interactive)  
-  (insert 
-          "#+begin_src sql :exports results :results table :engine postgres :database laura_db \n\n#+end_src"))
+(defun lauremacs-org--insert-db ()
+  (interactive)
+  (let* ((connections (mapcar 'car sql-connection-alist))
+         (selected (completing-read "Select DB connection: " connections nil t)))
+    (insert
+     (format
+      "#+begin_src sql :exports results :results table :engine postgresql :dbconnection %s\n\n#+end_src"
+      selected))))
 
 
 ;;;###autoload
@@ -102,7 +106,7 @@ POST-FUNC: reference for a function to run on :post exectution."
 	"Given the LANG-NAME, insert a org code block with proper :post function."
   (message lang-name)
   (cond
-   ((string= "laura-db" lang-name) (lauremacs-org--insert-laura-db))
+   ((string= "postgres-db" lang-name) (lauremacs-org--insert-db))
    ((string= "haskell" lang-name) (lauremacs-org--insert-src-with-post    lang-name "org-babel-haskell-formatter"))
    ((string= "clojure" lang-name) (lauremacs-org--insert-src-with-post    lang-name "org-babel-clojure-formatter"))
    ((string= "sage"    lang-name) (lauremacs-org--insert-src-with-session lang-name))
@@ -114,7 +118,7 @@ POST-FUNC: reference for a function to run on :post exectution."
     :candidates '(lambda ()
                    (fp/pipe org-babel-load-languages
                      (fp/map 'car)
-                     (fp/partial 'seq-concatenate 'list '(laura-db))))
+                     (fp/partial 'seq-concatenate 'list '(postgres-db))))
     :action 'lauremacs-org--insert-src))
 
 (defconst lauremacs-org--helm-lang-sources-fallback

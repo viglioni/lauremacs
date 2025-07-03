@@ -2,13 +2,21 @@ EMACS = emacs
 EMACS_FLAGS = -Q --batch
 EMACS_DIR = ~/.emacs.d
 EMACS_TEST_DIR = $(EMACS_DIR)/test
+BUTTERCUP_DIR = ~/.emacs.d/straight/build/buttercup
 
-.PHONY: test clean docs deps clean-deps prune-deps release-major release-minor release-patch
+.PHONY: test test-file clean docs deps clean-deps prune-deps release-major release-minor release-patch
 
 test:
 	$(EMACS) $(EMACS_FLAGS) \
 		--directory $(EMACS_TEST_DIR) \
 		--load run-tests.el
+
+test-file:
+	$(EMACS) $(EMACS_FLAGS) \
+		--directory $(EMACS_TEST_DIR) \
+		--directory $(BUTTERCUP_DIR) \
+		--load $(FILE) \
+		--eval "(buttercup-run)"
 
 clean:
 	rm -f *.elc test/*.elc
@@ -63,6 +71,7 @@ release-patch:
 help:
 	@echo "Available targets:"
 	@echo "  test        - Run all tests"
+	@echo "  test-file   - Run specific test file (use FILE=path/to/test.el)"
 	@echo "  clean       - Remove compiled Elisp files"
 	@echo "  clean-deps  - Remove all dependencies (keeps lockfile)"
 	@echo "  prune-deps  - Remove unused packages"

@@ -8,3 +8,4 @@ straight/*
 .gitignore
 eshell/*
 *~
+eln-cache/*

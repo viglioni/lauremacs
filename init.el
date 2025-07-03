@@ -13,12 +13,10 @@
 ;;; code:
 
 (lauremacs/load "core/consts.el")
-(lauremacs/load "./core/package-manager.el")
-(lauremacs/load "./core/core-packages.el")
-
+(lauremacs/load "core/package-manager.el")
+(lauremacs/load "core/core-packages.el")
 (lauremacs/load ".lauremacs" :dont-throw)
-
-(lauremacs/load "./test/test-helpers.el")
+(lauremacs/load "test/test-helpers.el")
 
 
 ;;

@@ -57,13 +57,15 @@
 (defun l-partial (fn &rest init-args)
   "Return a partially applied function with FN and INIT-ARGS.
 
-Creates a new function that, when called, applies FN to the combination
-of INIT-ARGS (provided now) and any additional arguments (provided later).
+Creates a new function that, when called, applies FN to the
+combination of INIT-ARGS (provided now) and any additional
+arguments (provided later).
 
 Examples:
-  (funcall (l-partial '+ 5) 3)     ;; => 8
-  (funcall (l-partial '* 2 3) 4)   ;; => 24
-  (funcall (l-partial 'concat \"Hello, \") \"World!\")  ;; => \"Hello, World!\"
+  (funcall (l-partial \\='+ 5) 3)     ;; => 8
+  (funcall (l-partial \\='* 2 3) 4)   ;; => 24
+  (funcall (l-partial \\='concat \"Hello, \") \"World!\")
+  ;; => \"Hello, World!\"
 
 FN can be a function symbol, lambda expression, or any callable.
 INIT-ARGS are the initial arguments to partially apply to FN."
@@ -102,8 +104,8 @@ BODY is the function body to execute when fully applied."
   "Transform expressions to support curried function call syntax.
 
 Enables the use of ((fn args) more-args) syntax within the macro body,
-transforming such expressions into proper funcall forms. This allows
-for more natural curried function composition and chaining.
+transforming such expressions into proper funcall forms.
+This allows for more natural curried function composition and chaining.
 
 The transformation converts:
   ((fn arg1) arg2 arg3)  =>  (funcall (fn arg1) arg2 arg3)
@@ -114,21 +116,22 @@ Examples:
   (with-laurisp (((add3 1) 2) 3))   ;; => 6
   (with-laurisp (+ ((add3 1) 2 3) ((multiply3 2) 3 4)))  ;; => 30
 
-BODY contains the expressions to transform. Regular function calls
-and other expressions are left unchanged."
+BODY contains the expressions to transform.
+Regular function calls and other expressions are left unchanged."
   `(progn ,@(mapcar #'l--transform-curry-calls body)))
 
 
 (defmacro __ (block &optional arg)
-  "Substitute all occurrences of `__' in BLOCK with ARG.
+  "Substitute all occurrences of \\=`__\\=' in BLOCK with ARG.
 
-This macro provides a convenient way to create expressions with placeholder
-substitution.  Every occurrence of the symbol `__' in BLOCK will be replaced
-with ARG before evaluation.
+This macro provides a convenient way to create expressions
+with placeholder substitution.
+Every occurrence of the symbol \\=`__\\=' in BLOCK
+will be replaced with ARG before evaluation.
 
-BLOCK is the expression containing placeholder symbols `__'.
-ARG is the value that will replace all `__' placeholders. If not provided,
-returns a function that expects one argument.
+BLOCK is the expression containing placeholder symbols \\=`__\\='.
+ARG is the value that will replace all \\=`__\\=' placeholders.
+If not provided, returns a function that expects one argument.
 
 Example:
   (__ (+ __ (* __ 2)) 5)
@@ -139,12 +142,12 @@ Example:
   ;; Returns a function that expects one argument
   ;; (funcall (__ (+ __ (* __ 2))) 5) evaluates to: 15
 
-  (__ (list __ (car __) (cdr __)) '(1 2 3))
+  (__ (list __ (car __) (cdr __)) \\='(1 2 3))
   ;; Expands to: (list (1 2 3) (car (1 2 3)) (cdr (1 2 3)))
   ;; Evaluates to: ((1 2 3) 1 (2 3))
 
-The substitution is recursive, so nested lists and complex expressions
-are handled correctly."
+The substitution is recursive, so nested lists and complex
+expressions are handled correctly."
   (cl-labels ((substitute-__ (expr replacement)
                 (cond
                  ((eq expr '__) replacement)
@@ -168,8 +171,9 @@ are handled correctly."
 (defun l--transform-curry-calls (expr)
   "Transform curry call expressions recursively.
 
-Internal function used by with-laurisp to transform expressions containing
-curried function calls. Identifies patterns like ((fn args) more-args) and
+Internal function used by with-laurisp to transform expressions
+containing curried function calls.
+Identifies patterns like ((fn args) more-args) and
 converts them to (funcall (fn args) more-args).
 
 The transformation rules:
@@ -179,9 +183,10 @@ The transformation rules:
 - Atoms are left unchanged
 
 EXPR is the expression to transform, can be an atom, list, or nested structure.
-Returns the transformed expression with curried calls converted to funcall forms."
+Returns the transformed expression with curried calls
+converted to funcall forms."
   (cond
-   ((and (consp expr) 
+   ((and (consp expr)
          (consp (car expr))
          (not (eq (caar expr) 'lambda)))
     ;; Transform ((fn args) more-args) to (funcall (fn args) more-args)
@@ -191,3 +196,5 @@ Returns the transformed expression with curried calls converted to funcall forms
    (t expr)))
 
 (provide 'laurisp)
+
+;;; laurisp.el ends here

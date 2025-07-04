@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; -*-
+;;; package --- Summary ;;; -*- lexical-binding: t; -*-
 ;;; laurisp.el --- Modern functional programming utilities for Emacs Lisp -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2025 Laura Viglioni
@@ -27,25 +27,49 @@
 ;;; Commentary:
 
 ;; Laurisp provides a modern functional programming approach to writing
-;; Emacs Lisp, drawing inspiration from Haskell and Elixir.
+;; Emacs Lisp, drawing inspiration from Common Lisp, Haskell and Elixir.
 ;;
-;; This library introduces currying, partial application, and functional
-;; composition utilities that make Emacs Lisp more expressive and closer
-;; to modern functional programming paradigms.
+;; This library introduces currying, partial application, pattern matching,
+;; and placeholder substitution utilities that make Emacs Lisp more expressive
+;; and closer to modern functional programming paradigms.
 ;;
 ;; Key features:
 ;; - Automatic currying with `ldef'
+;; - Pattern matching with `ldef'
 ;; - Partial application with `l-partial'
-;; - Functional composition utilities
-;; - Haskell-inspired syntax through `with-laurisp'
+;; - Placeholder substitution with `__'
+;; - Custom syntax `with-laurisp'
+;; - Optional syntax transformation via `laurisp-syntax'
+;;
+;; Configuration:
+;; The `laurisp-syntax' variable controls syntax transformation behavior.
+;; It can be set globally:
+;;
+;;   (setq laurisp-syntax t)
+;;
+;; Or locally in a file using a property line:
+;;
+;;   ;; -*- laurisp-syntax: t; -*-
+;;
+;; When enabled, this allows for more concise syntax transformations
+;; and enhanced readability in functional compositions.
 ;;
 ;; Example usage:
 ;;
 ;;   (ldef add3 (x y z) (+ x y z))
 ;;   (funcall (add3 1 2) 3) ; => 6
 ;;
+;;   (ldef greet ((name "Alice")) "Hello, Alice!")
+;;   (ldef greet (name) (concat "Hi, " name "!"))
+;;   (greet "Alice") ; => "Hello, Alice!"
+;;   (greet "Bob")   ; => "Hi, Bob!"
+;;
 ;;   (with-laurisp
 ;;     ((add3 1) 2 3)) ; => 6
+;;
+;;   (__ (+ __ (* __ 2)) 5) ; => 15
+;;
+;;   (funcall (l-partial '+ 10) 5) ; => 15
 
 ;;; Code:
 
@@ -253,7 +277,7 @@ converted to funcall forms."
 
 
 (cl-defmethod cl-generic-generalizers ((specializer (head equal)))
-  "Support for (equal VAL) specializers.
+  "Support for (equal VAL) SPECIALIZER.
 These match if the argument is `equal' to VAL."
   (let* ((form (cadr specializer))
          (val (if (or (not (symbolp form)) (macroexp-const-p form))
@@ -263,6 +287,153 @@ These match if the argument is `equal' to VAL."
     (cl-pushnew specializer specializers :test #'equal)
     (puthash val `(equal . ,specializers) cl--generic-equal-used))
   (list cl--generic-equal-generalizer))
+
+;; add laurisp syntax when loading
+(defun laurisp--process-file-content (content)
+  "Transform file CONTENT through with-laurisp.
+
+This function takes the string CONTENT, reads all S-expressions from it,
+and evaluates them wrapped in a `with-laurisp` form.  The content is
+processed in a temporary buffer to avoid affecting the current buffer.
+
+CONTENT should be a string containing valid Emacs Lisp code that may
+use laurisp syntax extensions.
+
+Returns the result of evaluating the transformed content."
+  (with-temp-buffer
+    (insert content)
+    (goto-char (point-min))
+    (let ((forms '()))
+      (while (not (eobp))
+        (condition-case nil
+            (push (read (current-buffer)) forms)
+          (end-of-file nil)))
+      (eval `(with-laurisp ,@(nreverse forms))))))
+
+(defun laurisp--load-file-advice (orig-fun file &optional noerror nomessage)
+  "Advice for `load-file' to handle laurisp-syntax.
+
+This around advice function intercepts calls to `load-file' and `load'
+to check if the file being loaded contains laurisp syntax.  If the file
+has a local variable `laurisp-syntax' set to non-nil, the file content
+is processed through `laurisp--process-file-content' instead of the
+normal loading mechanism.
+
+ORIG-FUN is the original function being advised.
+FILE is the file path to load.
+NOERROR and NOMESSAGE are optional arguments passed to the original function.
+
+The laurisp-syntax detection is performed by checking the file's local
+variables in the first line (prop-line) of the file."
+  (if (and (stringp file) (file-exists-p file))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (let ((laurisp-syntax (hack-local-variables-prop-line)))
+          (if (cdr (assq 'laurisp-syntax laurisp-syntax))
+              ;; Transform through with-laurisp
+              (laurisp--process-file-content (buffer-string))
+            ;; Regular loading
+            (funcall orig-fun file noerror nomessage))))
+    (funcall orig-fun file noerror nomessage)))
+
+(defun laurisp--check-file-local-vars ()
+  "Check if current buffer has laurisp-syntax enabled.
+
+This function examines the current buffer for file-local variables,
+specifically looking for the `laurisp-syntax' variable.  It processes
+both the prop-line (first line) and the file-local variables section
+at the end of the file.
+
+This function is typically used to determine whether laurisp syntax
+processing should be applied to the current buffer."
+  (hack-local-variables-prop-line)
+  (hack-local-variables))
+
+;; adding syntax on eval
+
+(defun laurisp--eval-last-sexp-advice (orig-fun &optional eval-last-sexp-arg-internal)
+  "Advice for `eval-last-sexp' to handle laurisp-syntax.
+
+This around advice function intercepts calls to `eval-last-sexp' and
+checks if the current buffer has `laurisp-syntax' enabled as a buffer-local
+variable.  If so, it wraps the preceding S-expression in a `with-laurisp'
+form before evaluation.
+
+ORIG-FUN is the original `eval-last-sexp' function.
+EVAL-LAST-SEXP-ARG-INTERNAL is the optional argument
+passed to the original function.
+
+The wrapping is achieved by temporarily redefining `elisp--preceding-sexp'
+to return the S-expression wrapped in `with-laurisp', allowing the original
+function to handle all other aspects of evaluation including output formatting."
+  (if (and (boundp 'laurisp-syntax) laurisp-syntax)
+      (let ((sexp (elisp--preceding-sexp)))
+        ;; Wrap in with-laurisp and let original function handle everything
+        (cl-letf (((symbol-function 'elisp--preceding-sexp)
+                   (lambda () `(with-laurisp ,sexp))))
+          (funcall orig-fun eval-last-sexp-arg-internal)))
+    (funcall orig-fun eval-last-sexp-arg-internal)))
+
+(defun laurisp--eval-region-advice (orig-fun start end &optional printflag read-function)
+  "Advice for `eval-region' to handle laurisp-syntax.
+
+This around advice function intercepts calls to `eval-region' and
+checks if the current buffer has `laurisp-syntax' enabled as a
+buffer-local variable.
+If so, it wraps the region content in a `with-laurisp' form before evaluation.
+
+ORIG-FUN is the original `eval-region' function.
+START and END define the region boundaries.
+PRINTFLAG and READ-FUNCTION are optional arguments
+passed to the original function.
+
+The wrapping is achieved by temporarily redefining
+`buffer-substring-no-properties' to return the region content wrapped in
+`with-laurisp', allowing the original function
+to handle all other aspects of evaluation."
+  (if (and (boundp 'laurisp-syntax) laurisp-syntax)
+      (let ((original-code (buffer-substring-no-properties start end)))
+        ;; Wrap in with-laurisp and let original function handle everything
+        (cl-letf (((symbol-function 'buffer-substring-no-properties)
+                   (lambda () (format "(with-laurisp %s)" original-code))))
+          (funcall orig-fun start end printflag read-function)))
+    (funcall orig-fun start end printflag read-function)))
+
+(defun laurisp--eval-buffer-advice (orig-fun &optional buffer printflag filename unibyte)
+  "Advice for `eval-buffer' to handle laurisp-syntax.
+
+This around advice function intercepts calls to `eval-buffer' and
+checks if the target buffer has `laurisp-syntax' enabled as a buffer-local
+variable.  If so, it wraps the entire buffer content in a `with-laurisp'
+form before evaluation.
+
+ORIG-FUN is the original `eval-buffer' function.
+BUFFER is the buffer to evaluate (defaults to current buffer).
+PRINTFLAG, FILENAME, and UNIBYTE are optional arguments passed to
+the original function.
+
+The wrapping is achieved by temporarily redefining `buffer-string'
+to return the buffer content wrapped in `with-laurisp', allowing the original
+function to handle all other aspects of evaluation."
+  (with-current-buffer (or buffer (current-buffer))
+    (if (and (boundp 'laurisp-syntax) laurisp-syntax)
+        (let ((original-content (buffer-string)))
+          ;; Wrap in with-laurisp and let original function handle everything
+          (cl-letf (((symbol-function 'buffer-string)
+                     (lambda () (format "(with-laurisp %s)" original-content))))
+            (funcall orig-fun buffer printflag filename unibyte)))
+      (funcall orig-fun buffer printflag filename unibyte))))
+
+
+(defun laurisp-syntax-adivices ()
+  "Add advice to evaluation functions for laurisp syntax support.
+This function adds around advice to `eval-last-sexp', `eval-region',
+`eval-buffer', `load-file', and `load' to enable laurisp syntax processing."
+  (advice-add 'eval-last-sexp :around #'laurisp--eval-last-sexp-advice)
+  (advice-add 'eval-region :around #'laurisp--eval-region-advice)
+  (advice-add 'eval-buffer :around #'laurisp--eval-buffer-advice)
+  (advice-add 'load-file :around #'laurisp--load-file-advice)
+  (advice-add 'load :around #'laurisp--load-file-advice))
 
 
 (provide 'laurisp)

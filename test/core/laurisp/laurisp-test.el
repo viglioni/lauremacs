@@ -24,7 +24,7 @@
       (message "Looking for laurisp.el at: %s" laurisp-path)
       (if (file-exists-p laurisp-path)
           (load laurisp-path nil t)
-        (error "Cannot find laurisp.el at %s" laurisp-path))))    
+        (error "Cannot find laurisp.el at %s" laurisp-path))))
 
   (describe "l-partial"
     (test-it "creates a partial function correctly"
@@ -121,7 +121,106 @@
 
       (test-it "works with mixed data types in currying"
                (ldef mixed-fn (num str list) (list num str (length list)))
-               (expect (funcall (mixed-fn 42) "test" '(1 2 3)) :to-equal '(42 "test" 3)))))
+               (expect (funcall (mixed-fn 42) "test" '(1 2 3)) :to-equal '(42 "test" 3))))
+
+    (describe "pattern matching with ldef"
+      (before-all
+        (ldef fib ((n 0)) 0)
+        (ldef fib ((n 1)) 1)
+        (ldef fib (n) (+ (fib (- n 1)) (fib (- n 2))))
+        )
+
+      (test-it "matches base case for n=0"
+               (expect (fib 0) :to-equal 0))
+
+      (test-it "matches base case for n=1"
+               (expect (fib 1) :to-equal 1))
+
+      (test-it "uses general case for n=2"
+               (expect (fib 2) :to-equal 1))
+
+      (test-it "uses general case for n=3"
+               (expect (fib 3) :to-equal 2))
+
+      (test-it "uses general case for n=4"
+               (expect (fib 4) :to-equal 3))
+
+      (test-it "uses general case for n=5"
+               (expect (fib 5) :to-equal 5))
+
+      (test-it "works with currying on pattern matched functions"
+               (expect (funcall (fib) 3) :to-equal 2))
+
+      (describe "multiple pattern matches"
+        (before-all
+          (ldef factorial ((n 0)) 1)
+          (ldef factorial ((n 1)) 1)
+          (ldef factorial (n) (* n (factorial (- n 1)))))
+
+        (test-it "matches factorial base cases"
+                 (expect (factorial 0) :to-equal 1)
+                 (expect (factorial 1) :to-equal 1))
+
+        (test-it "computes factorial recursively"
+                 (expect (factorial 5) :to-equal 120))
+
+        (test-it "works with currying on factorial"
+                 (expect (funcall (factorial) 4) :to-equal 24)))
+
+      (describe "pattern matching with different types"
+        (before-all
+          (ldef type-checker ((x nil)) "nil")
+          (ldef type-checker ((x t)) "true")
+          (ldef type-checker ((x 0)) "zero")
+          (ldef type-checker (x) "other"))
+
+        (test-it "matches nil value"
+                 (expect (type-checker nil) :to-equal "nil"))
+
+        (test-it "matches true value"
+                 (expect (type-checker t) :to-equal "true"))
+
+        (test-it "matches zero value"
+                 (expect (type-checker 0) :to-equal "zero"))
+
+        (test-it "uses general case for other values"
+                 (expect (type-checker 42) :to-equal "other")
+                 (expect (type-checker "hello") :to-equal "other")
+                 (expect (type-checker '(1 2 3)) :to-equal "other")))
+
+      (describe "pattern matching with strings"
+        (before-all
+          (ldef greet ((name "Alice")) "Hello, Alice!")
+          (ldef greet ((name "Bob")) "Hey, Bob!")
+          (ldef greet (name) (concat "Hi, " name "!")))
+
+        (test-it "matches specific string patterns"
+                 (expect (greet "Alice") :to-equal "Hello, Alice!")
+                 (expect (greet "Bob") :to-equal "Hey, Bob!"))
+
+        (test-it "uses general case for other strings"
+                 (expect (greet "Charlie") :to-equal "Hi, Charlie!")))
+
+      (describe "pattern matching with multiple arguments"
+        (before-all
+          (ldef calculator ((op '+) x y) (+ x y))
+          (ldef calculator ((op '-) x y) (- x y))
+          (ldef calculator ((op '*) x y) (* x y))
+          (ldef calculator (op x y) (error "Unknown operation: %s" op)))
+
+        (test-it "matches addition operation"
+                 (expect (calculator '+ 3 4) :to-equal 7))
+
+        (test-it "matches subtraction operation"
+                 (expect (calculator '- 10 3) :to-equal 7))
+
+        (test-it "matches multiplication operation"
+                 (expect (calculator '* 5 6) :to-equal 30))
+
+        (test-it "works with currying on pattern matched multi-arg functions"
+                 (expect (funcall (calculator '+) 2 3) :to-equal 5)
+                 (expect (funcall (calculator '+ 2) 3) :to-equal 5))))
+    )
 
   (describe "with-laurisp"
     (before-all

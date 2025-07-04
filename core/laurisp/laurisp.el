@@ -50,6 +50,8 @@
 ;;; Code:
 
 
+(require 'cl-lib)
+
 ;;;;;;;;;
 ;; API ;;
 ;;;;;;;;;
@@ -73,17 +75,22 @@ INIT-ARGS are the initial arguments to partially apply to FN."
     (apply fn (append init-args args))))
 
 
- (defmacro ldef (name args &rest body)
-  "Define a function that automatically curries when called with fewer arguments.
+(defmacro ldef (name args &rest body)
+  "Define autocurried functions.
 
-Creates a function NAME that can be called with any number of arguments up to
-the full arity defined by ARGS. When called with fewer arguments than required,
-it returns a partially applied function. When called with the full number of
+I.e define a function that automatically curries when
+called with fewer arguments.
+
+Creates a function NAME that can be called with any number of
+arguments up to the full arity defined by ARGS.
+When called with fewer arguments than required,
+it returns a partially applied function.
+When called with the full number of
 arguments, it executes the function body.
 
-IMPORTANT: Variadic arguments with &rest are NOT supported. ARGS must be a
-simple list of parameter names without &rest, &optional, or other lambda list
-keywords.
+IMPORTANT: Variadic arguments with &rest are NOT supported.
+ARGS must be a simple list of parameter names without &rest,
+&optional, or other lambda list keywords.
 
 Examples:
   (ldef add3 (x y z) (+ x y z))
@@ -94,11 +101,17 @@ Examples:
 NAME is the function name to define.
 ARGS is a list of parameter names (no &rest, &optional, etc.).
 BODY is the function body to execute when fully applied."
-  (let ((arity (length args)))
-    `(cl-defun ,name (&rest call-args)
-       (if (>= (length call-args) ,arity)
-           (apply (lambda ,args ,@body) call-args)
-         (apply #'l-partial #',name call-args)))))
+  (let ((impl-name (intern (format "l-----%s-impl-" name)))
+        (arity (length args)))
+    `(progn
+       ;; Define the actual implementation with pattern matching
+       (cl-defmethod ,impl-name ,(l--parse-args args) ,@body)
+       ;; Define the currying wrapper
+       (defun ,name (&rest call-args)
+         (if (>= (length call-args) ,arity)
+             (apply #',impl-name call-args)
+           (apply #'l-partial #',name call-args))))))
+
 
 (defmacro with-laurisp (&rest body)
   "Transform expressions to support curried function call syntax.
@@ -195,6 +208,49 @@ converted to funcall forms."
     (mapcar #'l--transform-curry-calls expr))
    (t expr)))
 
-(provide 'laurisp)
+(cl-defmethod l--parse-arg ((arg list))
+  "Parse ARG from `(symbol value)' to `(symbol (eql value))'."
+  `(,(car arg) (equal ,(cadr arg))))
 
+(cl-defmethod l--parse-arg ((arg symbol))
+  "When ARG is a symbol, return it."
+  arg)
+
+(defun l--parse-args (args)
+  "Parse a list of ARGS following =parse-arg' rules."
+   (mapcar 'l--parse-arg args))
+
+;; Extend cl-defmethod to accept equal
+
+
+(defvar cl--generic-equal-used (make-hash-table :test #'equal))
+
+(cl-generic-define-generalizer cl--generic-equal-generalizer
+  140 (lambda (name &rest _) `(gethash ,name cl--generic-equal-used))
+  (lambda (tag &rest _) (if (eq (car-safe tag) 'equal) (cdr tag))))
+
+
+(cl-defmethod cl-generic-generalizers ((specializer (head equal)))
+  "Support for (eql VAL) specializers.
+These match if the argument is `eql' to VAL."
+  (let* ((form (cadr specializer))
+         (val (if (or (not (symbolp form)) (macroexp-const-p form))
+                  (eval form t)
+                ;; FIXME: Compatibility with Emacs<28.  For now emitting
+                ;; a warning would be annoying for third party packages
+                ;; which can't use the new form without breaking compatibility
+                ;; with older Emacsen, but in the future we should emit
+                ;; a warning.
+                ;; (message "Quoting obsolete `eql' form: %S" specializer)
+                form))
+         (specializers (cdr (gethash val cl--generic-equal-used))))
+    ;; The `specializers-function' needs to return all the (eql EXP) that
+    ;; were used for the same VALue (bug#49866).
+    ;; So we keep this info in `cl--generic-equal-used'.
+    (cl-pushnew specializer specializers :test #'equal)
+    (puthash val `(equal . ,specializers) cl--generic-equal-used))
+  (list cl--generic-equal-generalizer))
+
+
+(provide 'laurisp)
 ;;; laurisp.el ends here

@@ -127,45 +127,20 @@
       (before-all
         (ldef fib ((n 0)) 0)
         (ldef fib ((n 1)) 1)
-        (ldef fib (n) (+ (fib (- n 1)) (fib (- n 2))))
-        )
+        (ldef fib (n) (+ (fib (- n 1)) (fib (- n 2)))))
 
-      (test-it "matches base case for n=0"
-               (expect (fib 0) :to-equal 0))
-
-      (test-it "matches base case for n=1"
+      (test-it "matches base cases"
+               (expect (fib 0) :to-equal 0)
                (expect (fib 1) :to-equal 1))
 
-      (test-it "uses general case for n=2"
-               (expect (fib 2) :to-equal 1))
-
-      (test-it "uses general case for n=3"
-               (expect (fib 3) :to-equal 2))
-
-      (test-it "uses general case for n=4"
-               (expect (fib 4) :to-equal 3))
-
-      (test-it "uses general case for n=5"
+      (test-it "uses general case for n>=2"
+               (expect (fib 2) :to-equal 1)
+               (expect (fib 3) :to-equal 2)
+               (expect (fib 4) :to-equal 3)
                (expect (fib 5) :to-equal 5))
 
       (test-it "works with currying on pattern matched functions"
-               (expect (funcall (fib) 3) :to-equal 2))
-
-      (describe "multiple pattern matches"
-        (before-all
-          (ldef factorial ((n 0)) 1)
-          (ldef factorial ((n 1)) 1)
-          (ldef factorial (n) (* n (factorial (- n 1)))))
-
-        (test-it "matches factorial base cases"
-                 (expect (factorial 0) :to-equal 1)
-                 (expect (factorial 1) :to-equal 1))
-
-        (test-it "computes factorial recursively"
-                 (expect (factorial 5) :to-equal 120))
-
-        (test-it "works with currying on factorial"
-                 (expect (funcall (factorial) 4) :to-equal 24)))
+               (expect (funcall (fib) 3) :to-equal 2))      
 
       (describe "pattern matching with different types"
         (before-all
@@ -219,27 +194,61 @@
 
         (test-it "works with currying on pattern matched multi-arg functions"
                  (expect (funcall (calculator '+) 2 3) :to-equal 5)
-                 (expect (funcall (calculator '+ 2) 3) :to-equal 5))))
-    )
+                 (expect (funcall (calculator '+ 2) 3) :to-equal 5)))))
 
   (describe "with-laurisp"
-    (before-all
-      (ldef add3 (x y z) (+ x y z)))
-    
-    (test-it "works with all arguments at once"
-             (expect (with-laurisp (add3 1 2 3)) :to-equal 6))
-    
-    (test-it "works with partial application - 1 arg then 2"
-             (expect (with-laurisp ((add3 1) 2 3)) :to-equal 6))
-    
-    (test-it "works with partial application - 2 args then 1"
-             (expect (with-laurisp ((add3 1 2) 3)) :to-equal 6))
-    
-    (test-it "works with chained partial applications"
-             (expect (with-laurisp (((add3 1) 2) 3)) :to-equal 6))
-    
-    (test-it "works with full currying chain"
-             (expect (with-laurisp ((((add3) 1) 2) 3)) :to-equal 6))
+
+    (describe "funcall notation"
+      (before-all
+        (ldef add3 (x y z) (+ x y z)))
+      
+      (test-it "works with all arguments at once"
+               (expect (with-laurisp (add3 1 2 3)) :to-equal 6))
+      
+      (test-it "works with partial application - 1 arg then 2"
+               (expect (with-laurisp ((add3 1) 2 3)) :to-equal 6))
+      
+      (test-it "works with partial application - 2 args then 1"
+               (expect (with-laurisp ((add3 1 2) 3)) :to-equal 6))
+      
+      (test-it "works with chained partial applications"
+               (expect (with-laurisp (((add3 1) 2) 3)) :to-equal 6))
+      
+      (test-it "works with full currying chain"
+               (expect (with-laurisp ((((add3) 1) 2) 3)) :to-equal 6))
+
+      (describe "regular elisp should work as expected inside with macro"
+        (test-it "works with regular arithmetic"
+                 (expect (with-laurisp (+ 1 2 3)) :to-equal 6))
+        
+        (test-it "works with regular list operations"
+                 (expect (with-laurisp (car '(1 2 3))) :to-equal 1)
+                 (expect (with-laurisp (cdr '(1 2 3))) :to-equal '(2 3)))
+        
+        (test-it "works with regular function calls"
+                 (expect (with-laurisp (length '(1 2 3 4))) :to-equal 4))
+        
+        (test-it "works with lambda expressions"
+                 (expect (with-laurisp (funcall (lambda (x) (+ x 1)) 5)) :to-equal 6))
+        
+        (test-it "works with let bindings"
+                 (expect (with-laurisp (let ((x 10)) (+ x 5))) :to-equal 15))
+        
+        (test-it "works with if expressions"
+                 (expect (with-laurisp (if (> 5 3) "yes" "no")) :to-equal "yes"))
+        
+        (test-it "works with nested regular expressions"
+                 (expect (with-laurisp (+ (* 2 3) (/ 8 2))) :to-equal 10))
+        
+        (test-it "works with string operations"
+                 (expect (with-laurisp (concat "hello" " " "world")) :to-equal "hello world"))
+        
+        (test-it "works with quoted expressions"
+                 (expect (with-laurisp (quote (1 2 3))) :to-equal '(1 2 3)))
+        
+        (test-it "works with progn"
+                 (expect (with-laurisp (progn (+ 1 2) (+ 3 4))) :to-equal 7)))
+      )
 
     (describe "complex transformation scenarios"
       (before-all

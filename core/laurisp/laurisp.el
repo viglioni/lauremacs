@@ -76,7 +76,7 @@ INIT-ARGS are the initial arguments to partially apply to FN."
 
 
 (defmacro ldef (name args &rest body)
-  "Define autocurried functions.
+  "Define autocurried functions with pattern matching support.
 
 I.e define a function that automatically curries when
 called with fewer arguments.
@@ -92,7 +92,28 @@ IMPORTANT: Variadic arguments with &rest are NOT supported.
 ARGS must be a simple list of parameter names without &rest,
 &optional, or other lambda list keywords.
 
-Examples:
+PATTERN MATCHING:
+Arguments can be specified as either symbols or lists for pattern matching.
+- Symbol: (x) - matches any value, binds to x
+- List: ((x value)) - matches only when x equals value
+
+Pattern matching examples:
+  (ldef fib ((n 0)) 0)                    ;; matches when n = 0
+  (ldef fib ((n 1)) 1)                    ;; matches when n = 1
+  (ldef fib (n) (+ (fib (- n 1)) (fib (- n 2))))  ;; general case
+  
+  (ldef greet ((name \"Alice\")) \"Hello, Alice!\")  ;; matches \"Alice\"
+  (ldef greet (name) (concat \"Hi, \" name \"!\"))   ;; general case
+  
+  (ldef calc ((op '+) x y) (+ x y))       ;; matches when op = '+
+  (ldef calc ((op '*) x y) (* x y))       ;; matches when op = '*
+  (ldef calc (op x y) (error \"Unknown op: %s\" op))  ;; general case
+
+CURRYING:
+Functions defined with ldef automatically curry when called
+with fewer arguments.
+
+Currying examples:
   (ldef add3 (x y z) (+ x y z))
   (add3 1 2 3)        ;; => 6 (full application)
   (funcall (add3 1) 2 3)  ;; => 6 (partial application)
@@ -101,6 +122,7 @@ Examples:
 NAME is the function name to define.
 ARGS is a list of parameter names (no &rest, &optional, etc.).
 BODY is the function body to execute when fully applied."
+
   (let ((impl-name (intern (format "l-----%s-impl-" name)))
         (arity (length args)))
     `(progn
@@ -220,7 +242,7 @@ converted to funcall forms."
   "Parse a list of ARGS following =parse-arg' rules."
    (mapcar 'l--parse-arg args))
 
-;; Extend cl-defmethod to accept equal
+;; Extend cl-defmethod to accept 'equal
 
 
 (defvar cl--generic-equal-used (make-hash-table :test #'equal))
@@ -231,22 +253,13 @@ converted to funcall forms."
 
 
 (cl-defmethod cl-generic-generalizers ((specializer (head equal)))
-  "Support for (eql VAL) specializers.
-These match if the argument is `eql' to VAL."
+  "Support for (equal VAL) specializers.
+These match if the argument is `equal' to VAL."
   (let* ((form (cadr specializer))
          (val (if (or (not (symbolp form)) (macroexp-const-p form))
                   (eval form t)
-                ;; FIXME: Compatibility with Emacs<28.  For now emitting
-                ;; a warning would be annoying for third party packages
-                ;; which can't use the new form without breaking compatibility
-                ;; with older Emacsen, but in the future we should emit
-                ;; a warning.
-                ;; (message "Quoting obsolete `eql' form: %S" specializer)
                 form))
          (specializers (cdr (gethash val cl--generic-equal-used))))
-    ;; The `specializers-function' needs to return all the (eql EXP) that
-    ;; were used for the same VALue (bug#49866).
-    ;; So we keep this info in `cl--generic-equal-used'.
     (cl-pushnew specializer specializers :test #'equal)
     (puthash val `(equal . ,specializers) cl--generic-equal-used))
   (list cl--generic-equal-generalizer))

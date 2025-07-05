@@ -290,16 +290,7 @@ These match if the argument is `equal' to VAL."
 
 ;; add laurisp syntax when loading
 (defun laurisp--process-file-content (content)
-  "Transform file CONTENT through with-laurisp.
-
-This function takes the string CONTENT, reads all S-expressions from it,
-and evaluates them wrapped in a `with-laurisp` form.  The content is
-processed in a temporary buffer to avoid affecting the current buffer.
-
-CONTENT should be a string containing valid Emacs Lisp code that may
-use laurisp syntax extensions.
-
-Returns the result of evaluating the transformed content."
+  "Transform file CONTENT through with-laurisp."
   (with-temp-buffer
     (insert content)
     (goto-char (point-min))
@@ -310,21 +301,9 @@ Returns the result of evaluating the transformed content."
           (end-of-file nil)))
       (eval `(with-laurisp ,@(nreverse forms))))))
 
+
 (defun laurisp--load-file-advice (orig-fun file &optional noerror nomessage)
-  "Advice for `load-file' to handle laurisp-syntax.
-
-This around advice function intercepts calls to `load-file' and `load'
-to check if the file being loaded contains laurisp syntax.  If the file
-has a local variable `laurisp-syntax' set to non-nil, the file content
-is processed through `laurisp--process-file-content' instead of the
-normal loading mechanism.
-
-ORIG-FUN is the original function being advised.
-FILE is the file path to load.
-NOERROR and NOMESSAGE are optional arguments passed to the original function.
-
-The laurisp-syntax detection is performed by checking the file's local
-variables in the first line (prop-line) of the file."
+  "Advice for load-file to handle laurisp-syntax."
   (if (and (stringp file) (file-exists-p file))
       (with-temp-buffer
         (insert-file-contents file)
@@ -335,6 +314,21 @@ variables in the first line (prop-line) of the file."
             ;; Regular loading
             (funcall orig-fun file noerror nomessage))))
     (funcall orig-fun file noerror nomessage)))
+
+
+(defun laurisp--load-advice (orig-fun file &optional noerror nomessage nosuffix must-suffix)
+  "Advice for load to handle laurisp-syntax."
+  (if (and (stringp file) (file-exists-p file))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (let ((laurisp-syntax (hack-local-variables-prop-line)))
+          (if (cdr (assq 'laurisp-syntax laurisp-syntax))
+              ;; Transform through with-laurisp
+              (laurisp--process-file-content (buffer-string))
+            ;; Regular loading
+            (funcall orig-fun file noerror nomessage nosuffix must-suffix))))
+    (funcall orig-fun file noerror nomessage nosuffix must-suffix)))
+
 
 (defun laurisp--check-file-local-vars ()
   "Check if current buffer has laurisp-syntax enabled.
@@ -423,6 +417,7 @@ function to handle all other aspects of evaluation."
                      (lambda () (format "(with-laurisp %s)" original-content))))
             (funcall orig-fun buffer printflag filename unibyte)))
       (funcall orig-fun buffer printflag filename unibyte))))
+
 
 
 (defun laurisp-syntax-adivices ()

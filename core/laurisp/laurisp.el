@@ -147,6 +147,56 @@ INIT-ARGS are the initial arguments to partially apply to FN."
   (lambda (&rest args)
     (apply fn (append init-args args))))
 
+(defmacro ldef (name args &rest body)
+  "Define autocurried functions with pattern matching support.
+
+Creates a function NAME that automatically curries when called with fewer
+arguments and supports pattern matching on arguments.
+
+ARGS is a list of parameter patterns supporting:
+- Regular parameters: arg
+- Wildcards: _ignore, _var (bind but conventionally ignore)
+- Type matches: (arg :integer), (arg :string), etc.
+- Value matches: (arg \"specific-value\"), (arg 42), etc.
+
+Methods are ordered by specificity (most specific first):
+1. Value matches (1000 points each)
+2. Type matches (100 points each)
+3. Wildcards (1 point each)
+
+PATTERN MATCHING:
+Arguments can be specified as either symbols or lists for pattern matching.
+- Symbol: x - matches any value, binds to x
+- Wildcard: _ignore - matches any value, binds but conventionally ignored
+- Type match: (x :integer) - matches only when x satisfies integerp
+- Value match: (x \"value\") - matches only when x equals \"value\"
+
+Pattern matching examples:
+  (ldef fib ((n 0)) 0)                    ;; matches when n = 0
+  (ldef fib ((n 1)) 1)                    ;; matches when n = 1
+  (ldef fib (n) (+ (fib (- n 1)) (fib (- n 2))))  ;; general case
+
+  (ldef greet ((name \"Alice\")) \"Hello, Alice!\")  ;; matches \"Alice\"
+  (ldef greet (name) (concat \"Hi, \" name \"!\"))   ;; general case
+
+  (ldef calc ((op '+) x y) (+ x y))       ;; matches when op = '+
+  (ldef calc ((op '*) x y) (* x y))       ;; matches when op = '*
+  (ldef calc (_op _x _y) (error \"Unknown operation\"))  ;; fallback
+
+CURRYING:
+Functions defined with ldef automatically curry when called
+with fewer arguments.
+
+Currying examples:
+  (ldef add3 (x y z) (+ x y z))
+  (add3 1 2 3)        ;; => 6 (full application)
+  (funcall (add3 1) 2 3)  ;; => 6 (partial application)
+  (funcall (funcall (add3 1) 2) 3)  ;; => 6 (chained partial)
+
+NAME is the function name to define.
+ARGS is a list of parameter patterns.
+BODY is the function body to execute when pattern matches and fully applied."
+  `(l-generic ,name ,args ,@body))
 
 (defmacro with-laurisp (&rest body)
   "Transform expressions to support curried function call syntax.
@@ -220,65 +270,6 @@ expressions are handled correctly."
       block)))
 
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Extend cl-defmethod to accept 'equal           ;;
-;; and predicates listed in `l--type-predicates'  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(defvar l--type-predicates
-  '((:function   . functionp)
-    (:number     . numberp)
-    (:integer    . integerp)
-    (:float      . floatp)
-    (:string     . stringp)
-    (:symbol     . symbolp)
-    (:list       . listp)
-    (:cons       . consp)
-    (:vector     . vectorp)
-    (:hash-table . hash-table-p)
-    (:buffer     . bufferp)
-    (:callable   . (lambda (x) (or (functionp x) (subrp x))))
-    (:sequence   . sequencep)
-    (:atom       . atom)
-    (:null       . null))
-  "Mapping of type keywords to predicate functions.")
-(defvar l--generic-equal-used (make-hash-table :test #'equal))
-(defvar l--generic-predicate-used (make-hash-table :test 'equal))
-
-;; generalizers with priority order
-(cl-generic-define-generalizer l--generic-predicate-generalizer
-  150 (lambda (name &rest _) `(gethash ,name l--generic-predicate-used))
-  (lambda (tag &rest _) (if (eq (car-safe tag) 'predicate) (cdr tag))))
-
-(cl-generic-define-generalizer l--generic-equal-generalizer
-  140 (lambda (name &rest _) `(gethash ,name l--generic-equal-used))
-  (lambda (tag &rest _) (if (eq (car-safe tag) 'equal) (cdr tag))))
-
-(cl-defmethod cl-generic-generalizers ((specializer (head equal)))
-  "Support for (equal VAL) SPECIALIZER.
-These match if the argument is `equal' to VAL."
-  (let* ((form (cadr specializer))
-         (val (if (or (not (symbolp form)) (macroexp-const-p form))
-                  (eval form t)
-                form))
-         (specializers (cdr (gethash val l--generic-equal-used))))
-    (cl-pushnew specializer specializers :test #'equal)
-    (puthash val `(equal . ,specializers) l--generic-equal-used))
-  (list l--generic-equal-generalizer))
-
-(cl-defmethod cl-generic-generalizers ((specializer (head predicate)))
-  "Support for (predicate PRED) specializers."
-    (print specializer)
-  (let* ((pred (cadr specializer))
-         (pred-key (if (symbolp pred) pred (prin1-to-string pred)))
-         (specializers (cdr (gethash pred-key l--generic-predicate-used))))
-    (cl-pushnew specializer specializers :test #'equal)
-    (puthash pred-key `(predicate . ,specializers) l--generic-predicate-used))
-  (list l--generic-predicate-generalizer))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Private functions ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -343,8 +334,8 @@ Returns a list suitable for use as a cl-defmethod parameter specializer."
         (spec (cadr arg)))
     (cond
      ;; ;; Case 1: (symbol :predicate-type) -> predicate check
-     ;; ((and (keywordp spec) (assoc spec l--type-predicates))
-     ;;  (let ((predicate (cdr (assoc spec l--type-predicates))))
+     ;; ((and (keywordp spec) (assoc spec l-generic-type-predicates))
+     ;;  (let ((predicate (cdr (assoc spec l-generic-type-predicates))))
      ;;    `(,param (predicate ,predicate))))
      ;; Case 2: (symbol :type) -> (symbol type) - type specializer
      ((keywordp spec)
@@ -360,8 +351,6 @@ Returns a list suitable for use as a cl-defmethod parameter specializer."
 (defun l--parse-args (args)
   "Parse a list of ARGS following =parse-arg' rules."
    (mapcar 'l--parse-arg args))
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Use laurisp syntax without `with-laurisp' ;;
@@ -500,6 +489,23 @@ function to handle all other aspects of evaluation."
 ;; l-generic dispatcher ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defvar l-generic-type-predicates
+  '((:function   . functionp)
+    (:number     . numberp)
+    (:integer    . integerp)
+    (:float      . floatp)
+    (:string     . stringp)
+    (:symbol     . symbolp)
+    (:list       . listp)
+    (:cons       . consp)
+    (:vector     . vectorp)
+    (:hash-table . hash-table-p)
+    (:buffer     . bufferp)
+    (:callable   . (lambda (x) (or (functionp x) (subrp x))))
+    (:sequence   . sequencep)
+    (:atom       . atom)
+    (:null       . null))
+  "Mapping of type keywords to predicate functions.")
 (defvar l-generic-registry (make-hash-table :test 'equal)
   "Registry of generic function methods.
 Structure: function-name -> list of (specificity arity pattern-list body)")
@@ -532,7 +538,7 @@ Value match: 1000, Type match: 100, Wildcard: 1"
       (cond
        ((keywordp spec)
         ;; Type match: (arg :integer) -> (integerp (nth 0 args))
-        (let ((predicate (cdr (assoc spec l--type-predicates))))
+        (let ((predicate (cdr (assoc spec l-generic-type-predicates))))
           (if predicate
               `(,predicate (nth ,arg-index args))
             (error "Unknown type predicate: %s" spec))))
@@ -564,7 +570,7 @@ Value match: 1000, Type match: 100, Wildcard: 1"
                              for i from 0
                              collect (l-generic--generate-pattern-condition pattern i)))
          (bindings (l-generic--generate-bindings pattern-list)))
-    
+  
     `((and ,@(remove t conditions))  ; Remove 'always true' conditions
       (let ,bindings
         ,@body))))
@@ -577,11 +583,11 @@ Value match: 1000, Type match: 100, Wildcard: 1"
          (max-arity (if methods (apply #'max (mapcar #'car methods-by-arity)) 0))
          (min-arity (if methods (apply #'min (mapcar #'car methods-by-arity)) 0))
          (arity-groups (cl-loop for arity from min-arity to max-arity
-                               collect (cons arity 
-                                           (cl-remove-if-not 
+                               collect (cons arity
+                                           (cl-remove-if-not
                                             (lambda (method) (= (nth 1 method) arity))
                                             methods)))))
-    
+  
     `(defun ,name (&rest args)
        (let ((arity (length args)))
          (cond
@@ -590,7 +596,7 @@ Value match: 1000, Type match: 100, Wildcard: 1"
                     collect `((= arity ,arity)
                              (cond
                               ,@(mapcar #'l-generic--generate-method-clause arity-methods)
-                              (t (error "PatternMatch error in '%s': couldn't match %S" 
+                              (t (error "PatternMatch error in '%s': couldn't match %S"
                                        ',name args)))))
           ;; Currying case
           (t (apply #'l-partial #',name args)))))))
@@ -600,13 +606,13 @@ Value match: 1000, Type match: 100, Wildcard: 1"
   (let* ((specificity (l-generic--calculate-specificity pattern-list))
          (method-spec (list specificity arity pattern-list body))
          (current-methods (gethash name l-generic-registry '())))
-    
+  
     ;; Add new method and sort by specificity (descending)
-    (puthash name 
+    (puthash name
              (sort (cons method-spec current-methods)
                    (lambda (a b) (> (car a) (car b))))
              l-generic-registry)
-    
+  
     ;; Regenerate dispatch function
     (eval (l-generic--generate-dispatch-function name (gethash name l-generic-registry)))))
 
@@ -623,7 +629,7 @@ Value match: 1000, Type match: 100, Wildcard: 1"
          (rest-arg (if rest-pos (nth (1+ rest-pos) args) nil))
          (arity (length fixed-args))
          (has-rest rest-pos))
-    
+  
     (if has-rest
         ;; Handle &rest arguments - create a wrapper that transforms calls
         `(progn
@@ -641,56 +647,7 @@ Value match: 1000, Type match: 100, Wildcard: 1"
          (l-generic--add-method ',name ,arity ',args '(,@body))
          ',name))))
 
-(defmacro ldef (name args &rest body)
-  "Define autocurried functions with pattern matching support.
 
-Creates a function NAME that automatically curries when called with fewer 
-arguments and supports pattern matching on arguments.
-
-ARGS is a list of parameter patterns supporting:
-- Regular parameters: arg
-- Wildcards: _ignore, _var (bind but conventionally ignore)  
-- Type matches: (arg :integer), (arg :string), etc.
-- Value matches: (arg \"specific-value\"), (arg 42), etc.
-
-Methods are ordered by specificity (most specific first):
-1. Value matches (1000 points each)
-2. Type matches (100 points each)  
-3. Wildcards (1 point each)
-
-PATTERN MATCHING:
-Arguments can be specified as either symbols or lists for pattern matching.
-- Symbol: x - matches any value, binds to x
-- Wildcard: _ignore - matches any value, binds but conventionally ignored
-- Type match: (x :integer) - matches only when x satisfies integerp
-- Value match: (x \"value\") - matches only when x equals \"value\"
-
-Pattern matching examples:
-  (ldef fib ((n 0)) 0)                    ;; matches when n = 0
-  (ldef fib ((n 1)) 1)                    ;; matches when n = 1
-  (ldef fib (n) (+ (fib (- n 1)) (fib (- n 2))))  ;; general case
-  
-  (ldef greet ((name \"Alice\")) \"Hello, Alice!\")  ;; matches \"Alice\"
-  (ldef greet (name) (concat \"Hi, \" name \"!\"))   ;; general case
-  
-  (ldef calc ((op '+) x y) (+ x y))       ;; matches when op = '+
-  (ldef calc ((op '*) x y) (* x y))       ;; matches when op = '*
-  (ldef calc (_op _x _y) (error \"Unknown operation\"))  ;; fallback
-
-CURRYING:
-Functions defined with ldef automatically curry when called
-with fewer arguments.
-
-Currying examples:
-  (ldef add3 (x y z) (+ x y z))
-  (add3 1 2 3)        ;; => 6 (full application)
-  (funcall (add3 1) 2 3)  ;; => 6 (partial application)
-  (funcall (funcall (add3 1) 2) 3)  ;; => 6 (chained partial)
-
-NAME is the function name to define.
-ARGS is a list of parameter patterns.
-BODY is the function body to execute when pattern matches and fully applied."
-  `(l-generic ,name ,args ,@body))
 
 
 (provide 'laurisp)

@@ -123,7 +123,7 @@
                (ldef mixed-fn (num str list) (list num str (length list)))
                (expect (funcall (mixed-fn 42) "test" '(1 2 3)) :to-equal '(42 "test" 3))))
 
-    (describe "pattern matching with ldef"
+    (describe "pattern matching"
       (before-all
         (ldef fib ((n 0)) 0)
         (ldef fib ((n 1)) 1)
@@ -194,7 +194,86 @@
 
         (test-it "works with currying on pattern matched multi-arg functions"
                  (expect (funcall (calculator '+) 2 3) :to-equal 5)
-                 (expect (funcall (calculator '+ 2) 3) :to-equal 5)))))
+                 (expect (funcall (calculator '+ 2) 3) :to-equal 5))))
+
+    (describe "type matching"
+      (before-all
+        (ldef type-add ((x :integer) (y :integer)) (+ x y))
+        (ldef type-add (x y) "not integers"))
+
+      (test-it "matches integer types"
+               (expect (type-add 5 3) :to-equal 8)
+               (expect (type-add 0 0) :to-equal 0)
+               (expect (type-add -1 1) :to-equal 0))
+
+      (test-it "falls through to general case for non-integers"
+               (expect (type-add "hello" "world") :to-equal "not integers")
+               (expect (type-add 5 "hello") :to-equal "not integers")
+               (expect (type-add '(1 2) 3) :to-equal "not integers"))
+
+      (test-it "works with currying on type-matched functions"
+               (expect (funcall (type-add 5) 3) :to-equal 8)
+               (expect (funcall (type-add "hello") "world") :to-equal "not integers"))
+
+      (describe "multiple type specializers"
+        (before-all
+          (ldef multi-type ((x :string) (y :integer)) (concat x " " (number-to-string y)))
+          (ldef multi-type ((x :integer) (y :string)) (concat (number-to-string x) " " y))
+          (ldef multi-type (x y) "mixed types"))
+
+        (test-it "matches string-integer combination"
+                 (expect (multi-type "count" 42) :to-equal "count 42"))
+
+        (test-it "matches integer-string combination"
+                 (expect (multi-type 42 "items") :to-equal "42 items"))
+
+        (test-it "falls through for other combinations"
+                 (expect (multi-type 42 42) :to-equal "mixed types")
+                 (expect (multi-type "hello" "world") :to-equal "mixed types")))
+
+      (describe "various type specializers"
+        (before-all
+          (ldef type-processor ((x :symbol)) (symbol-name x))
+          (ldef type-processor ((x :string)) (upcase x))
+          (ldef type-processor ((x :list)) (length x))
+          (ldef type-processor ((x nil)) (length x))
+          (ldef type-processor (x) "unknown type"))
+
+        (test-it "matches symbol type"
+                 (expect (type-processor 'hello) :to-equal "hello")
+                 (expect (type-processor 'world) :to-equal "world"))
+
+        (test-it "matches string type"
+                 (expect (type-processor "hello") :to-equal "HELLO")
+                 (expect (type-processor "world") :to-equal "WORLD"))
+
+        (test-it "matches list type"
+                 (expect (type-processor '(1 2 3)) :to-equal 3)
+                 (expect (type-processor '()) :to-equal 0))
+
+        (test-it "falls through for other types"
+                 (expect (type-processor 42) :to-equal "unknown type")
+                 (expect (type-processor t) :to-equal "t")))
+
+      (describe "mixed type and value matching"
+        (before-all
+          (ldef mixed-matcher ((x :integer) (y 0)) "integer and zero")
+          (ldef mixed-matcher ((x :string) (y "test")) "string and test")
+          (ldef mixed-matcher ((x :integer) y) (+ x y))
+          (ldef mixed-matcher (x y) "fallback"))
+
+        (test-it "matches type-value combination"
+                 (expect (mixed-matcher 42 0) :to-equal "integer and zero")
+                 (expect (mixed-matcher "hello" "test") :to-equal "string and test"))
+
+        (test-it "matches type with general value"
+                 (expect (mixed-matcher 10 5) :to-equal 15)
+                 (expect (mixed-matcher 7 3) :to-equal 10))
+
+        (test-it "falls through to general case"
+                 (expect (mixed-matcher "hello" "world") :to-equal "fallback")
+                 (expect (mixed-matcher '(1 2) 3) :to-equal "fallback"))))
+    )
 
   (describe "with-laurisp"
 
@@ -277,8 +356,13 @@
                (expect (with-laurisp (car '(1 2 3))) :to-equal 1))
 
       (test-it "works with complex nested structures"
-               (expect (with-laurisp (list ((add3 1) 2 3) ((multiply3 2 3) 4))) :to-equal '(6 24))))
-    
+               (expect (with-laurisp (list ((add3 1) 2 3) ((multiply3 2 3) 4))) :to-equal '(6 24)))
+      
+      (test-it "works with nested calls"
+        (expect (with-laurisp
+                 (with-laurisp
+                  (with-laurisp
+                   (with-laurisp (* 2 3))))) :to-equal 6)))  
     )
 
   (describe "__"

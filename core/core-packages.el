@@ -14,14 +14,22 @@
 
 (require 'straight)
 
+(use-package l
+  :straight (l :type git :host github :repo "viglioni/l-el" :branch "latest-release")
+  :mode ("\\.el\\'" . l-mode)
+  :custom
+  (l-syntax t)
+  :config
+  (l-syntax-advices))
+
 (use-package general
   :straight t
   :defer t
   :init
- (general-create-definer lauremacs-major-mode-leader
-   :prefix "<f17>")
- (general-create-definer lauremacs-leader
-   :prefix "<f19>"))
+  (general-create-definer lauremacs-major-mode-leader
+    :prefix "<f17>")
+  (general-create-definer lauremacs-leader
+    :prefix "<f19>"))
 
 (use-package which-key
   :straight t

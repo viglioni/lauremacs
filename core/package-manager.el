@@ -120,6 +120,4 @@ straight-use-package calls."
 ;; Add to after-init-hook
 ;(add-hook 'after-init-hook #'lauremacs/sync-straight-packages)
 
-
-
 ;;; package-manager.el ends here

@@ -32,7 +32,7 @@
 (defun lauremacs/load (path &optional noerror)
   "Load an Emacs Lisp file from a specified PATH.
 PATH is relative to the user's Emacs directory.
-If NOERROR is given, don't throw error if file does not exist."
+If NOERROR is non-nil, don't throw error if file does not exist."
   (load (expand-file-name path user-emacs-directory) noerror))
 
 

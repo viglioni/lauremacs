@@ -12,18 +12,14 @@
 
 ;;; code:
 
-(require 'straight)
-
-(use-package l
-  :straight (l :type git :host github :repo "viglioni/l-el" :branch "latest-release")
+(config-package l
   :mode ("\\.el\\'" . l-mode)
   :custom
   (l-syntax t)
   :config
   (l-syntax-advices))
 
-(use-package general
-  :straight t
+(config-package general
   :defer t
   :init
   (general-create-definer lauremacs-major-mode-leader
@@ -31,15 +27,13 @@
   (general-create-definer lauremacs-leader
     :prefix "<f19>"))
 
-(use-package which-key
-  :straight t
+(config-package which-key
   :defer t
   :init (which-key-mode)
   :config
   (setq which-key-idle-delay 0.3))
 
-(use-package buttercup
-  :straight t
+(config-package buttercup
   :defer t)
 
 

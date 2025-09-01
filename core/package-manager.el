@@ -31,93 +31,53 @@
 
 (require 'straight)
 
-;;
-;; Update lock file after installing a package via elisp
-;;
-
-(defun lauremacs/update-versions-if-from-elisp (&rest _)
-  (unless (eq real-this-command 'straight-use-package)
-    (straight-freeze-versions)))
-
-(add-hook 'after-init-hook #'lauremacs/update-versions-if-from-elisp)
-
 (setq straight-use-package-by-default t)
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 
-(with-eval-after-load 'core-packages
-  (straight-freeze-versions))
 
-;;
-;; Update packages
-;;
-
-(defun lauremacs/update-package (package)
-  "Update a single package and update lockfile."
-  (interactive "sPackage name: ")
-  (straight-pull-package package)
-  ;; Update lockfile since this is called from Elisp
-  (straight-freeze-versions))
-
-(defun lauremacs/update-all-packages ()
-  "Update all packages and update lockfile."
+(defun pm/runtime-install ()
   (interactive)
-  (straight-pull-all))
+  (cl-loop for package in (alist-get 'runtime-deps lauremacs-packages) do
+           (print package)
+           (pm//install package)
+           ))
 
-(add-hook 'after-init-hook
-          (lambda ()
-            (advice-add
-             'use-package :after
-             #'lauremacs/update-versions-if-from-elisp)))
+(defun pm//install (package)
+  (let ((name (car package))
+        (spec (cdr package)))
+    (pcase (pm//package-type spec)
+      ('git    (straight-use-package `(,@package :type git :host github)))
+      ('latest (straight-use-package name))
+      (_       (error "Failed to install %s" name)))))
+
+
+(defun pm//package-type (spec)
+  (cond
+   ((plist-get spec :repo) 'git)
+   ((equal (car spec) :latest) 'latest)
+   (t (error "Failed to match %s" spec))))
+
+(defmacro config-package (package &rest args)
+  "Configure PACKAGE with use-package syntax, ensuring it's in manifest."
+  (declare (indent defun))
+  
+  ;; Check if package exists in manifest
+  (let ((all-packages (append (alist-get 'runtime-deps lauremacs-packages)
+                             (alist-get 'dev-deps lauremacs-packages))))
+    (unless (assq package all-packages)
+      (error "Package %s not found in lauremacs-packages manifest" package)))
+  
+  ;; Generate use-package form
+  `(use-package ,package ,@args))
+
 
 ;;
-;; sync packages with lock file
+;; Function calls
 ;;
 
-(defun lauremacs/sync-straight-packages ()
-  "Synchronize packages with lockfile based on
-straight-use-package calls."
-  (interactive)
-  (let ((success t)
-        (error-packages '()))
-    
-    ;; Main synchronization with error handling
-    (condition-case-unless-debug err
-        (progn
-          (message "Starting package synchronization...")
-          
-          ;; Clean unused repos
-          (condition-case cleanup-err
-              (straight-remove-unused-repos)
-            (error
-             (setq success nil)
-             (message "Warning: Error during cleanup: %s" cleanup-err)))
-          
-          ;; Prune build cache
-          (condition-case prune-err
-              (straight-prune-build-cache)
-            (error
-             (setq success nil)
-             (message "Warning: Error during cache pruning: %s" prune-err)))
-          
-          ;; Freeze versions
-          (condition-case freeze-err
-              (straight-freeze-versions)
-            (error
-             (setq success nil)
-             (push (format "Failed to freeze versions: %s" freeze-err) error-packages))))
-      
-      ;; Handle any unexpected errors
-      ((debug error)
-       (setq success nil)
-       (message "Critical error during synchronization: %S" err)))
-    
-    ;; Final status report
-    (if success
-        (message "Package synchronization completed successfully")
-      (message "Package synchronization completed with errors: %s" 
-               (mapconcat #'identity error-packages ", ")))))
+(lauremacs/load "packages.el")
+(pm/runtime-install)
+(lauremacs/load "core/core-packages")
 
-;; Add to after-init-hook
-;(add-hook 'after-init-hook #'lauremacs/sync-straight-packages)
 
 ;;; package-manager.el ends here

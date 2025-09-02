@@ -74,8 +74,6 @@ If NOERROR is non-nil, don't throw error if file does not exist."
       ((file-exists-p lauremacs-user-init-file)
         (setq user-init-file lauremacs-user-init-file))
       ((file-exists-p "~/.emacs")
-       (setq user-init-file "~/.emacs")))
-     (print (file-exists-p "~/.emacs"))
-     (print user-init-file))))
+       (setq user-init-file "~/.emacs"))))))
 
 

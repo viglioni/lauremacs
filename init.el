@@ -18,8 +18,7 @@
 (lauremacs/load "core/package-manager.el")
 (lauremacs/load ".lauremacs" :dont-throw)
 (lauremacs/load "test/test-helpers.el")
-
-
+(lauremacs/load "config/shortcuts.el")
 
 
 ;;

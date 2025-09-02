@@ -27,6 +27,7 @@
      (l            :repo "viglioni/l-el"
                    :branch "latest-release")
      (helm         :latest)
+     (solarized-theme :latest)
      (projectile   :latest))
     
     (dev-deps

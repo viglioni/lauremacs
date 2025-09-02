@@ -36,5 +36,8 @@
 (config-package buttercup
   :defer t)
 
+(config-package solarized-theme
+  :init
+  (load-theme 'solarized-light t))
 
 ;;; core-packages.el ends here.

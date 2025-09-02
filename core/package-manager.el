@@ -38,9 +38,7 @@
 (defun pm/runtime-install ()
   (interactive)
   (cl-loop for package in (alist-get 'runtime-deps lauremacs-packages) do
-           (print package)
-           (pm//install package)
-           ))
+           (pm//install package)))
 
 (defun pm//install (package)
   (let ((name (car package))
@@ -66,7 +64,6 @@
                              (alist-get 'dev-deps lauremacs-packages))))
     (unless (assq package all-packages)
       (error "Package %s not found in lauremacs-packages manifest" package)))
-  
   ;; Generate use-package form
   `(use-package ,package ,@args))
 

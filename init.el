@@ -12,13 +12,19 @@
 
 ;;; code:
 
-(switch-to-buffer "*Messages*")
+;;
+;; core loads
+;;
 
 (lauremacs/load "core/consts.el")
 (lauremacs/load "core/package-manager.el")
-(lauremacs/load ".lauremacs" :dont-throw)
-(lauremacs/load "test/test-helpers.el")
+
+;;
+;; config loads
+;;
+
 (lauremacs/load "config/shortcuts.el")
+(lauremacs/load ".lauremacs" :dont-throw)
 
 
 ;;

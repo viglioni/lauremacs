@@ -63,6 +63,13 @@ If NOERROR is non-nil, don't throw error if file does not exist."
 
 
 ;;
+;; set theme
+;;
+
+(when (boundp 'solarized-theme)
+  (load-theme 'solarized-light))
+
+;;
 ;; set user init file if it exists
 ;;
 
@@ -72,7 +79,7 @@ If NOERROR is non-nil, don't throw error if file does not exist."
    (let ((lauremacs-user-init-file (expand-file-name ".lauremacs" user-emacs-directory)))
      (cond
       ((file-exists-p lauremacs-user-init-file)
-        (setq user-init-file lauremacs-user-init-file))
+       (setq user-init-file lauremacs-user-init-file))
       ((file-exists-p "~/.emacs")
        (setq user-init-file "~/.emacs"))))))
 

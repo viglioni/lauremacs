@@ -86,7 +86,7 @@ POST-FUNC: reference for a function to run on :post exectution."
          (selected (completing-read "Select DB connection: " connections nil t)))
     (insert
      (format
-      "#+begin_src sql :exports results :results table :engine postgresql :dbconnection %s\n\n#+end_src"
+      "#+begin_src sql :exports results :results table :engine postgres :dbconnection %s\n\n#+end_src"
       selected))))
 
 

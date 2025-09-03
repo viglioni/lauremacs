@@ -78,7 +78,10 @@
   (helm-locate-fuzzy-match      t)
   (helm-recentf-fuzzy-match     t)
   (helm-semantic-fuzzy-match    t)
-
+  (helm-ff-skip-boring-files t)
+  (helm-mode-handle-completion-in-region nil) ;; Allow native completion as fallback
+  (helm-completing-read-handlers-alist '((find-file . helm-completing-read-symbols)
+                                         (dired . helm-completing-read-symbols)))
   :init
 	(helm-mode 1)
 

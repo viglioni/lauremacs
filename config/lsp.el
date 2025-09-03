@@ -33,7 +33,10 @@
 	(setq lsp-use-workspace-root-for-server-default-directory nil)
   (setq lsp-auto-guess-root t)
   :config
-  (define-key lsp-mode-map (kbd "<f17>") lsp-command-map)) 
+  (define-key lsp-mode-map (kbd "<f17>") lsp-command-map)
+  (setq lsp-completion-provider :capf  ; Use completion-at-point-functions
+        lsp-idle-delay 0.2)           ; Small delay helps with performance
+  ) 
 
 (use-package lsp-ui
   :commands lsp-ui-mode

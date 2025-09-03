@@ -110,6 +110,9 @@ FILE-PATH-RX is e.g. *.exs?$"
 ;; Projectile impl-test-file
 ;;
 
+;TODO: move this code to a projectile related library and use for another langs
+;; such as ruby
+
 ;;;###autoload
 (defun elauxir--create-file (file-path)
   "Create file if it does not exist.  FILE-PATH is relative to project root."

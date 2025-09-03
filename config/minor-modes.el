@@ -1,13 +1,3 @@
-;;
-;; @author Laura Viglioni
-;; 2021
-;; GNU Public License 3.0
-;;
-
-;;
-;; smartparens
-;;
-
 (use-package smartparens 
   :config
   (smartparens-global-mode t)
@@ -122,20 +112,35 @@
 ;; Company
 ;;
 
-(use-package company
-  :bind (("C-/" . 'company-complete)
-         :map company-search-map
-         ("s-." . 'company-select-previous)
-         ("s-," . 'company-select-next))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company--idle-delay 0.3)
-  :init
-  (setq company-dabbrev-downcase nil)
-  (global-company-mode 1))
 
 (use-package company
-  :after '(company org))
+  :after yasnippet
+  :bind (("C-/" . 'company-complete)
+         ("s-." . 'company-select-previous)
+         ("s-," . 'company-select-next)
+         :map company-search-map)
+  :custom
+  (company-minimum-prefix-length 1)
+  (company--idle-delay 0.05)
+  (company-selection-wrap-around t)
+  (company-dabbrev-downcase nil)
+  :init
+  (setq company-global-mode t)
+  (setq company-backends '((company-capf :with company-yasnippet) company-yasnippet)
+        ;; Don't auto-select candidates
+        company-frontends '(company-pseudo-tooltip-frontend
+                            company-echo-metadata-frontend))  
+  ;; Show documentation when available
+  (setq company-show-quick-access t)
+
+  (use-package company-box
+    :ensure t
+    :hook (company-mode . company-box-mode)))
+
+(use-package company-prescient
+  :ensure t
+  :after company
+  :config (company-prescient-mode 1))
 
 ;;
 ;; Evil
@@ -167,14 +172,16 @@
 ;;
 ;; Yasnippet
 ;;
-
 (use-package yasnippet
   :init
   (yas-global-mode 1)
+  :custom
+  ;; Use TAB as trigger key and fallback to original behavior
+  (yas-trigger-key "TAB")
+  (yas-fallback-behavior 'call-other-command)
   :bind (:map yas-minor-mode-map
-              ("M-/" . yas-expand)
-              ("TAB" . nil)))
-
+              ("M-/" . yas-expand))) 
+ 
 (use-package yasnippet-snippets
   :after yasnippet)
 
@@ -256,6 +263,3 @@
 ;;
 (with-eval-after-load "hl-line-mode"
   (global-hl-line-mode t))
-
-
-

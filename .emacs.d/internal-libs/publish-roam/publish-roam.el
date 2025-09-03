@@ -71,9 +71,7 @@
   (let ((static-dir (format "%s/static" publish-dir)))
     (unless (file-directory-p static-dir) (make-directory static-dir))
     (shell-command-to-string
-     (format
-      "touch %s/styles.css && touch %s/index.js && touch %s/head.html"
-      static-dir static-dir static-dir))
+     (format "touch %s/head.html" static-dir))
     (unless (publish-roam--template-exist? publish-dir)
       (shell-command-to-string
        (format "echo \"<html><body>%%s</body></body>\" > %s/index.template.html"
@@ -139,14 +137,6 @@ Return a list of `roam-info'."
     (insert-file-contents filepath)
     (buffer-string)))
 
-(defun publish-roam--insert-css ()
-  "Insert CSS header."
-  (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"static/styles.css\" />\n\n"))
-
-(defun publish-roam--insert-js ()
-  "Insert CSS header."
-  (insert "#+HTML_HEAD: <script type=\"module\" src=\"static/index.js\" ></script>\n\n"))
-
 (defun publish-roam--insert-head (publish-dir)
   "Insert head from PUBLISH-DIR/static/head.html."
   (let* ((file (format "%s/static/head.html" publish-dir))
@@ -169,8 +159,6 @@ If NOT-EVALP is non nil, it will not eval babel code in the exported file."
 	  (with-temp-buffer
 		  (insert-file-contents (roam-info-file-path info))
       (publish-roam--fst-empty-line)
-		  (publish-roam--insert-css)
-      (publish-roam--insert-js)
 		  (publish-roam--insert-head publish-dir)
 		  (org-export-to-file 'html (publish-roam--export-file-name info publish-dir)))))
 

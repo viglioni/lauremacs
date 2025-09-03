@@ -25,10 +25,10 @@
 
 ;;; Code:
 
-(use-package go-translate
-  :init
-  (setq gts-translate-list '())
-  (setq gts-default-translator nil))
+;; (use-package go-translate
+;;   :init
+;;   (setq gts-translate-list '())
+;;   (setq gts-default-translator nil))
 
 
 (transient-define-prefix lauremacs-translate-transient ()
@@ -61,13 +61,14 @@
                                     (render (gts-posframe-pin-render)))
   "Translate words FROM language TO language."
   (message (format "translating from %s to %s" from to))
-  (let ((gts-translate-list  `((,from ,to)))
-				(gts-default-translator
-				 (gts-translator
-					:picker picker
-					:engines (list (gts-bing-engine) (gts-google-engine))
-					:render render)))
-		(gts-translate gts-default-translator)))
+  ;; (let ((gts-translate-list  `((,from ,to)))
+	;; 			(gts-default-translator
+	;; 			 (gts-translator
+	;; 				:picker picker
+	;; 				:engines (list (gts-bing-engine) (gts-google-engine))
+	;; 				:render render)))
+	;; 	(gts-translate gts-default-translator))
+	)
 
 
 (defun lauremacs-translate-to-brazilian-at-point ()

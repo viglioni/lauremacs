@@ -220,6 +220,7 @@
  "kdd" '(lauremacs/gptel-add-documentation-to-function :which-key "document selected code")
  "kdi" '(copilot-chat-insert-commit-message            :which-key "insert commit msg")
  "kdc" '(lauremacs/gptel-generate-changelog-entry      :which-key "generate changelog entry")
+ "kdt" '(lauremacs/gptel-add-type-to-function          :which-key "add type to function")
 
  ;; Explanation
  "ke"  '(nil                                           :which-key "explain")
@@ -340,7 +341,7 @@
 ;;
 
 (defconst lauremacs-tsx-search-params
-  "*.tsx$ --ignore=*native* --ignore=*mobile-app* --ignore=*stories*")
+  "*.tsx?$ --ignore=*native* --ignore=*mobile-app* --ignore=*stories*")
 
 (lauremacs-leader
 	"s"    '(nil                                          :which-key "search")

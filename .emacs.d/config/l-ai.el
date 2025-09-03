@@ -1,4 +1,3 @@
-
 ;;
 ;; Laura Viglioni
 ;; 2025
@@ -6,12 +5,57 @@
 
 (use-package buttercup)
 
+
+(use-package aidermacs
+  :bind (("<f19> a a" . aidermacs-transient-menu))
+  :config
+  ;; ANTHROPIC_API_KEY set in private.el
+  ; defun my-get-openrouter-api-key yourself elsewhere for security reasons
+  ;;(setenv "OPENROUTER_API_KEY" (my-get-openrouter-api-key))
+  :custom
+  ; See the Configuration section below
+  (aidermacs-default-chat-mode 'architect)
+  (aidermacs-default-model "sonnet"))
+
+
 (use-package gptel
   :ensure t
   :config
+  (setq gptel-backend
+      (gptel-make-anthropic "Claudio"
+        :key (getenv "ANTHROPIC_API_KEY")
+        :stream t
+        :models '(claude-sonnet-4-20250514)
+        :header (lambda () (when-let* ((key (gptel--get-api-key)))
+                        `(("x-api-key" . ,key)
+                          ("anthropic-version" . "2023-06-01")
+                          ("anthropic-beta" . "pdfs-2024-09-25")
+                          ("anthropic-beta" . "output-128k-2025-02-19")
+                          ("anthropic-beta" . "prompt-caching-2024-07-31"))))
+        :request-params '(:thinking (:type "enabled" :budget_tokens 2048)
+                                    :max_tokens 4096)))
   (setq gptel-default-mode 'org-mode)
+  (setq gptel-prompt-prefix-alist
+        '((org-mode . "* ")))           ; H1 for prompts
+
+  (setq gptel-response-prefix-alist
+        '((org-mode . "*")))             ; H2+ for responses
+
   :init
-  (define-key gptel-mode-map (kbd "C-c C-c") 'gptel-send))
+  (define-key gptel-mode-map (kbd "C-c C-c")     'gptel-send)
+  (define-key gptel-mode-map (kbd "C-u C-c C-c") 'org-ctrl-c-ctrl-c)
+  (mapcar
+   (lambda (item) (add-to-list 'gptel-directives item))
+   '((emacs . "You are an expert in Emacs, emacs-lisp and common lisp.
+You are the creator of emacs distribution with custom libraries.
+You must help a junior engineer to make good deliverables in this project, on senior level.")
+     (ruby . "You are an expert in Ruby On Rails/ReactJS.
+You are the tech lead of this project.
+You must help a junior engineer to make good deliverables in this project, on senior level.")
+     (elixir . "You are an expert in Elixir, Phoenix and Phoenix LiveView.
+You are the tech lead of this project.
+You must help a junior engineer to make good deliverables in this project, on senior level."))))
+
 
 (require 'gptel)
 (require 'gptel-rewrite)
@@ -50,6 +94,7 @@ Interactively prompts for the suffix regexp when called interactively."
   "Use gptel-rewrite on the function definition at point with DIRECTIVE.
 Does not show transient menu and executes immediately with clean code output."
   (interactive "sRewrite directive: ")
+  (message "Rewriting function at point with directive: %s" directive)
   (save-excursion
     (beginning-of-defun)
     (push-mark)
@@ -62,7 +107,9 @@ Does not show transient menu and executes immediately with clean code output."
 
 Here is your task: %s" directive))
            (gptel-rewrite-default-action 'accept))
-      (gptel--suffix-rewrite gptel--rewrite-message))))
+      (message "Querying GPT for function rewrite...")
+      (gptel--suffix-rewrite gptel--rewrite-message)
+      (message "Function rewrite completed successfully"))))
 
 (defun lauremacs/gptel-add-documentation-to-function (directive)
   "Use GPT to generate documentation for the function at point.
@@ -76,7 +123,41 @@ generating the documentation. By default it will be asked to
 When called interactively, prompts for a custom directive. 
 The directive helps guide GPT in how to document the function."
   (interactive (list (read-string "Enter directive: " "Write documentation for this function.")))
-  (lauremacs/gptel-rewrite-function-at-point directive))
+  (message "Adding documentation to function at point...")
+  (lauremacs/gptel-rewrite-function-at-point directive)
+  (message "Documentation added successfully"))
+
+
+(defun lauremacs/gptel-add-type-to-function (directive)
+  "Use GPT to add type annotations to the function at point.
+Uses gptel to analyze the function definition and add appropriate
+type annotations based on the code.
+
+DIRECTIVE is a string containing custom instructions for GPT when
+generating the type annotations. By default it will ask to
+'Add proper type annotations to this function.'
+
+When called interactively, prompts for a custom directive.
+The directive helps guide GPT in how to type the function."
+  (interactive (list (read-string "Enter directive: " "Add proper type annotations to this function.")))
+  (message "Adding type annotations to function at point...")
+  (save-excursion
+    (beginning-of-defun)
+    (push-mark)
+    (end-of-defun)
+    (activate-mark)
+    (let* ((gptel--rewrite-message
+            (format "Follow these rules strictly:
+1. Only output the exact code with NO markdown, NO backticks, NO explanations
+2. Keep indentation and formatting consistent
+3. Add appropriate type annotations/signatures based on the function's implementation
+4. Preserve all existing functionality and logic
+
+Here is your task: %s" directive))
+           (gptel-rewrite-default-action 'accept))
+      (message "Querying GPT for type annotations...")
+      (gptel--suffix-rewrite gptel--rewrite-message)
+      (message "Type annotations added successfully"))))
 
 
 (defun lauremacs/gptel-generate-changelog-entry ()
@@ -84,7 +165,7 @@ The directive helps guide GPT in how to document the function."
 
 This function uses the gptel package to analyze the current git diff of
 staged changes and creates a well-formatted changelog entry. The entry is
-automatically inserted into CHANGELOG.md file under the Unreleased section.
+automatically inserted into CHANGELOG.md or CHANGELOG.org file under the Unreleased section.
 
 If no staged changes are found, it will ask GPT to review recent commits instead.
 
@@ -94,14 +175,28 @@ user-facing changes and improvements.
 Requirements:
 - gptel package must be installed
 - The current directory must be within a git repository
-- CHANGELOG.md file should exist (will be created otherwise)"
+- CHANGELOG.md or CHANGELOG.org file should exist (will be created otherwise)"
   (interactive)
   (if (not (featurep 'gptel))
       (error "This function requires gptel. Please install it first")
     
     ;; Get the git diff for staged changes
     (let* ((git-diff (shell-command-to-string "git diff --staged"))
-           (changelog-file (expand-file-name "CHANGELOG.md"))
+           (org-changelog-file (expand-file-name "CHANGELOG.org"))
+           (md-changelog-file (expand-file-name "CHANGELOG.md"))
+           (use-org (file-exists-p org-changelog-file))
+           (changelog-file (if use-org org-changelog-file md-changelog-file))
+           ;; Format-specific variables
+           (section-regex (if use-org "^\\*\\* \\(.*\\)" "^### \\(.*\\)"))
+           (unreleased-regex (if use-org "^\\* Unreleased" "^## \\[Unreleased\\]"))
+           (next-section-regex (if use-org "^\\* " "^## "))
+           (section-format (if use-org "\n** %s\n\n%s" "\n### %s\n\n%s"))
+           (unreleased-format (if use-org "* Unreleased\n\n%s\n\n" "## [Unreleased]\n\n%s\n\n"))
+           ;; Project info
+           (project-root (or (projectile-project-root) default-directory))
+           (project-name (file-name-nondirectory (directory-file-name project-root)))
+           (git-branch (string-trim (shell-command-to-string "git rev-parse --abbrev-ref HEAD")))
+           (git-info (string-trim (shell-command-to-string "git log -1 --pretty=format:'%s' HEAD")))
            (prompt (format "Based on the following git diff, write a clear, concise changelog entry 
 in past tense with bullet points. Focus on user-facing changes and improvements:
 
@@ -111,23 +206,114 @@ in past tense with bullet points. Focus on user-facing changes and improvements:
       (when (string-empty-p git-diff)
         (setq prompt "Please review my recent commits and suggest a changelog entry for them."))
       
-      ;; Use gptel to generate the changelog entry
-      (gptel prompt 
-             :callback (lambda (response)
-                         (with-current-buffer (find-file-noselect changelog-file)
-                           (goto-char (point-min))
-                           ;; Look for a section to add the entry
-                           (if (re-search-forward "^## \\[Unreleased\\]" nil t)
-                               (progn
-                                 (forward-line 1)
-                                 (insert "\n" response "\n")
-                                 (save-buffer)
-                                 (message "Changelog entry added to %s" changelog-file))
-                             ;; If no Unreleased section, just add at the beginning
-                             (goto-char (point-min))
-                             (insert "## [Unreleased]\n\n" response "\n\n")
-                             (save-buffer)
-                             (message "Changelog entry added to %s" changelog-file))))))))
+      ;; Open file and add to context
+      (when (not (find-buffer-visiting changelog-file))
+        (find-file-noselect changelog-file))
+      
+      ;; Add file to gptel context if not already added
+      (gptel-add-file changelog-file)
+      
+      ;; Format the instruction
+      (let* ((final-changelog-file changelog-file)
+             (final-section-regex section-regex)
+             (final-unreleased-regex unreleased-regex)
+             (final-next-section-regex next-section-regex)
+             (final-section-format section-format)
+             (final-unreleased-format unreleased-format)
+             (instruction (format "Write a changelog entry for the project '%s' (branch: %s) based on the following changes.
+Focus ONLY on changes related to THIS project, not external dependencies.
+Follow the format of the existing changelog entries exactly.
+Group changes under appropriate header (Added/Changed/Fixed/Removed).
+Sort section headers alphabetically (Added comes before Changed comes before Fixed comes before Removed).
+Sort items alphabetically within each section when order is not important.
+Only output the raw changelog entry with no explanations, no code blocks, and no backticks.
+Use concise, user-focused language:
+
+Current commit message: %s
+
+Changes:
+%s" 
+                                  project-name git-branch git-info prompt)))
+        
+        ;; Make the GPT request
+        (gptel-request
+            instruction
+          :callback (lambda (response info)
+                      (when response
+                        (with-current-buffer (find-file final-changelog-file)
+                          (goto-char (point-min))
+                          ;; Look for Unreleased section
+                          (if (re-search-forward final-unreleased-regex nil t)
+                              (progn
+                                ;; Define the unreleased section boundary
+                                (let* ((unreleased-start (point))
+                                       (unreleased-end (save-excursion
+                                                         (if (re-search-forward final-next-section-regex nil t)
+                                                             (match-beginning 0)
+                                                           (point-max))))
+                                       (lines (split-string response "\n"))
+                                       (current-section nil)
+                                       (sections (make-hash-table :test 'equal)))
+                                 
+                                  ;; Group content by section headers
+                                  (dolist (line lines)
+                                    (if (string-match final-section-regex line)
+                                        (setq current-section (match-string 1 line))
+                                      (when current-section
+                                        (puthash current-section 
+                                                 (concat (gethash current-section sections "") line "\n")
+                                                 sections))))
+                                 
+                                  ;; Insert content into appropriate sections within the Unreleased section
+                                  (let* ((all-section-names (hash-table-keys sections))
+                                         (section-names (sort all-section-names 'string<)))
+                                    (dolist (section-name section-names)
+                                      ;; Look for existing section within the Unreleased boundaries
+                                      (save-excursion
+                                        (goto-char unreleased-start)
+                                        (if (and (re-search-forward (format final-section-regex (regexp-quote section-name)) unreleased-end t))
+                                            ;; Section exists, append content
+                                            (progn
+                                              (forward-line 1)
+                                              (insert (gethash section-name sections)))
+                                          ;; Section doesn't exist, create it at the end of Unreleased section
+                                          (goto-char unreleased-start)
+                                          (insert (format final-section-format section-name (gethash section-name sections)))))))
+                                  (save-buffer)
+                                  (message "Changelog entry added to %s" final-changelog-file)))
+                            ;; If no Unreleased section, just add at the beginning
+                            (goto-char (point-min))
+                            (insert (format final-unreleased-format response))
+                            (save-buffer)
+                            (message "Changelog entry added to %s" final-changelog-file))))))))))
+
+(defun lauremacs/gptel-insert-at-point (directive)
+  "Ask GPT with DIRECTIVE and insert response at current point.
+The response will be clean text without explanations or code fences."
+  (interactive "sEnter directive: ")
+  (let* ((buffer (current-buffer)))
+    (message "Connecting to LLM...")
+    (gptel-request
+     directive
+     :system "You are a helpful assistant that provides direct answers.
+Follow these instructions strictly:
+- Generate ONLY plain text as output, without any explanation or markdown formatting
+- Do not use code fences, backticks, or any other formatting
+- Start immediately with the content
+- End immediately after the content"
+     :callback (lambda (response info)
+                 (cond
+                  ((plist-get info :error)
+                   (message "Error: Something went wrong with the request - %s" 
+                            (plist-get info :error)))
+                  (response
+                   (message "Writing response...")
+                   (with-current-buffer (current-buffer)
+                     (save-excursion
+                       (insert response)
+                       (message "GPT response inserted at point"))))
+                  (t
+                   (message "No response received from LLM")))))))
 
 
 (defun lauremacs/gptel-rewrite-region-or-buffer (directive)
@@ -148,34 +334,48 @@ Here is your task: %s" directive))
       (gptel--suffix-rewrite gptel--rewrite-message))))
 
 
-(defmacro lauremacs/bind-key-conditionally (key function condition mode-map)
+(defmacro lauremacs/bind-key-conditionally (key function condition)
   "Bind KEY to FUNCTION if CONDITION is true, otherwise call the existing binding.
 
 KEY is the key to bind.
 FUNCTION is the function to call if CONDITION evaluates to true.
-CONDITION is a form that is evaluated to determine which function to call.
-
-If CONDITION evaluates to true, FUNCTION is called.
-If CONDITION evaluates to false, the existing binding of the key is called."
+CONDITION is a form that is evaluated to determine which function to call."
   `(let ((existing-binding (key-binding (kbd ,key))))
+     (print existing-binding)
+     (global-set-key
+      (kbd ,key)
+      (lambda () (interactive)
+        (if (funcall ,condition)
+            (call-interactively ,function)
+          (when existing-binding
+            (call-interactively existing-binding)))))))
 
-     (define-key ,mode-map
-                 (kbd ,key)
-                 (lambda () (interactive)
-                   (if (funcall ,condition)
-                       (funcall ,function)
-                     (funcall-interactively existing-binding))))))
- 
+;; (defun lauremacs/bind-key-conditionally (key-string function condition-fn)
+;;   "Implementation function that takes the actual map variable"
+;;   (let ((existing-binding (key-binding (kbd key-string))))
+;;     (global-set-key
+;;                 (kbd key-string)
+;;                 (lambda () (interactive)
+;;                   (if (funcall condition-fn)
+;;                       (funcall function)
+;;                     (funcall-interactively existing-binding))))))
 
+(global-set-key (kbd "TAB") 'indent-for-tab-command)
 (use-package copilot
   :ensure t
   :hook ((prog-mode . copilot-mode))
-  :init 
-  (lauremacs/bind-key-conditionally "<backtab>" 'copilot-accept-completion 'copilot--overlay-visible copilot-mode-map)
-  (lauremacs/bind-key-conditionally "s-," 'copilot-next-completion 'copilot--overlay-visible copilot-mode-map)
-  (lauremacs/bind-key-conditionally "s-." 'copilot-previous-completion 'copilot--overlay-visible copilot-mode-map)
-  (lauremacs/bind-key-conditionally "TAB" (lambda () (interactive) (copilot-accept-completion-by-word) (copilot-complete)) 'copilot--overlay-visible copilot-mode-map)
-)
+  :config
+  ;; (lauremacs/bind-key-conditionally "<backtab>" #'copilot-accept-completion #'copilot--overlay-visible)
+  ;; (lauremacs/bind-key-conditionally "s-," #'copilot-next-completion #'copilot--overlay-visible)
+  ;; (lauremacs/bind-key-conditionally "s-." #'copilot-previous-completion #'copilot--overlay-visible)
+  ;; (lauremacs/bind-key-conditionally "TAB" (lambda () (interactive) (copilot-accept-completion-by-word) (copilot-complete)) 'copilot--overlay-visible)
+  )
+
+
+
+
+
+
 
 
 

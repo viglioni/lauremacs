@@ -69,6 +69,9 @@
   (mapcar 'load-file config-files))
 
 
+(global-origami-mode 1)
+(global-hl-line-mode 1)
+
 ;;
 ;; require private files
 ;;

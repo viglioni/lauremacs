@@ -1,4 +1,4 @@
-(use-dependencies 'go-translate)
+;(use-dependencies 'go-translate)
 (require 'laurisp-core)
 (require 'general)
 

@@ -72,7 +72,6 @@ e.g.:
 		(sqlau--add-to-sql-conection-alist 'postgres name host port user password full-uri)))
 
 
-
 ;;;###autoload
 (cl-defun sqlau-add-mysql-db (name &key (port 3306) user database password host)
 	"Adds a mysql database to emacs and lsp.

@@ -106,20 +106,26 @@ TODO: put this use nvm script in a clever way."
 ;;
 
 (defconst NS--default-import-lib-list
-  '(("fp-ts/Array"        . "A")
-    ("fp-ts/Either"       . "E")
-		("fp-ts/lib/function" . "f")
+  '(
 		("fp-ts/Option"       . "O")
+		("fp-ts/Random"       . "Rand")
+		("fp-ts/lib/function" . "f")
+    ("fp-ts/Array"        . "A")
+    ("fp-ts/Either"       . "E")
     ("fp-ts/IO"           . "IO")
     ("fp-ts/IOEither"     . "IOE")
-    ("fp-ts/TaskEither"   . "TE")
+    ("fp-ts/number"       . "Num")
+    ("fp-ts/Ord"          . "Ord")
+    ("fp-ts/Tuple"        . "Tuple")
+    ("fp-ts/Record"       . "R")
+    ("fp-ts/String"       . "S")
     ("fp-ts/Task"         . "T")
-    ("io-ts/Decoder"      . "D")
-		("fp-ts/Random"       . "rand")
+    ("fp-ts/TaskEither"   . "TE")
     ("fp-ts/number"       . "N")
-    ("ramda"              . "R")
-    ("lodash/fp"          . "_")
-    ("rxjs/operators"     . "rx")))
+    ("io-ts/Decoder"      . "D")
+    ("ramda"              . "Ramda")
+    ("rxjs/operators"     . "rx")
+    ))
 
 (defconst NS--default-import-candidates
   (mapcar (lambda (c) (cons (car c) c)) NS--default-import-lib-list))

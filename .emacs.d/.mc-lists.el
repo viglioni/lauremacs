@@ -36,6 +36,7 @@
         lsp-signature-stop
         markdown-cycle
         markdown-enter-key
+        markdown-insert-link
         markdown-outdent-or-delete
         ns-copy-including-secondary
         org-beginning-of-line
@@ -54,23 +55,10 @@
         org-table-blank-field
         org-table-copy-down
         org-table-delete-column
+        org-table-insert-column
         org-todo
         org-yank
-        paredit-backslash
-        paredit-backward
-        paredit-close-round
-        paredit-delete-char
-        paredit-doublequote
-        paredit-forward
-        paredit-forward-barf-sexp
-        paredit-forward-delete
-        paredit-forward-kill-word
-        paredit-forward-slurp-sexp
         paredit-kill
-        paredit-newline
-        paredit-open-round
-        paredit-open-square
-        paredit-semicolon
         restclient-toggle-body-visibility-or-indent
         sgml-slash
         sp-backward-sexp
@@ -105,11 +93,14 @@
         lauremacs/switch-to-last-buffer
         lauremacs/window-split-double-columns
         lauremacs/window-split-single-column
+        lsp-find-references
         lsp-rename
         lsp-ui-doc--handle-mouse-movement
         markdown-insert-list-item
         mc/mark-all-in-region
+        mouse-drag-vertical-line
         mouse-set-region
+        neotree-toggle-project-dir
         org-ctrl-c-ctrl-c
         org-ctrl-c-minus
         set-rectangular-region-anchor

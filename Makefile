@@ -25,12 +25,6 @@ clean-deps:
 	rm -rf $(EMACS_DIR)/straight/build
 	rm -rf $(EMACS_DIR)/straight/repos
 
-prune-deps:
-	$(EMACS) $(EMACS_FLAGS) \
-		--eval "(setq user-emacs-directory (expand-file-name \"$(EMACS_DIR)\"))" \
-		--load core/package-manager.el \
-		--eval "(lauremacs/sync-straight-packages)"
-
 docs:
 	$(EMACS) $(EMACS_FLAGS) \
 		--directory $(EMACS_DIR) \
@@ -42,31 +36,16 @@ docs:
 		git commit -m "docs: update readme files [automated]"; \
 	fi
 
-deps:
-	$(EMACS) $(EMACS_FLAGS) \
-		--eval "(setq user-emacs-directory (expand-file-name \"$(EMACS_DIR)\"))" \
-		--load core/package-manager.el \
-    --load core/core-packages.el \
-		--eval "(straight-thaw-versions)" \
-		--eval "(straight-check-all)"
-
-release-major:
-	$(EMACS) $(EMACS_FLAGS) \
-		--directory $(EMACS_DIR) \
-		--load scripts/release.el \
-		--eval "(lauremacs/release-version 'major)"
-
-release-minor:
-	$(EMACS) $(EMACS_FLAGS) \
-		--directory $(EMACS_DIR) \
-		--load scripts/release.el \
-		--eval "(lauremacs/release-version 'minor)"
 
 release-patch:
-	$(EMACS) $(EMACS_FLAGS) \
-		--directory $(EMACS_DIR) \
-		--load scripts/release.el \
-		--eval "(lauremacs/release-version 'patch)"
+	$(EMACS) --batch --load scripts/release.el --eval "(release-version \"patch\")"
+
+release-minor:
+	$(EMACS) --batch --load scripts/release.el --eval "(release-version \"minor\")"
+
+release-major:
+	$(EMACS) --batch --load scripts/release.el --eval "(release-version \"major\")"
+
 
 help:
 	@echo "Available targets:"

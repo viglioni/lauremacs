@@ -18,6 +18,7 @@
 
 (lauremacs/load "core/consts.el")
 (lauremacs/load "core/package-manager.el")
+(lauremacs/load "core/windows-and-buffers.el")
 
 ;;
 ;; config loads
@@ -40,7 +41,6 @@
                     (float-time
                      (time-subtract after-init-time lauremacs-start-time)))
             gcs-done)))
-
 
 ;;; init.el ends here.
 

@@ -25,10 +25,10 @@
      (t (error "Unknown increment type: %s" increment-type)))
     
     ;; Confirm versions
-    (unless (yes-or-no-p (format "Confirm current version: %s?" current-version))
+    (unless (y-or-n-p (format "Confirm current version: %s?" current-version))
       (user-error "Release aborted"))
     
-    (unless (yes-or-no-p (format "Confirm new version: %s?" new-version))
+    (unless (y-or-n-p (format "Confirm new version: %s?" new-version))
       (user-error "Release aborted"))
     
     (message "Preparing release: %s -> %s" current-version new-version)

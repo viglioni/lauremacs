@@ -33,11 +33,44 @@
   :config
   (setq which-key-idle-delay 0.3))
 
+(config-package magit
+  :init
+  (setq magit-display-buffer-function
+        (lambda (buffer)
+          (display-buffer
+           buffer
+           (cond ((and (derived-mode-p 'magit-mode)
+                       (eq (with-current-buffer buffer major-mode)
+                           'magit-status-mode))
+                  nil)
+                 ((memq (with-current-buffer buffer major-mode)
+                        '(magit-process-mode
+                          magit-revision-mode
+                          magit-diff-mode
+                          magit-stash-mode))
+                  nil)
+                 (t
+                  '(display-buffer-same-window)))))))
+
 (config-package buttercup
   :defer t)
 
 (config-package solarized-theme
   :init
   (load-theme 'solarized-light t))
+
+(config-package avy) 
+
+(config-package ace-window
+  :after avy)
+
+(config-package evil
+   :commands (evil-mode
+             evil-window-down
+             evil-window-left
+             evil-window-up
+             evil-window-right))
+
+(provide 'core-packages)
 
 ;;; core-packages.el ends here.

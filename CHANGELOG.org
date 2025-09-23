@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 * Unreleased
 
+*** Added
+- Basic navigation shortcuts
+- Window navigation shortcuts
+- Basic W and B shortcuts
 
 * 0.1.0 - 2025-09-12
 

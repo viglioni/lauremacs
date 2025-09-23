@@ -84,3 +84,6 @@ If NOERROR is non-nil, don't throw error if file does not exist."
        (setq user-init-file "~/.emacs"))))))
 
 
+
+;; Do not use tabs for indentation
+(setq-default indent-tabs-mode nil)

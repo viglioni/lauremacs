@@ -18,9 +18,18 @@
 
 ;; Window navigation (check also <leader>-W)
 
-(general-define-key
- )
-
+(general-define-key ;; walk through windows
+ :prefix "C-x"
+ "<up>" 'evil-window-up
+ "<down>" 'evil-window-down
+ "<left>" 'evil-window-left
+ "<right>" 'evil-window-right
+ "m" 'evil-window-left
+ "," 'evil-window-down
+ "." 'evil-window-up
+ "/" 'evil-window-right
+ "-" 'split-window-vertically
+ "\\" 'split-window-horizontally)
 
 (lauremacs-leader
   "TAB"  '(wb/switch-to-last-buffer :which-key "prev buffer")

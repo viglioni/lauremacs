@@ -13,11 +13,12 @@
 ;;; code:
 
 (config-package l
-  :mode ("\\.el\\'" . l-mode)
+;  :mode ("\\.el\\'" . l-mode)
   :custom
   (l-syntax t)
   :config
   (l-syntax-advices))
+
 
 (config-package general
   :defer t
@@ -70,6 +71,17 @@
              evil-window-left
              evil-window-up
              evil-window-right))
+
+(use-package neotree
+  :after (projectile)
+  :custom
+  (neo-smart-open t)
+  (neo-autorefresh t)
+  (neo-window-width 35)
+  (neo-window-position 'right)
+  (neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (neo-show-hidden-files t))
+
 
 (provide 'core-packages)
 

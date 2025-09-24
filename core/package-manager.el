@@ -65,7 +65,7 @@
     (unless (assq package all-packages)
       (error "Package %s not found in lauremacs-packages manifest" package)))
   ;; Generate use-package form
-  `(use-package ,package ,@args))
+  `(use-package ,package :straight t ,@args))
 
 
 ;;

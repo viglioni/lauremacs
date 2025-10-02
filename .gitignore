@@ -1,3 +1,11 @@
+.cache/*
+.lsp-*
+.mc-lists.el
+*.eld
+org-roam.db
+transient/*
+url/*
+tramp
 elpa/*
 auto-save-list/*
 straight/*

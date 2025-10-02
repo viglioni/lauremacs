@@ -24,6 +24,7 @@ clean:
 clean-deps:
 	rm -rf $(EMACS_DIR)/straight/build
 	rm -rf $(EMACS_DIR)/straight/repos
+	rm -rf $(EMACS_DIR)/elpa
 
 docs:
 	$(EMACS) $(EMACS_FLAGS) \
@@ -46,6 +47,10 @@ release-minor:
 release-major:
 	$(EMACS) --batch --load scripts/release.el --eval "(release-version \"major\")"
 
+install-external-deps:
+	brew install font-source-code-pro \
+	# for typescript-mode:
+	brew install eslint
 
 help:
 	@echo "Available targets:"

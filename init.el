@@ -16,16 +16,19 @@
 ;; core loads
 ;;
 
-(lauremacs/load "core/consts.el")
-(lauremacs/load "core/package-manager.el")
-(lauremacs/load "core/windows-and-buffers.el")
+(lauremacs/load "core/consts")
+(lauremacs/load "core/package-manager")
+(lauremacs/load "core/windows-and-buffers")
 
 ;;
 ;; config loads
 ;;
 
-(lauremacs/load "config/shortcuts.el")
-(lauremacs/load ".lauremacs" :dont-throw)
+(lauremacs/load "config/coding")
+(lauremacs/load "config/org-config")
+(lauremacs/load "config/compilation")
+(lauremacs/load "config/shortcuts")
+(lauremacs/load-user-config)
 
 
 ;;
@@ -43,5 +46,4 @@
             gcs-done)))
 
 ;;; init.el ends here.
-
 

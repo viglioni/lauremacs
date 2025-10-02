@@ -13,6 +13,7 @@
 ;; install straight.el
 ;;
 
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -34,10 +35,10 @@
 (setq straight-use-package-by-default t)
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 
-
 (defun pm/runtime-install ()
   (interactive)
-  (cl-loop for package in (alist-get 'runtime-deps lauremacs-packages) do
+  (lauremacs/load "packages.el")
+  (cl-loop for package in (alist-get 'runtime-deps (lauremacs-packages)) do
            (pm//install package)))
 
 (defun pm//install (package)
@@ -46,6 +47,8 @@
     (pcase (pm//package-type spec)
       ('git    (straight-use-package `(,@package :type git :host github)))
       ('latest (straight-use-package name))
+      ('built-in (straight-use-package `(,name :type built-in)))
+      ('recipee (straight-use-package package))
       (_       (error "Failed to install %s" name)))))
 
 
@@ -53,16 +56,19 @@
   (cond
    ((plist-get spec :repo) 'git)
    ((equal (car spec) :latest) 'latest)
-   (t (error "Failed to match %s" spec))))
+   ((equal (car spec) :built-in) 'built-in)
+   (t 'recipee)))
 
 (defmacro config-package (package &rest args)
   "Configure PACKAGE with use-package syntax, ensuring it's in manifest."
   (declare (indent defun))
-  
-  ;; Check if package exists in manifest
-  (let ((all-packages (append (alist-get 'runtime-deps lauremacs-packages)
-                             (alist-get 'dev-deps lauremacs-packages))))
-    (unless (assq package all-packages)
+  (lauremacs/load "packages.el")
+  ;; Check if package exists in manifests
+  (let ((all-packages (append (alist-get 'runtime-deps (lauremacs-packages))
+                             (alist-get 'dev-deps (lauremacs-packages)))))
+    (unless (or (assq package all-packages)
+		(eq package 'magit)
+		(eq package 'org))
       (error "Package %s not found in lauremacs-packages manifest" package)))
   ;; Generate use-package form
   `(use-package ,package :straight t ,@args))
@@ -72,7 +78,6 @@
 ;; Function calls
 ;;
 
-(lauremacs/load "packages.el")
 (pm/runtime-install)
 (lauremacs/load "core/core-packages")
 

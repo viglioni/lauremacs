@@ -21,8 +21,8 @@ Add \"/\" to the end of the path if necessary."
 (defconst lauremacs-buffer-name       "*lauremacs*")
 (defconst lauremacs-config-dir        (join-path lauremacs-dir "config"))
 (defconst lauremacs-core-dir          (join-path lauremacs-dir "core"))
-(defconst lauremacs-home-page-dir     (join-path lauremacs-core-dir "lauremacs-home-page"))
 (defconst lauremacs-internal-libs-dir (join-path lauremacs-dir "lauremacs-libs"))
+(defvar   lauremacs-org-roam-files    "~/org-roam-files")
 
 (setq custom-theme-directory (join-path lauremacs-dir "custom-themes"))
 (setq user-emacs-directory   lauremacs-dir)
@@ -31,6 +31,6 @@ Add \"/\" to the end of the path if necessary."
 ;; (defconst lauremacs-private-files-dir "~/private-files/emacs-files")
 ;; (defconst lauremacs-agenda-dir (join-path lauremacs-private-files-dir "org-agenda"))
 ;; (defconst lauremacs-elisp-private-files (join-path lauremacs-private-files-dir "elisp-files"))
-;; (defconst lauremacs-org-roam-files "~/org-roam-files")
+
 
 ;;; consts.el ends here.

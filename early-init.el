@@ -29,12 +29,25 @@
 (setq inhibit-default-init t)  ; Prevent loading of default.el
 (setq site-run-file nil) 
 
+(defun lauremacs//maybe-add-dot-el (path)
+  (if (string-match "\\.el$" path)
+      path
+    (format "%s.el" path)))
+
+(defun lauremacs/path (path)
+  "Return the PATH relative to `emacs-user-directory'."
+  (expand-file-name (lauremacs//maybe-add-dot-el path) user-emacs-directory))
+
 (defun lauremacs/load (path &optional noerror)
   "Load an Emacs Lisp file from a specified PATH.
 PATH is relative to the user's Emacs directory.
 If NOERROR is non-nil, don't throw error if file does not exist."
-  (load (expand-file-name path user-emacs-directory) noerror))
+  (load (lauremacs/path path) noerror))
 
+(defun lauremacs/load-user-config ()
+  (if (file-exists-p "~/.emacs")
+      (load "~/.emacs")
+    (load (expand-file-name ".lauremacs" user-emacs-directory))))
 
 (with-eval-after-load "warnings" ;; avoid warning flood of compiled functions
   (setq warning-minimum-level :error)) 
@@ -63,11 +76,11 @@ If NOERROR is non-nil, don't throw error if file does not exist."
 
 
 ;;
-;; set theme
+;; appearance
 ;;
 
-(when (boundp 'solarized-theme)
-  (load-theme 'solarized-light))
+
+(lauremacs/load "config/appearance")
 
 ;;
 ;; set user init file if it exists
@@ -84,6 +97,3 @@ If NOERROR is non-nil, don't throw error if file does not exist."
        (setq user-init-file "~/.emacs"))))))
 
 
-
-;; Do not use tabs for indentation
-(setq-default indent-tabs-mode nil)

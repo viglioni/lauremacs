@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 - Basic navigation shortcuts
 - Window navigation shortcuts
 - Basic W and B shortcuts
+- updates on makefile (fonts and eslint)
+- org basic config
+- appearance basic config
+- coding configuration
+  - lisps, ts, python, lsp, company, flycheck
+- helm and projectile basic config
+
+
+*** solved
+- straight issue with org and magit
 
 * 0.1.0 - 2025-09-12
 

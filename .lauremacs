@@ -6,3 +6,5 @@
     ('dark (load-theme  'solarized-dark t))))
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+
+(message "loaded personal config.")

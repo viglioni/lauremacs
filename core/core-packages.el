@@ -13,12 +13,42 @@
 ;;; code:
 
 (config-package l
-;  :mode ("\\.el\\'" . l-mode)
+  :mode ("\\.el\\'" . l-mode)
   :custom
   (l-syntax t)
-  :config
-  (l-syntax-advices))
+  ;;  :config
+  ;; (l-syntax-advices)
+  )
 
+(config-package helm
+  :custom
+  (helm-M-x-fuzzy-match        t)
+  (helm-apropos-fuzzy-match    t)
+  (helm-buffers-fuzzy-matching t)
+  (helm-imenu-fuzzy-match      t)
+  (helm-lisp-fuzzy-completion  t)
+  (helm-locate-fuzzy-match     t)
+  (helm-recentf-fuzzy-match    t)
+  (helm-semantic-fuzzy-match   t)
+  (helm-ff-skip-boring-files   t)
+  :init
+  (helm-mode 1)
+  )
+
+(config-package helm-swoop
+  :after helm)
+
+(config-package helm-flx
+	:after helm
+	:init (helm-flx-mode 1))
+
+(config-package helm-projectile
+  :after (projectile helm))
+
+(config-package helm-posframe
+  :after helm
+  :init
+  (helm-posframe-enable))
 
 (config-package general
   :defer t
@@ -33,6 +63,10 @@
   :init (which-key-mode)
   :config
   (setq which-key-idle-delay 0.3))
+
+(config-package exec-path-from-shell
+  :init
+  (exec-path-from-shell-initialize))
 
 (config-package magit
   :init
@@ -56,9 +90,7 @@
 (config-package buttercup
   :defer t)
 
-(config-package solarized-theme
-  :init
-  (load-theme 'solarized-light t))
+(config-package solarized-theme)
 
 (config-package avy) 
 

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
 (set-fringe-mode 10)        ; Give some breathing room
@@ -9,8 +10,8 @@
 ;; set theme
 ;;
 
-(when (fboundp 'solarized-reload)
-  (load-theme 'solarized-light t))
+(when (package-installed-p 'spacemacs-theme)
+  (load-theme 'spacemacs-light t))
 
 
 ;;
@@ -20,3 +21,5 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq-default indent-tabs-mode nil) ; Do not use tabs for indentation
 (setq-default tab-width 2)
+
+

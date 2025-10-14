@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -68,29 +69,11 @@
   :init
   (exec-path-from-shell-initialize))
 
-(config-package magit
-  :init
-  (setq magit-display-buffer-function
-        (lambda (buffer)
-          (display-buffer
-           buffer
-           (cond ((and (derived-mode-p 'magit-mode)
-                       (eq (with-current-buffer buffer major-mode)
-                           'magit-status-mode))
-                  nil)
-                 ((memq (with-current-buffer buffer major-mode)
-                        '(magit-process-mode
-                          magit-revision-mode
-                          magit-diff-mode
-                          magit-stash-mode))
-                  nil)
-                 (t
-                  '(display-buffer-same-window)))))))
 
 (config-package buttercup
   :defer t)
 
-(config-package solarized-theme)
+(config-package spacemacs-theme)
 
 (config-package avy) 
 

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (require 'general)
 
 ;; Basic navigation
@@ -56,6 +57,19 @@
   )
 
 ;;
+;; <leader>-F
+;; Frames
+;;
+
+(require 'lauremacs-posframe)
+
+(lauremacs-leader
+  "f" '(nil :which-key "frames")
+  "fe" '(lpf/open-lauremacs-config :which-key "emacs config in posframe")
+  )
+
+
+;;
 ;; <leader>-G
 ;; Git
 ;;
@@ -64,8 +78,44 @@
   "gd" '(magit-diff-dwim                               :which-key "diff")
   "ge" '(:keymap smerge-basic-map :package smerge-mode :which-key "git diff - smerge")
   "gf" '(magit-find-file                               :which-key "find file")
+  "gn" '(lauremacs/magit-new-branch-from-main          :which-key "new branch from origin/main")
+  "gp" '(lauremacs/gh-create-pr                        :which-key "create PR (simple)")
+  "gP" '(lauremacs/ai-create-pr-with-claude            :which-key "create PR with AI")
   "gs" '(magit-status                                  :which-key "magit status")
   )
+
+
+;;
+;; <leader>-K
+;; AI assistants
+;;
+(require 'claude-code)
+(lauremacs-leader
+ "k"   '(nil                                           :which-key "AI assistants")
+ "kk" '(:keymap claude-code-command-map :package claude-code :which-key "Claude code")
+
+ ;; direct commands
+ "kg"   '(gptel                                         :which-key "open gptel buffer")
+  
+ ;; Documentation and explanation
+ "kd"  '(nil                                           :which-key "documentation")
+ "kdd" '(lauremacs/gptel-add-documentation-to-function :which-key "document selected code") 
+ "kdc" '(lauremacs/gptel-generate-changelog-entry      :which-key "generate changelog entry")
+ "kdt" '(lauremacs/gptel-add-type-to-function          :which-key "add type to function")
+
+
+ ;; Code review and modification
+ "kr"  '(nil                                           :which-key "review/rewrite")
+ "krf" '(lauremacs/gptel-rewrite-function-at-point     :which-key "rewrite function at point")
+ "kri" '(lauremacs/gptel-insert-at-point               :which-key "gptel insert at point")
+ "krr" '(lauremacs/gptel-rewrite-region-or-buffer      :which-key "gptel rewrite")
+
+ ;; Buffer and file operations
+ "kb"  '(nil                                           :which-key "buffers")
+ "kbb" '(gptel-add                                     :which-key "add current buffer")
+ "kbp" '(lauremacs/add-files-under-dir-to-gptel        :which-key "project files to gptel"))
+
+
 
 ;;
 ;; <leader>-M
@@ -166,6 +216,7 @@
 (lauremacs-leader
   "w" '(nil :which-key "window")
   "w-" '(split-window-vertically :which-key "split horizontally")
+  "w1" '(delete-other-windows :which-key "single window")
   "w=" '(balance-windws :which-key "balance windows")
   "w\\" '(split-window-horizontally :which-key "split vertically")
   "wf" '(delete-other-windows :which-key "single window")

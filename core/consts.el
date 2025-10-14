@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -22,7 +23,9 @@ Add \"/\" to the end of the path if necessary."
 (defconst lauremacs-config-dir        (join-path lauremacs-dir "config"))
 (defconst lauremacs-core-dir          (join-path lauremacs-dir "core"))
 (defconst lauremacs-internal-libs-dir (join-path lauremacs-dir "lauremacs-libs"))
-(defvar   lauremacs-org-roam-files    "~/org-roam-files")
+
+(defvar lauremacs-org-roam-files "~/org-roam-files")
+(defvar lauremacs-private-files "~/personal/private-files")
 
 (setq custom-theme-directory (join-path lauremacs-dir "custom-themes"))
 (setq user-emacs-directory   lauremacs-dir)

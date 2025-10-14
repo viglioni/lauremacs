@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (defun lauremacs/org-update-parent-todo (n-done n-not-done)
   "Update parent TODO state based on the state of its children.
 When all children are done, mark parent as DONE.

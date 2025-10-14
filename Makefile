@@ -50,7 +50,11 @@ release-major:
 install-external-deps:
 	brew install font-source-code-pro \
 	# for typescript-mode:
-	brew install eslint
+	brew install eslint \
+	# for elixir
+	brew install elixir \
+	# helm ag
+	brew install ag
 
 help:
 	@echo "Available targets:"

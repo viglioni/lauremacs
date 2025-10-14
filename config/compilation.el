@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (require 'ansi-color)
 
 (defun lauremacs/colorize-compilation-buffer ()

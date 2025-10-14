@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; Emacs Lisp
 ;;

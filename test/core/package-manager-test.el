@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025

@@ -1,51 +1,59 @@
-;;; windows-and-buffers.el --- Helper functions to navigate buffers/windows -*- lexical-binding: t; l-syntax: t -*-
+;;; lauremacs-posframe.el --- Posframe utilities for lauremacs -*- lexical-binding: t; l-syntax: t -*-
 ;;
-;; @author Laura Viglioni
-;; 2025
+;; Filename: lauremacs-posframe.el
+;; Description: Posframe utilities for lauremacs configuration
+;; Author: Laura Viglioni
+;; Maintainer: Laura Viglioni
+;; Created: 2025-10-08
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "26.1") (posframe "1.4.4") (projectile "2.0") (helm "3.0"))
+;; Last-Updated:
+;;           By:
+;;     Update #: 0
+;; URL:
+;; Doc URL:
+;; Keywords: convenience, frames
+;; Compatibility: Emacs 26.1+
 ;;
-;; GNU Public License 3.0
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; since: NEXT
-;;
-;; helper functions to navigate buffers/windows
-;;
-
 ;;; Commentary:
-
-;; todo create single window function
-;; todo window layouts
-;; docs
-
+;;
+;; This library provides posframe-based utilities for lauremacs,
+;; including functions to open files in floating frames.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Change Log:
+;;
+;; 2025-10-08 - Initial creation
+;;   - Added lpf/open-lauremacs-config
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or (at
+;; your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;;; Code:
 
+(require 'posframe)
+(require 'projectile)
+(require 'helm)
 
 ;;;###autoload
-(defun wb/switch-to-last-buffer ()
-  ;; todo use pipe
-  (interactive)
-  (switch-to-buffer
-   (car
-    (seq-filter
-     (lambda (b) (not (string-match-p "*" (buffer-name b))))
-     (cdr
-      (if (projectile-project-p) (projectile-project-buffers) (buffer-list)))))))
-
-
-
-;;;###autoload
-(defun wb/switch-buffers ()
-  (interactive)
-  (if (projectile-project-p)
-      (helm :sources '(helm-source-projectile-buffers-list
-                       ;; bug: only works after run once
-                       helm-source-buffers-list)
-            :buffer (concat "*helm projectile: " (projectile-project-name) "*")
-            :truncate-lines helm-buffers-truncate-lines
-            :prompt (projectile-prepend-project-name "Switch to buffer: "))
-    (helm-buffers-list)))
-
-;;;###autoload
-(defun wb/open-emacs-config-in-posframe ()
+(defun lpf/open-lauremacs-config ()
   "Open a file from .emacs.d in a posframe."
   (interactive)
   (let* ((default-directory (expand-file-name "~/.emacs.d/"))
@@ -88,8 +96,8 @@
                                               )))))
           :buffer "*helm emacs.d*"
           :prompt "Emacs config file: ")))
- 
-(provide 'windows-and-buffers)
-;;; windows-and-buffers.el ends here
 
- 
+(provide 'lauremacs-posframe)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; lauremacs-posframe.el ends here

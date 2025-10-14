@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -29,25 +30,33 @@
 (setq inhibit-default-init t)  ; Prevent loading of default.el
 (setq site-run-file nil) 
 
-(defun lauremacs//maybe-add-dot-el (path)
-  (if (string-match "\\.el$" path)
-      path
-    (format "%s.el" path)))
 
-(defun lauremacs/path (path)
-  "Return the PATH relative to `emacs-user-directory'."
-  (expand-file-name (lauremacs//maybe-add-dot-el path) user-emacs-directory))
 
-(defun lauremacs/load (path &optional noerror)
-  "Load an Emacs Lisp file from a specified PATH.
-PATH is relative to the user's Emacs directory.
-If NOERROR is non-nil, don't throw error if file does not exist."
-  (load (lauremacs/path path) noerror))
+(defmacro lauremacs/path (&rest path-parts)
+  "Return the path relative to `emacs-user-directory'.
+Accepts multiple arguments that will be joined with slashes.
+Example: (lauremacs/path config langs ts.el) => ~/.emacs.d/config/langs/ts.el"
+  `(expand-file-name
+    (mapconcat #'symbol-name ',path-parts "/")
+    user-emacs-directory))
 
-(defun lauremacs/load-user-config ()
-  (if (file-exists-p "~/.emacs")
-      (load "~/.emacs")
-    (load (expand-file-name ".lauremacs" user-emacs-directory))))
+(defmacro lauremacs/file-path (&rest path-parts)
+  "Return the path relative to `emacs-user-directory', adding .el if not present.
+Accepts multiple arguments that will be joined with slashes.
+Example: (lauremacs/file-path config langs web) => ~/.emacs.d/config/langs/web.el"
+  `(let ((path (lauremacs/path ,@path-parts)))
+     (if (string-match "\\.el$" path)
+         path
+       (format "%s.el" path))))
+
+(defmacro lauremacs/load (&rest path-parts-and-maybe-noerror)
+  "Load an Emacs Lisp file from specified path parts.
+Path parts are relative to the user's Emacs directory and will be joined.
+If the last argument is t, it's treated as NOERROR flag.
+Example: (lauremacs/load config langs web) or (lauremacs/load config langs web t)"
+  (let* ((args path-parts-and-maybe-noerror)
+         (noerror (and (eq (car (last args)) t) (setq args (butlast args)) t)))
+    `(load (lauremacs/file-path ,@args) ,noerror)))
 
 (with-eval-after-load "warnings" ;; avoid warning flood of compiled functions
   (setq warning-minimum-level :error)) 
@@ -80,7 +89,7 @@ If NOERROR is non-nil, don't throw error if file does not exist."
 ;;
 
 
-(lauremacs/load "config/appearance")
+(lauremacs/load config appearance)
 
 ;;
 ;; set user init file if it exists
@@ -94,6 +103,8 @@ If NOERROR is non-nil, don't throw error if file does not exist."
       ((file-exists-p lauremacs-user-init-file)
        (setq user-init-file lauremacs-user-init-file))
       ((file-exists-p "~/.emacs")
-       (setq user-init-file "~/.emacs"))))))
+       (setq user-init-file "~/.emacs"))))
+      ;; user loads
+   (load user-init-file)))
 
 

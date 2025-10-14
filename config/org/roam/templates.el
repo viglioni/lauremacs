@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (defmacro lauremacs/roam-lang-template (keybind name lang-code)
   `'(,keybind
      ,name

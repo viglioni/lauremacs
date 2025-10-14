@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;;###autoload
 (defun lauremacs/lsp-organize-imports-before-save ()
 	"Run `lsp-organize-imports' before save."
@@ -18,7 +19,9 @@
   :commands (lsp lsp-deferred)
   :hook ((lsp-mode . lauremacs/lsp-mode-setup)
 				 (lsp-mode . lsp-ui-mode)
-				 (lsp-mode . lsp-enable-which-key-integration))
+				 (lsp-mode . lsp-enable-which-key-integration)
+         (lsp-completion-mode . (lambda ()
+                                  (setf (alist-get 'lsp-capf completion-category-defaults) '((styles . (flex)))))))
   :init
   (setq lsp-keymap-prefix "<f17>")
 																				;(setq lsp-enable-on-type-formatting nil)
@@ -27,6 +30,7 @@
   :config
   (define-key lsp-mode-map (kbd "<f17>") lsp-command-map)
   (setq lsp-completion-provider :capf  ; Use completion-at-point-functions
+        lsp-completion-enable t
         lsp-idle-delay 0.2)           ; Small delay helps with performance
   ) 
 
@@ -47,3 +51,13 @@
 (config-package lsp-haskell
 	:after (lsp haskell-mode))
 
+(config-package lsp-volar
+  :after (lsp vue-mode))
+
+(config-package lsp-tailwindcss
+  :after (lsp-mode vue-mode)
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  (setq lsp-tailwindcss-skip-config-check nil)
+  :config
+  (add-to-list 'lsp-tailwindcss-major-modes 'vue-mode))

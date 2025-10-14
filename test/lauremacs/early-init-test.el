@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -25,13 +25,13 @@
   (describe "lauremacs/load"
     (test-it "loads files relative to user-emacs-directory"
       (spy-on 'load)
-      (lauremacs/load "test.el")
+      (lauremacs/load test.el)
       (expect 'load :to-have-been-called-with
               (expand-file-name "test.el" user-emacs-directory) nil))
 
     (test-it "respects noerror parameter"
       (spy-on 'load)
-      (lauremacs/load "test.el" t)
+      (lauremacs/load test.el t)
       (expect 'load :to-have-been-called-with
               (expand-file-name "test.el" user-emacs-directory) t)))
 

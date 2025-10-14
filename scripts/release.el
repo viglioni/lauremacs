@@ -1,4 +1,4 @@
-;;; release.el --- Script for releasing new versions -*- lexical-binding: t; -*-
+;;; release.el --- Script for releasing new versions -*- lexical-binding: t; l-syntax: t -*-
 
 (require 'subr-x)
 

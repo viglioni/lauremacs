@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (config-package typescript-mode
   :mode ( "\\.ts\\'" "\\.js\\'")
   :hook ((typescript-mode . lsp-deferred)
@@ -32,3 +33,16 @@
   :config
   (tree-sitter-require 'tsx)
   (add-to-list 'tree-sitter-major-mode-language-alist '(tsx-mode . tsx)))
+
+(config-package vue-mode
+  :mode "\\.vue\\'"
+  :hook ((vue-mode . lsp-deferred)
+         (vue-mode . prettier-js-mode))
+  :custom
+  (vue-html-tab-width 2)
+  (js-indent-level 2)
+  (mmm-submode-decoration-level 0)
+  (css-indent-offset 2))
+
+(config-package web-mode
+  :mode "\\.html$")

@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -47,17 +47,17 @@
   (describe "initialization sequence"
     (test-it "loads core files in the correct order"
       ;; Verify that these files were loaded via lauremacs/load
-      (expect 'lauremacs/load :to-have-been-called-with "core/consts.el")
-      (expect 'lauremacs/load :to-have-been-called-with "core/package-manager.el"))
-    
+      (expect 'lauremacs/load :to-have-been-called-with 'core 'consts)
+      (expect 'lauremacs/load :to-have-been-called-with 'core 'package-manager))
+
     (test-it "loads config files after core"
       ;; Verify config files are loaded after core
-      (let ((core-index (spy-calls-indices-matching 'lauremacs/load "core/"))
-            (config-index (spy-calls-indices-matching 'lauremacs/load "config/")))
+      (let ((core-index (spy-calls-indices-matching 'lauremacs/load "core"))
+            (config-index (spy-calls-indices-matching 'lauremacs/load "config")))
         (when (and core-index config-index)
           (expect (apply #'max core-index) :to-be-less-than (apply #'min config-index)))
-        (expect 'lauremacs/load :to-have-been-called-with "config/shortcuts.el")))
-    
+        (expect 'lauremacs/load :to-have-been-called-with 'config 'shortcuts)))
+
     (test-it "loads personal config file if it exists"
       (let ((personal-load (spy-calls-all-args-matching 'lauremacs/load "lauremacs" t)))
         (expect (length personal-load) :to-be-greater-than 0))))

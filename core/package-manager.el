@@ -1,4 +1,4 @@
-;;; package-manager.el --- Set up straight.el and helpers.
+;;; package-manager.el --- Set up straight.el and helpers. -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; Author: Laura Viglioni
 ;; 2025
@@ -37,7 +37,7 @@
 
 (defun pm/runtime-install ()
   (interactive)
-  (lauremacs/load "packages.el")
+  (lauremacs/load packages)
   (cl-loop for package in (alist-get 'runtime-deps (lauremacs-packages)) do
            (pm//install package)))
 
@@ -62,7 +62,7 @@
 (defmacro config-package (package &rest args)
   "Configure PACKAGE with use-package syntax, ensuring it's in manifest."
   (declare (indent defun))
-  (lauremacs/load "packages.el")
+  (lauremacs/load packages)
   ;; Check if package exists in manifests
   (let ((all-packages (append (alist-get 'runtime-deps (lauremacs-packages))
                              (alist-get 'dev-deps (lauremacs-packages)))))
@@ -79,7 +79,7 @@
 ;;
 
 (pm/runtime-install)
-(lauremacs/load "core/core-packages")
+(lauremacs/load core core-packages)
 
 
 

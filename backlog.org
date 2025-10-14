@@ -19,7 +19,7 @@ A - means next release
 B - means release 1.0.0
 C - future releases / nice to have
 
-* Backlog [0/17]
+* Backlog [0/19]
 ** TODO [#A] set up package manager
 ** TODO [#A] add tests for load order
 ** TODO [#A] set up personal files (.emacs)
@@ -37,6 +37,9 @@ C - future releases / nice to have
 ** TODO [#B] setup org roam 
 ** TODO [#B] setup private files
 ** TODO [#C] make readmes reload before push
+** TODO fix FE 
+** TODO m-0-9 for windows
+
 * COMMENT Local Variables
 # Local Variables:
 # eval: (org-babel-execute-buffer)

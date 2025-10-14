@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (defun lauremacs/org-font-setup ()
   (interactive)
   ;; Replace list hyphen with dot

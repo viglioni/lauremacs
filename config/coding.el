@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; l-syntax: t -*-
 (with-eval-after-load "prog-mode"
   (lauremacs-major-mode-leader
     :keymaps 'prog-mode-map
@@ -19,10 +20,10 @@
 ;;
 ;; Languages
 ;;
-(lauremacs/load "config/lsp")
-(lauremacs/load "config/langs/lisps")
-(lauremacs/load "config/langs/python")
-(lauremacs/load "config/langs/ts")
+(lauremacs/load config lsp)
+(lauremacs/load config langs lisps)
+(lauremacs/load config langs python)
+(lauremacs/load config langs web)
 
 ;;
 ;; Packages

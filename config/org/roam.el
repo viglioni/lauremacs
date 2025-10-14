@@ -1,4 +1,5 @@
-(lauremacs/load "config/org/roam/templates")
+;;; -*- lexical-binding: t; l-syntax: t -*-
+(lauremacs/load config org roam templates)
 
 (defun org-extra-node-insert-immediate (arg &rest args)
   "Insert org-roam node even if it doesnt exist yet."

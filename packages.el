@@ -1,4 +1,4 @@
-;;; packages.el --- Package manifest for Lauremacs
+;;; packages.el --- Package manifest for Lauremacs -*- lexical-binding: t; l-syntax: t -*-
 ;;
 ;; Package versioning documentation:
 ;;
@@ -21,9 +21,16 @@
 ;;; Code:
 
 (defun lauremacs-packages ()
-    "Package dependencies organized by category with version constraints."
-    '((runtime-deps
-       (highlight-indentation :latest)
+  "Package dependencies organized by category with version constraints."
+  '((runtime-deps
+     (highlight-indentation :latest)
+     (lsp-volar :type git :host github :repo "jadestrong/lsp-volar")
+     (elixir-mode :latest)
+     (vterm :latest)
+     (claude-code :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
+                  :files ("*.el" (:exclude "images/*")))
+     (web-mode :latest)
+     (s :latest)
      (general :latest)
      (which-key :latest)
      (python-mode :latest)
@@ -32,6 +39,7 @@
      (prettier-js :latest)
      (tree-sitter :latest)
      (tree-sitter-langs :latest)
+     (vue-mode :latest)
      (l :repo "viglioni/l-el"
         :branch "latest-release")
      (org :built-in)
@@ -41,11 +49,13 @@
      (lsp-treemacs :latest)
      (lsp-origami :latest)
      (lsp-haskell :latest)
+     (lsp-tailwindcss :latest)
      (magit :source melpa)
      (org-roam :latest)
      (helm-posframe :repo "tumashu/helm-posframe")
      (avy :latest)
      (eval-sexp-fu :latest)
+     (eat :latest)
      (smartparens :latest)
      (doom-modeline :latest)
      (nyan-mode :latest)
@@ -68,7 +78,9 @@
      (multiple-cursors :latest)
      (helm-projectile :latest)
      (all-the-icons :latest)
-     (solarized-theme :latest)
+     (gptel :latest)
+     (lsp-pyright :latest)
+     (spacemacs-theme :latest)
      (company-box :latest)
      (org-bullets :latest)
      (olivetti :latest)

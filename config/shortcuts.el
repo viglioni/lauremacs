@@ -92,28 +92,7 @@
 (require 'claude-code)
 (lauremacs-leader
  "k"   '(nil                                           :which-key "AI assistants")
- "kk" '(:keymap claude-code-command-map :package claude-code :which-key "Claude code")
-
- ;; direct commands
- "kg"   '(gptel                                         :which-key "open gptel buffer")
-  
- ;; Documentation and explanation
- "kd"  '(nil                                           :which-key "documentation")
- "kdd" '(lauremacs/gptel-add-documentation-to-function :which-key "document selected code") 
- "kdc" '(lauremacs/gptel-generate-changelog-entry      :which-key "generate changelog entry")
- "kdt" '(lauremacs/gptel-add-type-to-function          :which-key "add type to function")
-
-
- ;; Code review and modification
- "kr"  '(nil                                           :which-key "review/rewrite")
- "krf" '(lauremacs/gptel-rewrite-function-at-point     :which-key "rewrite function at point")
- "kri" '(lauremacs/gptel-insert-at-point               :which-key "gptel insert at point")
- "krr" '(lauremacs/gptel-rewrite-region-or-buffer      :which-key "gptel rewrite")
-
- ;; Buffer and file operations
- "kb"  '(nil                                           :which-key "buffers")
- "kbb" '(gptel-add                                     :which-key "add current buffer")
- "kbp" '(lauremacs/add-files-under-dir-to-gptel        :which-key "project files to gptel"))
+ )
 
 
 

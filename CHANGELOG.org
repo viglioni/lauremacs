@@ -12,12 +12,17 @@ All notable changes to this project will be documented in this file.
 - org basic config
 - appearance basic config
 - coding configuration
-  - lisps, ts, python, lsp, company, flycheck
+  - lisps, ts, python, lsp, company, flycheck, vue
 - helm and projectile basic config
+- created vue-origami config
+- added package-manager autodeletion features
 
-
-*** solved
+*** Changed
+- used agent-shell instead of other AI helpers
+  
+*** Fixed
 - straight issue with org and magit
+- release.el
 
 * 0.1.0 - 2025-09-12
 

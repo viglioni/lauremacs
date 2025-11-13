@@ -27,8 +27,6 @@
      (lsp-volar :type git :host github :repo "jadestrong/lsp-volar")
      (elixir-mode :latest)
      (vterm :latest)
-     (claude-code :repo "stevemolitor/claude-code.el" :branch "main" :depth 1
-                  :files ("*.el" (:exclude "images/*")))
      (web-mode :latest)
      (s :latest)
      (general :latest)
@@ -40,6 +38,7 @@
      (tree-sitter :latest)
      (tree-sitter-langs :latest)
      (vue-mode :latest)
+     (agent-shell  :latest)     
      (l :repo "viglioni/l-el"
         :branch "latest-release")
      (org :built-in)
@@ -78,7 +77,6 @@
      (multiple-cursors :latest)
      (helm-projectile :latest)
      (all-the-icons :latest)
-     (gptel :latest)
      (lsp-pyright :latest)
      (spacemacs-theme :latest)
      (company-box :latest)

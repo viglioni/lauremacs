@@ -18,6 +18,7 @@
 
 ;;; Code:
 
+(require 'helm-buffers)
 
 ;;;###autoload
 (defun wb/switch-to-last-buffer ()

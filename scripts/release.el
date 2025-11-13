@@ -26,9 +26,11 @@
     
     ;; Confirm versions
     (unless (y-or-n-p (format "Confirm current version: %s?" current-version))
+      (shell-command "git stash")
       (user-error "Release aborted"))
     
     (unless (y-or-n-p (format "Confirm new version: %s?" new-version))
+      (shell-command "git stash")
       (user-error "Release aborted"))
     
     (message "Preparing release: %s -> %s" current-version new-version)
@@ -37,8 +39,18 @@
     (dolist (file (directory-files-recursively default-directory "\\.el$"))
       (with-temp-buffer
         (insert-file-contents file)
-        (when (search-forward ";; since 0.1.0" nil t)
-          (replace-match (format ";; since %s" new-version))
+        (when (search-forward "since: NEXT" nil t)
+          (replace-match (format "since: %s" new-version))
+          (write-region (point-min) (point-max) file)
+          (message "Updated %s" file))))
+
+    ;; Update "since: X.X.X" pattern to new version in all .el files
+    (dolist (file (directory-files-recursively default-directory "\\.el$"))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (goto-char (point-min))
+        (when (re-search-forward "since: [0-9]+\\.[0-9]+\\.[0-9]+" nil t)
+          (replace-match (format "since: %s" new-version))
           (write-region (point-min) (point-max) file)
           (message "Updated %s" file))))
     
@@ -48,8 +60,8 @@
                             "CHANGELOG.md"))
           (today (format-time-string "%Y-%m-%d"))
           (unreleased-header (if (file-exists-p "CHANGELOG.org") 
-                                "* Unreleased"
-                              "## [Unreleased]")))
+                                 "* Unreleased"
+                               "## [Unreleased]")))
       
       (with-temp-buffer
         (insert-file-contents changelog-file)
@@ -57,39 +69,47 @@
         ;; Replace Unreleased with new version
         (goto-char (point-min))
         (when (re-search-forward (if (file-exists-p "CHANGELOG.org") 
-                                    "\\* Unreleased"
-                                  "## \\[Unreleased\\]") nil t)
+                                     "\\* Unreleased"
+                                   "## \\[Unreleased\\]") nil t)
           (replace-match (if (file-exists-p "CHANGELOG.org")
                              (format "* %s - %s" new-version today)
                            (format "## [%s] - %s" new-version today))))
         
         ;; Add new Unreleased section
         (goto-char (point-min))
-        (forward-line 4) ; Move past title and initial description
+        (forward-line 4)     ; Move past title and initial description
         (insert unreleased-header "\n\n")
         
         (write-region (point-min) (point-max) changelog-file)
         (message "Updated %s" changelog-file)))
     
     ;; Commit the changes
-    (when (yes-or-no-p "Commit changelog and version updates?")
-      (shell-command (format "git add -A && git commit -m \"Release version %s\"" new-version))
-      (message "Changes committed"))
+    (unless (y-or-n-p "Commit changelog and version updates?")
+      (shell-command "git stash")
+      (user-error "Release aborted"))
+    (shell-command (format "git add -A && git commit -m \"Release version %s\"" new-version))
+    (message "Changes committed")
     
     ;; Create git tag
-    (when (yes-or-no-p (format "Create tag %s?" new-version))
-      (shell-command (format "git tag -a %s -m \"Release %s\"" new-version new-version))
-      (message "Tagged version %s" new-version))
+    (unless (y-or-n-p (format "Create tag %s?" new-version))
+      (shell-command "git stash")
+      (user-error "Release aborted"))
+    (shell-command (format "git tag -a %s -m \"Release %s\"" new-version new-version))
+    (message "Tagged version %s" new-version)
     
     ;; Push changes to remote
-    (when (yes-or-no-p "Push changes to remote?")
-      (shell-command "git push")
-      (message "Changes pushed to remote"))
+    (unless (y-or-n-p "Push changes to remote?")
+      (shell-command "git stash")
+      (user-error "Release aborted"))
+    (shell-command "git push")
+    (message "Changes pushed to remote")
     
     ;; Push tag to remote
-    (when (yes-or-no-p (format "Push tag %s to remote?" new-version))
-      (shell-command (format "git push origin %s" new-version))
-      (message "Tag %s pushed to remote" new-version))
+    (unless (y-or-n-p (format "Push tag %s to remote?" new-version))
+      (shell-command "git stash")
+      (user-error "Release aborted"))
+    (shell-command (format "git push origin %s" new-version))
+    (message "Tag %s pushed to remote" new-version)
     
     (message "Release %s completed!" new-version)))
 

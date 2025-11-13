@@ -1,3 +1,4 @@
+
 ;;; fp.el --- functional library for emacs lisp -*- lexical-binding: t; l-syntax: t -*-
 ;; REMOVE
 
@@ -122,7 +123,7 @@ E.g.:
    'org-babel-load-languages
    '(
      (elixir		 . t)
-     ;;     (sqlite     . t)
+     (sqlite     . t)
      ;;		 (haskell		 . t)
      ;;  (mermaid    . t)
      ;;  (clojure		 . t)

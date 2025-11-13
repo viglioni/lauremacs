@@ -1,4 +1,4 @@
-;;; package-manager.el --- Set up straight.el and helpers. -*- lexical-binding: t; l-syntax: t -*-
+;;; package-manager.el --- Set up straight.el and helpers. -*- lexical-binding: t; -*-
 ;;
 ;; Author: Laura Viglioni
 ;; 2025
@@ -54,8 +54,8 @@
 
 (defun pm//package-type (spec)
   (cond
-   ((plist-get spec :repo) 'git)
-   ((equal (car spec) :latest) 'latest)
+   ((plist-get  spec  :repo)     'git)
+   ((equal (car spec) :latest)   'latest)
    ((equal (car spec) :built-in) 'built-in)
    (t 'recipee)))
 
@@ -73,15 +73,13 @@
   ;; Generate use-package form
   `(use-package ,package :straight t ,@args))
 
-
 ;;
 ;; Function calls
 ;;
 
 (pm/runtime-install)
 (lauremacs/load core core-packages)
-
-
-
+(lauremacs/load config packager-manager)
+(pm/clean-unused-packages)
 
 ;;; package-manager.el ends here

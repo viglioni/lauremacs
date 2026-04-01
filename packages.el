@@ -1,4 +1,4 @@
-;;; packages.el --- Package manifest for Lauremacs -*- lexical-binding: t; l-syntax: t -*-
+;;; packages.el --- Package manifest for Lauremacs -*- lexical-binding: t; -*-
 ;;
 ;; Package versioning documentation:
 ;;
@@ -24,23 +24,28 @@
   "Package dependencies organized by category with version constraints."
   '((runtime-deps
      (highlight-indentation :latest)
-     (lsp-volar :type git :host github :repo "jadestrong/lsp-volar")
+     (shrink-path :latest)
+     (doom-modeline :repo "seagle0128/doom-modeline")
+     (nyan-mode :latest)
+     (lsp-volar :repo "jadestrong/lsp-volar")
      (elixir-mode :latest)
+     (elixir-ts-mode :latest)
      (vterm :latest)
      (web-mode :latest)
      (s :latest)
+     (ox-gfm :latest)
+     (emoji-cheat-sheet-plus :latest)
      (general :latest)
      (which-key :latest)
      (python-mode :latest)
+     (org-notion :repo "richardwesthaver/org-notion")
      (envrc :latest)
      (typescript-mode :latest)
      (prettier-js :latest)
      (tree-sitter :latest)
      (tree-sitter-langs :latest)
      (vue-mode :latest)
-     (agent-shell  :latest)     
-     (l :repo "viglioni/l-el"
-        :branch "latest-release")
+     (agent-shell  :latest)          
      (org :built-in)
      (lsp-mode :latest)
      (lsp-ui :latest)
@@ -51,13 +56,12 @@
      (lsp-tailwindcss :latest)
      (magit :source melpa)
      (org-roam :latest)
+     ;(restclient :repo "pashky/restclient.el")
      (helm-posframe :repo "tumashu/helm-posframe")
      (avy :latest)
      (eval-sexp-fu :latest)
      (eat :latest)
      (smartparens :latest)
-     (doom-modeline :latest)
-     (nyan-mode :latest)
      (rainbow-delimiters :latest)
      (paren :latest)
      (yasnippet :latest)

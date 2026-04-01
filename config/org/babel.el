@@ -129,7 +129,7 @@ E.g.:
      ;;  (clojure		 . t)
      ;;   (emacs-lisp . t)
      ;;		 (ts         . t)
-     ;;   (python		 . t)
+     (python		 . t)
      ;;  (js				 . t)
      ;;   (C					 . t)
      ;;     (latex			 . t)
@@ -210,9 +210,9 @@ POST-FUNC: reference for a function to run on :post exectution."
 (defconst lauremacs-org//helm-lang-sources
   (helm-build-sync-source "Language name"
     :candidates '(lambda ()
-                   (fp/pipe org-babel-load-languages
-                     (fp/map 'car)
-                     (fp/partial 'seq-concatenate 'list '(postgres-db))))
+                   (cons
+                    'postgres-db
+                    (mapcar #'car org-babel-load-languages)))
     :action 'lauremacs-org//insert-src))
 
 (defconst lauremacs-org//helm-lang-sources-fallback
@@ -231,3 +231,6 @@ POST-FUNC: reference for a function to run on :post exectution."
          :sources '(lauremacs-org//helm-lang-sources lauremacs-org//helm-lang-sources-fallback))
         (forward-line -1)
 				(indent-for-tab-command))))
+
+(setq org-babel-python-command "python3")
+

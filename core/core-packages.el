@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; l-syntax: t -*-
+;;; -*- lexical-binding: t;  -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -13,7 +13,7 @@
 
 ;;; code:
 
-(config-package l
+(use-package l
   :mode ("\\.el\\'" . l-mode)
   :custom
   (l-syntax t)
@@ -90,6 +90,7 @@
 (use-package neotree
   :after (projectile)
   :custom
+  (neo-default-system-application "open")
   (neo-smart-open t)
   (neo-autorefresh t)
   (neo-window-width 35)

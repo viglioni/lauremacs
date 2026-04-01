@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; l-syntax: t -*-
+;;; -*- lexical-binding: t; -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -13,7 +13,7 @@
 
 ;; Lauremacs start time
 (defvar lauremacs-start-time (current-time))
-
+(setq debug-on-error t)
 ;;
 ;; Garbage colector threshold
 ;;

@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t; l-syntax: t -*-
+;;; -*- lexical-binding: t; -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025
@@ -12,6 +12,8 @@
 ;;
 
 ;;; code:
+
+(require 'cl-lib)
 
 ;;
 ;; add to loadpath

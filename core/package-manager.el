@@ -13,6 +13,11 @@
 ;; install straight.el
 ;;
 
+;; Disable package.el in favor of straight.el
+(setq package-enable-at-startup nil)
+
+;; Temporarily use HTTPS for bootstrapping
+(setq straight-vc-git-default-protocol 'https)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -34,30 +39,13 @@
 
 (setq straight-use-package-by-default t)
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
+(setq straight-disable-compile '("l"))
 
-(defun pm/runtime-install ()
-  (interactive)
-  (lauremacs/load packages)
-  (cl-loop for package in (alist-get 'runtime-deps (lauremacs-packages)) do
-           (pm//install package)))
-
-(defun pm//install (package)
-  (let ((name (car package))
-        (spec (cdr package)))
-    (pcase (pm//package-type spec)
-      ('git    (straight-use-package `(,@package :type git :host github)))
-      ('latest (straight-use-package name))
-      ('built-in (straight-use-package `(,name :type built-in)))
-      ('recipee (straight-use-package package))
-      (_       (error "Failed to install %s" name)))))
-
-
-(defun pm//package-type (spec)
-  (cond
-   ((plist-get  spec  :repo)     'git)
-   ((equal (car spec) :latest)   'latest)
-   ((equal (car spec) :built-in) 'built-in)
-   (t 'recipee)))
+(unless (featurep 'l)
+  (straight-use-package '(l :repo "viglioni/l-el"
+                            :branch "latest-release"
+                            :type git
+                            :host github)))
 
 (defmacro config-package (package &rest args)
   "Configure PACKAGE with use-package syntax, ensuring it's in manifest."
@@ -65,10 +53,11 @@
   (lauremacs/load packages)
   ;; Check if package exists in manifests
   (let ((all-packages (append (alist-get 'runtime-deps (lauremacs-packages))
-                             (alist-get 'dev-deps (lauremacs-packages)))))
+                              (alist-get 'dev-deps (lauremacs-packages)))))
     (unless (or (assq package all-packages)
-		(eq package 'magit)
-		(eq package 'org))
+		            (eq package 'l)
+		            )
+
       (error "Package %s not found in lauremacs-packages manifest" package)))
   ;; Generate use-package form
   `(use-package ,package :straight t ,@args))
@@ -77,9 +66,11 @@
 ;; Function calls
 ;;
 
-(pm/runtime-install)
+(require 'amazonia)
+(amazonia/runtime-install)
 (lauremacs/load core core-packages)
-(lauremacs/load config packager-manager)
-(pm/clean-unused-packages)
+;(amazonia/clean-unused-packages)
+
+(provide 'package-manager)
 
 ;;; package-manager.el ends here

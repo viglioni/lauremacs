@@ -39,6 +39,15 @@ C - future releases / nice to have
 ** TODO [#C] make readmes reload before push
 ** TODO fix FE 
 ** TODO m-0-9 for windows
+** TODO [#A] Fix l-syntax--load to only check file-local l-syntax declaration
+Bug: l-syntax--load uses l--should-use-l-syntax-p which checks the global l-syntax variable first.
+When l-syntax is set globally to t, ALL .el files get processed with with-l transformation,
+including straight/build-cache.el which breaks Magit's letrec closure in magit-custom-initialize-after-init.
+
+Fix: Create l-syntax--file-declares-l-syntax-p that only checks the file's prop-line for l-syntax: t,
+and use that in l-syntax--load instead of l--should-use-l-syntax-p.
+
+Error: "Symbol's value as variable is void: symbol" from (custom-initialize-set symbol value)
 
 * COMMENT Local Variables
 # Local Variables:

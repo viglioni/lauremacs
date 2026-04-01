@@ -1,3 +1,6 @@
+;; Add custom themes directory
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+
 ;; theme
 
 (defun my/apply-theme (appearance)
@@ -9,6 +12,8 @@
 
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
+
+
 ;; discover projects
 (setq projectile-project-search-path
       '("~/company/" "~/personal/"))
@@ -19,16 +24,27 @@
 ;; private files
 (load "~/personal/private-files/content.el")
 
-
-
 (message "loaded .lauremacs config.")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("902baf2c1a6d2d888ae9ced6776dc40673dc3c787f7069a310f56083b0621a9f" "4ea22919055b177c5d11152b394243cd4514eefaa7cfcd3a38b1b33922137ee0" default))
  '(safe-local-variable-values
-   '((eval org-babel-execute-buffer)
+   '((org-todo-keyword-faces
+      ("TODO" . "red")
+      ("DOING" . "orange")
+      ("DONE" . "purple"))
+     (org-todo-keyword-faces
+      ("OURO" . "gold1")
+      ("PRATA" . "gray75")
+      (COBRE . "Orangered3")
+      ("BRONZE" . "Darkgoldenrod3")
+      ("COMUM" . "Lightyellow4"))
+     (eval add-hook 'before-save-hook 'org-make-toc nil t)
+     (eval org-babel-execute-buffer)
      (org-todo-keyword-faces
       ("TODO" . "orange")
       ("DOING" . "purple")

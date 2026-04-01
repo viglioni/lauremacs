@@ -1,4 +1,4 @@
-;;; windows-and-buffers.el --- Helper functions to navigate buffers/windows -*- lexical-binding: t; l-syntax: t -*-
+;;; windows-and-buffers.el --- Helper functions to navigate buffers/windows -*- lexical-binding: t; -*-
 ;;
 ;; @author Laura Viglioni
 ;; 2025

@@ -15,7 +15,10 @@
   (global-hl-line-mode t)
   
   ;; prettify symbols
-  (global-prettify-symbols-mode 1))
+  (global-prettify-symbols-mode 1)
+  
+  ;; auto-pair parentheses, brackets, quotes
+  (electric-pair-mode 1))
 
 ;;
 ;; Languages
@@ -24,6 +27,7 @@
 (lauremacs/load config langs lisps)
 (lauremacs/load config langs python)
 (lauremacs/load config langs web)
+(lauremacs/load config langs elixir)
 
 ;;
 ;; Packages
@@ -125,3 +129,96 @@
 (config-package envrc
   :init
   (envrc-global-mode))
+
+;; todo sql
+(defvar sql-connection-alist nil)
+(defun sqlau--add-to-sql-conection-alist (db-type name host port user password db)
+	(add-to-list 'sql-connection-alist
+							 (list name
+										 (list 'sql-product `(quote ,db-type))
+										 (list 'sql-user user)
+										 (list 'sql-server host)
+										 (list 'sql-port port)
+										 (list 'sql-password password)
+										 (list 'sql-database db))))
+
+(defun sqlau--format-postgres-sqls (host port user password db)
+  (format "host=%s port=%s user=%s password=%s dbname=%s"
+          host port user password db))
+
+(defun sqlau--url-formatter (type host port user password db)
+	"TYPE should be 'postgres or 'mysql.
+If postgres, return url \"postgresql://user:password@host:port/db\".
+If mysql, return url \"user:password@tcp(host:port)/db\""
+	(let* ((postgress-formatter "postgresql://%s:%s@%s:%s/%s")
+				 (mysql-formatter "%s:%s@tcp(%s:%s)/%s")
+				 (hexed-passwd (url-hexify-string (format "%s" password)))
+				 (formatter (if (eq type 'postgres)
+												postgress-formatter
+											mysql-formatter)))
+		;(throw-unless (contains? '(postgres mysql) type) "TYPE should be 'postgres or 'mysql.")
+	  (format formatter user hexed-passwd host port db)))
+
+(cl-defun sqlau-add-postgres-db (name &key (port 5432) user database password host)
+	"Adds a postgres database to emacs and lsp
+Args: NAME (symbol) to the database and a p-list of parameters
+:port, :user, :password, :database, :host
+The only optional is :port, its default value is 5432
+e.g.:
+(sqlau-sql-add-postgres-db 'my-db-name 
+     :port 1234
+     :user \"username\"
+     :host \"my-host\"
+     :database \"my-db\"
+     :password \"mypassword\")"
+
+ 
+	(let ((full-uri (sqlau--url-formatter 'postgres host port user password database))
+				(data-src-name (sqlau--format-postgres-sqls host port user password database)))
+                                        ;	(sqlau--add-to-lsp-sqls-connections "postgresql" data-src-name)
+		(sqlau--add-to-sql-conection-alist 'postgres name host port user password full-uri)))
+
+(sqlau-add-postgres-db
+   'laura_db
+   :user "lauraviglioni"
+   :host "localhost"
+   :database "laura_db"
+   :password ""
+   :port 5432)
+
+
+;; (defgroup lauremacs-posframe nil
+;;   "Lauremacs posframe"
+;;   :prefix "lauremacs-posframe")
+
+;; (defface lauremacs-posframe-border
+;;   '((t (:inherit default :background "gray50")))
+;;   "Face used by the ivy-posframe's border."
+;;   :group 'lauremacs-posframe)
+
+;; (require 'helm-posframe)
+
+;; (when (posframe-workable-p)
+;;   (defvar my-posframe-buffer (find-file "~/.zshrc"))
+  
+;;   (with-selected-frame
+;;       (posframe-show
+;;        my-posframe-buffer
+;;                                         ;     :string "This is a test"
+;;        :position (point)
+;;        :poshandler #'posframe-poshandler-frame-center
+;;        :respect-header-line t
+;;        :border-width 2
+;;        :refposhandler helm-posframe-refposhandler
+;;        :border-color (face-attribute 'lauremacs-posframe-border :background nil t)
+;;        :width (window-width)
+;;        :min-height (/ (* 9  (window-width)) 16)
+;;        :fringe 10
+;;        :x-pixel-offset 20
+;;        :y-pixel-offset 20
+;;        :accept-focus t
+;;        :override-parameters '((cursor-type . box))
+;;        )
+;;     ))
+
+

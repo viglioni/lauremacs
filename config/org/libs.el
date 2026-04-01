@@ -1,4 +1,6 @@
 ;;; -*- lexical-binding: t; l-syntax: t -*-
+(config-package org-notion)
+
 (config-package org-download
   :custom
   (org-download-method 'directory)

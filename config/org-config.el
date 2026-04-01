@@ -81,33 +81,43 @@ Example: (define-org-cmd :heading 'my-fn :table 'my-fn2)"
   (org-html-postamble nil)
   (org-link-frame-setup '((file . find-file))) ; Open in same buffer instead of other window
   :init
-	
-	;; ;; keymaps
-  ;; (general-define-key
-  ;;  :keymaps 'org-mode-map
-  ;;  "C-M-<return>" '(org-insert-todo-heading :general "insert todo heading")
-  ;;  "M-s-m" (define-org-cmd
-  ;;           :heading 'org-promote-subtree
-  ;;           :table   'org-table-move-column-left)
-	;;  "M-s-," (define-org-cmd
-	;; 					:heading 'org-move-subtree-down
-	;; 					:item    'org-move-item-down
-  ;;           :table   'org-table-move-row-down)
-  ;;  "M-s-. " (define-org-cmd
-	;; 					:heading 'org-move-subtree-up
-	;; 					:item    'org-move-item-up
-  ;;           :table   'org-table-move-row-up)
-  ;;  "M-s-/" (define-org-cmd
-  ;;           :heading 'org-demote-subtree
-  ;;           :table   'org-table-move-column-right)
-  ;;  "s-d" 'org-table-copy-down)
-	
+  (require 'ox-gfm)
+	(general-define-key
+   :keymaps 'org-mode-map
+   ;; Trees
+   "C-<right>" 'org-demote-subtree
+   "C-<left>" 'org-promote-subtree
+   "C-<up>" 'org-move-item-up
+   "C-<down>" 'org-move-item-down
+   )
+	 ;; ;; keymaps
+   ;; (general-define-key
+   ;;  :keymaps 'org-mode-map
+   ;;  "C-M-<return>" '(org-insert-todo-heading :general "insert todo heading")
+   ;;  "M-s-m" (define-org-cmd
+   ;;           :heading 'org-promote-subtree
+   ;;           :table   'org-table-move-column-left)
+	 ;;  "M-s-," (define-org-cmd
+	 ;; 					:heading 'org-move-subtree-down
+	 ;; 					:item    'org-move-item-down
+   ;;           :table   'org-table-move-row-down)
+   ;;  "M-s-. " (define-org-cmd
+	 ;; 					:heading 'org-move-subtree-up
+	 ;; 					:item    'org-move-item-up
+   ;;           :table   'org-table-move-row-up)
+   ;;  "M-s-/" (define-org-cmd
+   ;;           :heading 'org-demote-subtree
+   ;;           :table   'org-table-move-column-right)
+   ;;  "s-d" 'org-table-copy-down)
+
+	 
 	(lauremacs-major-mode-leader
 		:keymaps 'org-mode-map
 		;; "T"		'(nil                              :which-key "toggle")
 		;; "Tf"	'(org-fragtog-mode                 :which-key "toggle fragtog mode")
 		"i"   '(nil                              :which-key "insert")
-		"ic"  '(lauremacs/org-insert-source :which-key "insert code block source")
+		"ic"  '(lauremacs-org/insert-source :which-key "insert code block source")
+    "e" '(org-edit-special :which-key "edit code in special env")
 		;; "im"  '(nil                              :which-key "insert math")
 		;; "imb" '(org-insert-mathbb                :which-key "insert mathbb")
 		;; "imc" '(org-insert-mathcal               :which-key "insert mathcal")

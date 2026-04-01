@@ -17,6 +17,12 @@
  "s->"   'backward-paragraph
  "s-?"   'forward-word)
 
+;; F navigation
+(general-define-key
+ "<User0>" 'backward-word)
+
+ (global-set-key (kbd "<User0>") 'backward-word)
+
 ;; Window navigation (check also <leader>-W)
 
 (general-define-key ;; walk through windows
@@ -52,8 +58,7 @@
 
 (lauremacs-leader
   "b" '(nil :which-key "buffers")
-  "bb" '(wb/switch-buffers :which-key "project buffer list")
-  "bB" '(helm-buffers-list :which-key "buffer list")
+  "bb" '(helm-buffers-list :which-key "buffer list")
   )
 
 ;;
@@ -80,7 +85,6 @@
   "gf" '(magit-find-file                               :which-key "find file")
   "gn" '(lauremacs/magit-new-branch-from-main          :which-key "new branch from origin/main")
   "gp" '(lauremacs/gh-create-pr                        :which-key "create PR (simple)")
-  "gP" '(lauremacs/ai-create-pr-with-claude            :which-key "create PR with AI")
   "gs" '(magit-status                                  :which-key "magit status")
   )
 
@@ -89,7 +93,6 @@
 ;; <leader>-K
 ;; AI assistants
 ;;
-(require 'claude-code)
 (lauremacs-leader
  "k"   '(nil                                           :which-key "AI assistants")
  )
@@ -196,8 +199,9 @@
   "w" '(nil :which-key "window")
   "w-" '(split-window-vertically :which-key "split horizontally")
   "w1" '(delete-other-windows :which-key "single window")
-  "w=" '(balance-windws :which-key "balance windows")
+  "w=" '(balance-windows :which-key "balance windows")
   "w\\" '(split-window-horizontally :which-key "split vertically")
+  "w/" '(split-window-horizontally :which-key "split vertically")
   "wf" '(delete-other-windows :which-key "single window")
   "wh" '(split-window-vertically :which-key "split horizontally")
   "wm" '(maximize-window :which-key "maximize window")

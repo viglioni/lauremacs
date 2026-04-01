@@ -24,8 +24,15 @@
 ;; Find and load all test files
 (defvar buttercup-suits)
 (setq buttercup-suites nil) ;; Clear any previous tests
+
+;; Load tests from main test directory
 (dolist (test-file (directory-files-recursively lauremacs-test-directory "-test.el$"))
   (load test-file nil))
+
+;; Load tests from lauremacs-libs/**/test/*test.el
+(cl-loop for test-file in
+         (directory-files-recursively "~/.emacs.d/lauremacs-libs" "-test.el$")
+         do (load test-file nil))
 
 ;; Run tests
 (buttercup-run)

@@ -17,3 +17,6 @@ straight/*
 tramp
 transient/*
 url/*
+.claude/*
+agent/*
+*#

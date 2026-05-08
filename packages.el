@@ -23,6 +23,7 @@
 (defun lauremacs-packages ()
   "Package dependencies organized by category with version constraints."
   '((runtime-deps
+     (vterm-toggle :latest)
      (highlight-indentation :latest)
      (shrink-path :latest)
      (doom-modeline :repo "seagle0128/doom-modeline")

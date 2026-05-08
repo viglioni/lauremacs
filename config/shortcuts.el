@@ -50,6 +50,20 @@
 
 
 ;;
+;; <leader>-A
+;; Applications
+;;
+
+(lauremacs-leader
+  "a" '(nil :which-key "applications")
+  "as" '(nil :which-key "shell")
+  "ase" '(eshell :which-key "eshell")
+  "asv" '(vterm-toggle :which-key "vterm toggle")
+  "asp" '(nil :which-key "personal shells")
+  ;; aspX keys in user-init-file
+  )
+
+;;
 ;; <leader>-B
 ;; Buffers
 ;;

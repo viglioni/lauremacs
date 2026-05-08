@@ -13,6 +13,67 @@
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
 
+(require 'publish-roam)
+
+(defun lauremacs/local-publish-coins (&optional evalp)
+  (interactive)
+  (save-some-buffers)
+  (publish-roam-by-tag "numismatica" "~/Personal/coins" (not evalp)))
+
+(defun lauremacs/publish-coins ()
+  (interactive)
+  (lauremacs/local-publish-coins t)
+  (let ((default-directory "~/Personal/coins"))
+    (async-shell-command
+     (format "git add -A * && git commit --allow-empty -m \"%s\" && git push"
+             (format-time-string "%D %Hh%M")))))
+
+
+;;
+;; Personal shells
+
+(defun lauterm/home-server ()
+  ""
+  (interactive)
+  (lauterm/open-specific-shell "*home-server term*" "ssh home-server"))
+
+(defun lauterm/personal-mac ()
+  ""
+  (interactive)
+  (lauterm/open-specific-shell "*mac term*" "ssh personal-mac"))
+
+(defun lauterm/nas ()
+  ""
+  (interactive)
+  (lauterm/open-specific-shell "*mac term*" "ssh nas"))
+
+
+(lauremacs-leader
+  "asph" '(lauterm/home-server :which-key "open home server")
+  "aspn" '(lauterm/nas :which-key "open nas")
+  "aspm" '(lauterm/personal-mac :which-key "open mac")
+  )
+
+
+;;
+;; Claude
+;;
+
+(defun lauremacs/ai-company-claude ()
+  (interactive)
+  (let ((default-directory "~/company"))
+    (agent-shell-anthropic-start-claude-code)))
+
+(defun lauremacs/ai-canary-claude ()
+  (interactive)
+  (let ((default-directory "~/company/canary"))
+    (agent-shell-anthropic-start-claude-code)))
+
+(defun lauremacs/ai-personal-claude ()
+  (interactive)
+  (let* ((default-directory "~/personal")
+         (buff-name (agent-shell-anthropic-start-claude-code)))))
+
 
 ;; discover projects
 (setq projectile-project-search-path

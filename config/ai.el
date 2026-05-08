@@ -5,14 +5,5 @@
     :keymaps 'agent-shell-mode-map
     "<f17>" '(agent-shell-help-menu :which-key "Agent shell menu")
     )
+  (require 'agent-shell-usage)
   )
-
-(defun lauremacs/ai-company-claude ()
-  (interactive)
-  (let ((default-directory "~/company"))
-    (agent-shell-anthropic-start-claude-code)))
-
-(defun lauremacs/ai-personal-claude ()
-  (interactive)
-  (let* ((default-directory "~/personal")
-        (buff-name (agent-shell-anthropic-start-claude-code)))))
